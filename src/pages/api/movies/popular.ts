@@ -12,6 +12,7 @@ const handler = async (
     console.log(req)
     const data = await fetch(`${process.env.TMDB_V3_URL}/movie/popular?api_key=${process.env.TMDB_APIKEY}`);
     const popularMovies = await data.json();
+    res.setHeader('Access-Control-Allow-Origin', "*")
     res.status(200).json(popularMovies);
 }
 
