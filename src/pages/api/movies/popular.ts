@@ -5,9 +5,11 @@ type Data = {
   name: string
 }
 
-export default function handler(
+export default async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'John Doe' })
+) => {
+    const data = await fetch(`${process.env.TMDB_V3_URL}/movie/popular?api_key=${process.env.TMDB_APIKEY}`);
+    const popularMovies = await data.json();
+    res.status(200).json(popularMovies);
 }
