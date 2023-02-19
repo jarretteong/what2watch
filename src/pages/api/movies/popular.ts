@@ -5,7 +5,7 @@ type Data = {
   name: string
 }
 
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
@@ -13,3 +13,5 @@ export default async (
     const popularMovies = await data.json();
     res.status(200).json(popularMovies);
 }
+
+export default handler;

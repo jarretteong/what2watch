@@ -14,7 +14,7 @@ export default async function Home() {
             <div>
                 {popularMovies.results?.map((movie: any) => {
                     return (
-                        <div>
+                        <div key={movie.id}>
                             <h2>{movie.title}</h2>
                             <h3>{movie.overview}</h3>
                         </div>
