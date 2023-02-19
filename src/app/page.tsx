@@ -5,7 +5,7 @@ import "./page.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home() {
-    const apiUrl = `http://${process.env.API_URL}` || `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    const apiUrl = process.env.API_URL ? `http://${process.env.API_URL}` : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     const data = await fetch(`${apiUrl}/api/movies/popular`);
     const popularMovies = await data?.json();
     
