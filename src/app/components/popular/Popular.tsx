@@ -1,21 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PopularMovies from "./PopularMovies";
 
-const Popular = ({ movies }: any) => {
-    return (
-        <div>
-            {movies.map((movie: any) => {
-                <div>
-                    <h2>{movie.title}</h2>
-                    <h3>{movie.overview}</h3>
-                </div>;
-            })}
-        </div>
+const fetchPopularMovies = async () => {
+    const popularData = await fetch(
+        `${process.env.TMDB_V3_URL}/movie/popular?api_key=${process.env.TMDB_APIKEY}`
     );
-};
+    const movies = await popularData.json();
+    return movies;
+}
 
-Popular.propTypes = {
-    movies: PropTypes.array,
+const Popular = async () => {
+    const movies = await fetchPopularMovies();
+    return <PopularMovies movies={movies.results} />
 };
 
 export default Popular;
