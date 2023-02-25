@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
-import styles from "../../page.module.scss";
+import styles from "../../movies/page.module.scss";
 
 import { Navigation, Pagination } from "swiper";
 import Image from "next/image";
@@ -47,7 +47,7 @@ const PopularMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                 return (
                     <SwiperSlide key={movie.id}>
                         <img
-                            className={styles["poster-image"]}
+                            className={styles.posterImage}
                             alt={movie.title}
                             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
                         />

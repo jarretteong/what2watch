@@ -6,7 +6,7 @@ import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import { Navigation, Pagination } from "swiper";
-import styles from "@/app/page.module.scss";
+import styles from "../../movies/page.module.scss";
 import LandingMetadata from "./LandingMetadata";
 
 type MoviesProps = {
@@ -15,7 +15,7 @@ type MoviesProps = {
 
 const TrendingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
     return (
-        <div className={styles["landing-container"]}>
+        <div className={styles.landingContainer}>
             <Swiper
                 modules={[Navigation, Pagination]}
                 slidesPerView={1}
@@ -26,7 +26,7 @@ const TrendingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: Movies
                     return (
                         <SwiperSlide key={movie.id}>
                             <img
-                                className={styles["backdrop-image"]}
+                                className={styles.backdropImage}
                                 alt={movie.title}
                                 src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                             />

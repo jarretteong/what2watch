@@ -6,6 +6,7 @@ import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import { Navigation, Pagination } from "swiper";
+import styles from '../../movies/page.module.scss'
 
 type MoviesProps = {
     movies: any[];
@@ -23,7 +24,7 @@ const TrendingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: Movies
                 return (
                     <SwiperSlide className="movie-slide" key={movie.id}>
                         <img
-                            className="poster-image"
+                            className={styles.posterImage}
                             alt={movie.title}
                             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
                         />
