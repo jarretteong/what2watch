@@ -1,17 +1,44 @@
+import Trailer, { Video } from "@/app/components/trailer/Trailer";
+import { parseMovieIdQuery } from "@/app/utils";
+import { fetchTMDBMovieDetails, fetchTMDBMovieVideos } from "@/app/utils/tmdbApi";
+import _ from "lodash";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import styles from "./page.module.scss";
 
-type MovieProps = {
-    movie: any;
+const checkValidParams = async (movieId: string): Promise<number | null> => {
+    const id = _.last(movieId.split("-"));
+    if (id) {
+        try {
+            const movieData = await fetchTMDBMovieDetails(+id);
+            return movieId === parseMovieIdQuery(+id, movieData.title) ? +id : null;
+        } catch (err) {
+            return null;
+        }
+    }
+    return null;
 };
 
-export default async function Movie({ movie }: MovieProps) {
-    // const latestData = fetch(
-    //     `${process.env.TMDB_V3_URL}/movie/latest?api_key=${process.env.TMDB_APIKEY}`
-    // );
-    // const popularMovies = await data.json();
+export default async function Movie(request: any) {
+    const { movieId } = request.params;
+    const validId = await checkValidParams(movieId);
+
+    if (!validId) {
+        return notFound();
+    }
+
+    const videosList = await fetchTMDBMovieVideos(validId);
+    console.log(videosList.results);
 
     return (
         <div className={styles.movie}>
+            {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
+                <Suspense>
+                    <Trailer
+                        videos={videosList.results.filter((v: Video) => v.type === "Trailer")}
+                    />
+                </Suspense>
+            ) : null}
         </div>
     );
 }

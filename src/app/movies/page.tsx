@@ -2,6 +2,7 @@ import styles from "./page.module.scss";
 import Popular from "../components/popular/Popular";
 import Trending from "../components/trending/Trending";
 import Landing from "../components/landing/Landing";
+import { Suspense } from "react";
 
 export default async function Movies() {
     // const latestData = fetch(
@@ -12,16 +13,22 @@ export default async function Movies() {
     return (
         <div className={styles.movies}>
             <div className={styles.landingContainer}>
-                {/* @ts-expect-error Async Server Components */}
-                <Landing />
+                <Suspense fallback="Loading...">
+                    {/* @ts-expect-error Async Server Components */}
+                    <Landing />
+                </Suspense>
             </div>
             <div className={styles.popularContainer}>
-                {/* @ts-expect-error Async Server Components */}
-                <Popular />
+                <Suspense>
+                    {/* @ts-expect-error Async Server Components */}
+                    <Popular />
+                </Suspense>
             </div>
             <div className={styles.trendingContainer}>
-                {/* @ts-expect-error Async Server Components */}
-                <Trending />
+                <Suspense>
+                    {/* @ts-expect-error Async Server Components */}
+                    <Trending />
+                </Suspense>
             </div>
         </div>
     );

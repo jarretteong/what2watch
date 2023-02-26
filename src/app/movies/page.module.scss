@@ -17,6 +17,7 @@
             bottom: 36px;
             left: 48px;
             max-width: 260px;
+            z-index: 5;
 
             .movieMetadata {
                 display: flex;
@@ -40,7 +41,7 @@
                     font-size: 18px;
                     transition: 0.6s;
                     max-height: 85px;
-                    
+
                     &.metadataFull {
                         max-height: 300px;
                     }
@@ -57,6 +58,15 @@
                     outline: none;
                 }
             }
+        }
+
+        .videoContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-height: 100vh;
+            aspect-ratio: 16 / 9;
         }
     }
 

@@ -1,17 +1,24 @@
+import { fetchTMDBMovieDetails, fetchTMDBMovieVideos, fetchTMDBTrendingMovies } from "@/app/utils/tmdbApi";
+import _ from "lodash";
 import React from "react";
+import { Video } from "../trailer/Trailer";
 import LandingMovie from "./LandingMovies";
 
-const fetchLandingMovie = async () => {
-    const trendingMovies = await fetch(
-        `${process.env.TMDB_V3_URL}/trending/movie/day?api_key=${process.env.TMDB_APIKEY}`
-    );
-    const movies = await trendingMovies.json();
-    return movies;
-}
-
 const Popular = async () => {
-    const movies = await fetchLandingMovie();
-    return <LandingMovie movies={movies.results} />
+    const movies = await fetchTMDBTrendingMovies();
+    const popularMovies = await Promise.all(
+        movies.results.map(async (movie: any) => {
+            const videos = await fetchTMDBMovieVideos(movie.id);
+            const officialTrailer = _.first(videos.results.filter(
+                (video: Video) => video.type === "Trailer"
+            ));
+            return {
+                ...movie,
+                trailer: officialTrailer,
+            };
+        })
+    );
+    return <LandingMovie movies={popularMovies} />;
 };
 
 export default Popular;
