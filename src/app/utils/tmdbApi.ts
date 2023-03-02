@@ -1,3 +1,5 @@
+import { Movie } from "@/interfaces/movie";
+
 export const fetchTMDBTrendingMovies = async () => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/trending/movie/day?api_key=${process.env.TMDB_APIKEY}`
@@ -12,7 +14,7 @@ export const fetchTMDBPopularMovies = async () => {
     return await data.json();
 };
 
-export const fetchTMDBMovieDetails = async (id: number) => {
+export const fetchTMDBMovieDetails = async (id: number): Promise<Movie> => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/movie/${id}?api_key=${process.env.TMDB_APIKEY}`
     );

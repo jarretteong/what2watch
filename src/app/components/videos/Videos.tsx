@@ -23,11 +23,11 @@ type VideosProps = {
     videos: Video[]
 };
 
-const Trailer: React.FunctionComponent<VideosProps> = ({ videos }: VideosProps) => {
+const Videos: React.FunctionComponent<VideosProps> = ({ videos }: VideosProps) => {
     return (
         <Swiper
             modules={[Navigation]}
-            slidesPerView={3}
+            slidesPerView={2}
         >
             {videos.map((video) => {
                 return (
@@ -40,4 +40,4 @@ const Trailer: React.FunctionComponent<VideosProps> = ({ videos }: VideosProps) 
     );
 };
 
-export default Trailer;
+export default Videos;

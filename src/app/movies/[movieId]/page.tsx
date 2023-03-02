@@ -1,7 +1,9 @@
-import Trailer, { Video } from "@/app/components/trailer/Trailer";
+import Videos from "@/app/components/videos/Videos";
+import { Video } from "@/app/components/videos/Videos";
 import { parseMovieIdQuery } from "@/app/utils";
 import { fetchTMDBMovieDetails, fetchTMDBMovieVideos } from "@/app/utils/tmdbApi";
 import _ from "lodash";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import styles from "./page.module.scss";
@@ -28,17 +30,32 @@ export default async function Movie(request: any) {
     }
 
     const videosList = await fetchTMDBMovieVideos(validId);
-    console.log(videosList.results);
-
+    const movieDetails = await fetchTMDBMovieDetails(validId);
+    console.log({ movieDetails });
     return (
         <div className={styles.movie}>
-            {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
+            {/* {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
                 <Suspense>
-                    <Trailer
+                    <Videos
                         videos={videosList.results.filter((v: Video) => v.type === "Trailer")}
                     />
                 </Suspense>
-            ) : null}
+            ) : null} */}
+            <div className={styles.coverImage}>
+                <Image
+                    src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
+                    alt={movieDetails.original_title}
+                    fill
+                />
+            </div>
+            <div className={styles.movieOverview}>
+                <Image
+                    src={`https://image.tmdb.org/t/p/original${movieDetails.poster_path}`}
+                    alt={movieDetails.original_title}
+                    width="200"
+                    height="300"
+                />
+            </div>
         </div>
     );
 }
