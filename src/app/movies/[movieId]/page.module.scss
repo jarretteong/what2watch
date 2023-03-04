@@ -1,20 +1,65 @@
 .movie {
-    display: flex;
-    position: relative;
-
     .coverImage {
         position: absolute;
         top: 0;
         left: 0;
-        opacity: 0.9;
-        filter: brightness(0.5);
         width: 100%;
         height: 100%;
+        max-height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
-    .movieOverview {
+    .movieSummary {
         display: flex;
+        position: relative;
         justify-content: center;
         z-index: 5;
+        margin: 200px 30px 0 30px;
+
+        .moviePoster {
+            border-radius: 4px;
+            margin: 0 90px;
+        }
+
+        .movieInfo {
+            font-family: Montserrat;
+            max-width: 50%;
+            color: #fff;
+
+            > * {
+                margin-bottom: 16px;
+            }
+
+            .movieTitle {
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            .movieMainMetadata {
+                display: flex;
+                font-size: 13px;
+                align-items: center;
+
+                > * {
+                    margin-right: 30px;
+                }
+
+                .trailerBtn {
+                    display: flex;
+                    padding: 6px 0;
+                    align-items: center;
+                }
+                
+                .avgRating {
+                    
+                }
+            }
+
+            .movieInfoOverview {
+                font-size: 13px;
+            }
+
+        }
     }
 }

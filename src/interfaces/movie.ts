@@ -3,7 +3,7 @@ export interface Movie {
     backdrop_path: string;
     belongs_to_collection: any;
     budget: number;
-    genres: any[];
+    genres: MovieGenre[];
     homepage: string;
     id: number;
     imdb_id: string;
@@ -24,4 +24,9 @@ export interface Movie {
     video: boolean;
     vote_average: number;
     vote_count: number;
+}
+
+export interface MovieGenre {
+    id: number;
+    name: string;
 }
