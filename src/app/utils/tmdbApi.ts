@@ -27,3 +27,10 @@ export const fetchTMDBMovieVideos = async (id: number) => {
     );
     return await data.json();
 };
+
+export const fetchTMDBMovieCredits = async (id: number) => {
+    const data = await fetch(
+        `${process.env.TMDB_V3_URL}/movie/${id}/credits?api_key=${process.env.TMDB_APIKEY}`
+    );
+    return await data.json();
+};

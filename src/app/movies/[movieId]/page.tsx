@@ -1,6 +1,10 @@
 import { parseMovieIdQuery } from "@/app/utils";
-import { fetchTMDBMovieDetails, fetchTMDBMovieVideos } from "@/app/utils/tmdbApi";
-import { faStar, faVideo, faVideoCamera } from "@fortawesome/free-solid-svg-icons";
+import {
+    fetchTMDBMovieCredits,
+    fetchTMDBMovieDetails,
+    fetchTMDBMovieVideos,
+} from "@/app/utils/tmdbApi";
+import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
 import Image from "next/image";
@@ -32,13 +36,14 @@ export default async function Movie(request: any) {
 
     const videosList = await fetchTMDBMovieVideos(validId);
     const movieDetails = await fetchTMDBMovieDetails(validId);
-    console.log({ movieDetails });
+    const movieCredits = await fetchTMDBMovieCredits(validId);
+
     return (
         <div className={styles.movie}>
             <div
                 className={styles.coverImage}
                 style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.65)), url('https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}')`,
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.55)), url('https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}')`,
                 }}
             ></div>
             {/* {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
@@ -53,8 +58,8 @@ export default async function Movie(request: any) {
                     className={styles.moviePoster}
                     src={`https://image.tmdb.org/t/p/original${movieDetails.poster_path}`}
                     alt={movieDetails.title}
-                    width="200"
-                    height="300"
+                    width="250"
+                    height="400"
                 />
                 <div className={styles.movieInfo}>
                     <p className={styles.movieTitle}>{movieDetails.title}</p>
@@ -76,10 +81,65 @@ export default async function Movie(request: any) {
                         </div>
                     </div>
                     <div className={styles.movieInfoOverview}>{movieDetails.overview}</div>
-                    <div className={styles.movieMoreMetadata}>
+                    <div className={styles.movieExtras}>
                         {/* Genres: {movieDetails.genres.map((genre: MovieGenre) => {
                             return genre.name;
                         }).join(", ")} */}
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Released:</strong> {movieDetails.release_date}
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Genres:</strong>{" "}
+                            {movieDetails.genres
+                                .map((genre: MovieGenre) => {
+                                    return genre.name;
+                                })
+                                .join(", ")}
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Duration:</strong> {movieDetails.runtime}m
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Cast:</strong>{" "}
+                            {movieCredits.cast
+                                .slice(0, 5)
+                                .map((cast: any) => {
+                                    return cast.name;
+                                })
+                                .join(", ")}
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Country:</strong>{" "}
+                            {movieDetails.genres
+                                .map((genre: MovieGenre) => {
+                                    return genre.name;
+                                })
+                                .join(", ")}
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Country:</strong>{" "}
+                            {movieDetails.production_countries
+                                .map((country: any) => {
+                                    return country.name;
+                                })
+                                .join(", ")}
+                        </div>
+                        <div className={styles.movieExtrasItem}>
+                            <strong>Languages:</strong>{" "}
+                            {movieDetails.spoken_languages
+                                .map((lang: any) => {
+                                    return lang.english_name;
+                                })
+                                .join(", ")}
+                        </div>
+                        {movieDetails.homepage ? (
+                            <div className={styles.movieExtrasItem}>
+                                <strong>Website:</strong>{" "}
+                                <a rel="noopener" href={movieDetails.homepage} target="_blank">
+                                    {movieDetails.homepage}
+                                </a>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
