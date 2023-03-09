@@ -27,11 +27,13 @@ const LandingMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MoviePr
             onMouseLeave={onMetadataHoverEnd}
         >
             <div className={styles.movieMetadata}>
-                <img
-                    className={styles.landingMetadataImage}
-                    alt={movie.title}
-                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
-                />
+                <picture>
+                    <img
+                        className={styles.landingMetadataImage}
+                        alt={movie.title}
+                        src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                    />
+                </picture>
                 <p className={styles.landingMetadataOverview} ref={overviewRef}>
                     {movie.overview}
                 </p>

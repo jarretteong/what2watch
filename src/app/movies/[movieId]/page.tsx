@@ -3,6 +3,7 @@ import {
     fetchTMDBMovieCredits,
     fetchTMDBMovieDetails,
     fetchTMDBMovieVideos,
+    fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
 import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +12,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { MovieGenre } from "@/interfaces/movie";
+import { Movie, MovieGenre, Video } from "@/interfaces/movie";
+import { Suspense } from "react";
+import Videos from "@/app/components/videos/Videos";
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
@@ -26,7 +29,7 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     return null;
 };
 
-export default async function Movie(request: any) {
+export default async function MovieComponent(request: any) {
     const { movieId } = request.params;
     const validId = await checkValidParams(movieId);
 
@@ -37,7 +40,7 @@ export default async function Movie(request: any) {
     const videosList = await fetchTMDBMovieVideos(validId);
     const movieDetails = await fetchTMDBMovieDetails(validId);
     const movieCredits = await fetchTMDBMovieCredits(validId);
-
+    console.log(videosList)
     return (
         <div className={styles.movie}>
             <div
@@ -46,13 +49,6 @@ export default async function Movie(request: any) {
                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.55)), url('https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}')`,
                 }}
             ></div>
-            {/* {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
-                <Suspense>
-                    <Videos
-                        videos={videosList.results.filter((v: Video) => v.type === "Trailer")}
-                    />
-                </Suspense>
-            ) : null} */}
             <div className={styles.movieSummary}>
                 <Image
                     className={styles.moviePoster}
@@ -62,7 +58,7 @@ export default async function Movie(request: any) {
                     height="400"
                 />
                 <div className={styles.movieInfo}>
-                    <p className={styles.movieTitle}>{movieDetails.title}</p>
+                    <h2 className={styles.movieTitle}>{movieDetails.title}</h2>
                     <div className={styles.movieMainMetadata}>
                         <div className={styles.trailerBtn}>
                             <FontAwesomeIcon icon={faVideoCamera} />
@@ -135,7 +131,7 @@ export default async function Movie(request: any) {
                         {movieDetails.homepage ? (
                             <div className={styles.movieExtrasItem}>
                                 <strong>Website:</strong>{" "}
-                                <a rel="noopener" href={movieDetails.homepage} target="_blank">
+                                <a rel="noreferrer" href={movieDetails.homepage} target="_blank">
                                     {movieDetails.homepage}
                                 </a>
                             </div>
@@ -143,6 +139,56 @@ export default async function Movie(request: any) {
                     </div>
                 </div>
             </div>
+            <div className={styles.movieOthers}>
+                {videosList.results.filter((v: Video) => v.type === "Clip").length > 0 ? (
+                    <div className={styles.movieClips}>
+                        <Suspense>
+                            <Videos
+                                videos={videosList.results.filter(
+                                    (v: Video) => v.type === "Clip"
+                                )}
+                                slidesPerView={2}
+                                title="Clips"
+                            />
+                        </Suspense>
+                    </div>
+                ) : null}
+                {videosList.results.filter((v: Video) => v.type === "Teaser").length > 0 ? (
+                    <div className={styles.movieTeasers}>
+                        <h3>Teasers</h3>
+                        <Suspense>
+                            <Videos
+                                videos={videosList.results.filter(
+                                    (v: Video) => v.type === "Teaser"
+                                )}
+                                slidesPerView={2}
+                            />
+                        </Suspense>
+                    </div>
+                ) : null}
+                {videosList.results.filter((v: Video) => v.type === "Featurette").length > 0 ? (
+                    <div className={styles.movieFeaturettes}>
+                        <h3>Featurettes</h3>
+                        <Suspense>
+                            <Videos
+                                videos={videosList.results.filter(
+                                    (v: Video) => v.type === "Featurette"
+                                )}
+                                slidesPerView={2}
+                            />
+                        </Suspense>
+                    </div>
+                ) : null}
+                <div className={styles.movieBehindTheScenes}></div>
+            </div>
         </div>
     );
+}
+
+export async function generateStaticParams() {
+    const movies = await fetchTMDBTrendingMovies();
+
+    return movies.results.map((movie: Movie) => ({
+        movieId: parseMovieIdQuery(movie.id, movie.title),
+    }));
 }

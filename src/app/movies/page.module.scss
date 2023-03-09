@@ -68,6 +68,12 @@
             max-height: 100vh;
             aspect-ratio: 16 / 9;
             pointer-events: none;
+
+            iframe {
+                width: 300%;
+                height: 100%;
+                margin-left: -100%;
+            }
         }
     }
 

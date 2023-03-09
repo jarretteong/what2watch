@@ -5,38 +5,46 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import { Navigation } from "swiper";
-import styles from '../../movies/page.module.scss'
-import ReactPlayer from 'react-player/lazy'
+import videoStyles from "./videos.module.scss";
+import ReactPlayer from "react-player/lazy";
 
 export interface Video {
-    name: string,
-    key: string,
-    site: string,
-    size: number,
-    type: string,
-    official: boolean,
-    published_at: Date,
-    id: string,
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: Date;
+    id: string;
 }
 
 type VideosProps = {
-    videos: Video[]
+    videos: Video[];
+    slidesPerView: number;
+    title?: string;
 };
 
-const Videos: React.FunctionComponent<VideosProps> = ({ videos }: VideosProps) => {
+const Videos: React.FunctionComponent<VideosProps> = ({
+    videos,
+    slidesPerView,
+    title,
+}: VideosProps) => {
     return (
-        <Swiper
-            modules={[Navigation]}
-            slidesPerView={2}
-        >
-            {videos.map((video) => {
-                return (
-                    <SwiperSlide className="movie-slide" key={video.id}>
-                        <ReactPlayer url={`https://www.youtube.com/watch?v=${video.key}`}/>
-                    </SwiperSlide>
-                );
-            })}
-        </Swiper>
+        <div className={videoStyles.videos}>
+            {title ? <h3>{title}</h3> : null}
+            <div className={videoStyles.videosList}>
+                <Swiper modules={[Navigation]} slidesPerView={slidesPerView || 1}>
+                    {videos.map((video) => {
+                        return (
+                            <SwiperSlide className={videoStyles.movieSlide} key={video.id}>
+                                <ReactPlayer url={`https://www.youtube.com/watch?v=${video.key}`} />
+                            </SwiperSlide>
+                        );
+                    })}
+                </Swiper>
+            </div>
+        </div>
     );
 };
 
