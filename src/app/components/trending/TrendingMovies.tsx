@@ -17,8 +17,6 @@ const TrendingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: Movies
         <Swiper
             modules={[Navigation, Pagination]}
             slidesPerView={3}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
         >
             {movies.map((movie: any) => {
                 return (

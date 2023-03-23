@@ -40,7 +40,7 @@ export default async function MovieComponent(request: any) {
     const videosList = await fetchTMDBMovieVideos(validId);
     const movieDetails = await fetchTMDBMovieDetails(validId);
     const movieCredits = await fetchTMDBMovieCredits(validId);
-    console.log(videosList)
+    
     return (
         <div className={styles.movie}>
             <div
@@ -105,10 +105,11 @@ export default async function MovieComponent(request: any) {
                                 .join(", ")}
                         </div>
                         <div className={styles.movieExtrasItem}>
-                            <strong>Country:</strong>{" "}
-                            {movieDetails.genres
-                                .map((genre: MovieGenre) => {
-                                    return genre.name;
+                            <strong>Production:</strong>{" "}
+                            {movieDetails.production_companies
+                                .slice(0, 5)
+                                .map((production: any) => {
+                                    return production.name;
                                 })
                                 .join(", ")}
                         </div>
@@ -121,7 +122,7 @@ export default async function MovieComponent(request: any) {
                                 .join(", ")}
                         </div>
                         <div className={styles.movieExtrasItem}>
-                            <strong>Languages:</strong>{" "}
+                            <strong>Audio:</strong>{" "}
                             {movieDetails.spoken_languages
                                 .map((lang: any) => {
                                     return lang.english_name;
@@ -141,40 +142,45 @@ export default async function MovieComponent(request: any) {
             </div>
             <div className={styles.movieOthers}>
                 {videosList.results.filter((v: Video) => v.type === "Clip").length > 0 ? (
-                    <div className={styles.movieClips}>
+                    <div className={styles.movieVids}>
                         <Suspense>
                             <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Clip"
-                                )}
+                                videos={videosList.results.filter((v: Video) => v.type === "Clip")}
                                 slidesPerView={2}
                                 title="Clips"
                             />
                         </Suspense>
                     </div>
                 ) : null}
-                {videosList.results.filter((v: Video) => v.type === "Teaser").length > 0 ? (
-                    <div className={styles.movieTeasers}>
-                        <h3>Teasers</h3>
+                {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
+                    <div className={styles.movieVids}>
                         <Suspense>
                             <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Teaser"
-                                )}
+                                videos={videosList.results.filter((v: Video) => v.type === "Trailer")}
                                 slidesPerView={2}
+                                title="Trailers"
+                            />
+                        </Suspense>
+                    </div>
+                ) : null}
+                {videosList.results.filter((v: Video) => v.type === "Teaser").length > 0 ? (
+                    <div className={styles.movieVids}>
+                        <Suspense>
+                            <Videos
+                                videos={videosList.results.filter((v: Video) => v.type === "Teaser")}
+                                slidesPerView={3}
+                                title="Teasers"
                             />
                         </Suspense>
                     </div>
                 ) : null}
                 {videosList.results.filter((v: Video) => v.type === "Featurette").length > 0 ? (
-                    <div className={styles.movieFeaturettes}>
-                        <h3>Featurettes</h3>
+                    <div className={styles.movieVids}>
                         <Suspense>
                             <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Featurette"
-                                )}
-                                slidesPerView={2}
+                                videos={videosList.results.filter((v: Video) => v.type === "Featurette")}
+                                slidesPerView={3}
+                                title="Featurettes"
                             />
                         </Suspense>
                     </div>

@@ -34,7 +34,6 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
             >
                 {activeSlide >= 0 &&
                     movies.map((movie: any, index: number) => {
-                        console.log(activeSlide, index);
                         return (
                             <SwiperSlide key={movie.id}>
                                 <img

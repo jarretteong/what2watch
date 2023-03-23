@@ -2,7 +2,7 @@ import { Movie } from "@/interfaces/movie";
 
 export const fetchTMDBTrendingMovies = async () => {
     const data = await fetch(
-        `${process.env.TMDB_V3_URL}/trending/movie/day?api_key=${process.env.TMDB_APIKEY}`
+        `${process.env.TMDB_V3_URL}/trending/movie/week?api_key=${process.env.TMDB_APIKEY}`
     );
     return await data.json();
 };

@@ -41,7 +41,6 @@ const PopularMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
             }}
             navigation
             slidesPerView={8}
-            onSlideChange={(swiper) => console.log(swiper)}
         >
             {movies.map((movie: any) => {
                 return (
