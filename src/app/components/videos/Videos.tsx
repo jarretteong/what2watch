@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper as ReactSwiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
+import "swiper/scss/grid";
 import "node_modules/swiper/modules/navigation/navigation.scss";
-import { Navigation } from "swiper";
+import Swiper from "swiper";
 import videoStyles from "./videos.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Image from "next/image";
+import classNames from "classnames";
+import _ from "lodash";
 
 export interface Video {
     name: string;
@@ -22,7 +25,7 @@ export interface Video {
 
 type VideosProps = {
     videos: Video[];
-    slidesPerView: number;
+    slidesPerView: number | "auto" | undefined;
     title?: string;
 };
 
@@ -32,16 +35,66 @@ const Videos: React.FunctionComponent<VideosProps> = ({
     title,
 }: VideosProps) => {
     const [videoSlides, setVideoSlides] = useState<Video[]>([]);
+    const [swiper, setSwiper] = useState<Swiper>();
+    const [prevClass, setPrevClass] = useState<string>("");
+    const [nextClass, setNextClass] = useState<string>("");
+
+    const updateSliderButtons = (swiper: Swiper) => {
+        setPrevClass(
+            classNames({
+                [videoStyles.back]: true,
+                [videoStyles.disabled]: swiper.activeIndex === 0,
+            })
+        );
+        console.log(swiper.activeIndex, slidesPerView, videos.length);
+        setNextClass(
+            classNames({
+                [videoStyles.next]: true,
+                [videoStyles.disabled]: _.isNumber(slidesPerView)
+                    ? swiper.activeIndex + slidesPerView >= videos.length
+                        ? true
+                        : false
+                    : false,
+            })
+        );
+    };
 
     useEffect(() => {
         setVideoSlides(videos);
     }, [videos]);
 
+    useEffect(() => {
+        if (swiper) {
+            updateSliderButtons(swiper);
+        }
+    }, [swiper]);
+
     return (
         <div className={videoStyles.videos}>
-            {title ? <h3>{title}</h3> : null}
+            <div className={videoStyles.titleWrapper}>{title ? <h3>{title}</h3> : null}</div>
             <div className={videoStyles.videosList}>
-                <Swiper modules={[Navigation]} slidesPerView={slidesPerView || 1} navigation spaceBetween={16}>
+                <div className={prevClass} onClick={() => swiper?.slidePrev()}>
+                    <svg
+                        fill="#FFF"
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 52 52"
+                        data-name="Layer 1"
+                        id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g>
+                            <path d="M38,52a2,2,0,0,1-1.41-.59l-24-24a2,2,0,0,1,0-2.82l24-24a2,2,0,0,1,2.82,0,2,2,0,0,1,0,2.82L16.83,26,39.41,48.59A2,2,0,0,1,38,52Z" />
+                        </g>
+                    </svg>
+                </div>
+                <ReactSwiper
+                    className={videoStyles.videosSwiper}
+                    slidesPerView={slidesPerView || "auto"}
+                    spaceBetween={24}
+                    onSlideChange={(swiper) => updateSliderButtons(swiper)}
+                    onSwiper={(swiper) => setSwiper(swiper)}
+                >
                     {videoSlides.length > 0
                         ? videoSlides.map((video: Video) => (
                               <SwiperSlide className={videoStyles.movieSlide} key={video.id}>
@@ -50,7 +103,12 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                       controls={false}
                                   /> */}
                                   <div className={videoStyles.videoContent}>
-                                      <div className={videoStyles.videoImage}>
+                                      <div
+                                          className={classNames({
+                                              [videoStyles.videoImage]: true,
+                                              [videoStyles[`slides${slidesPerView}`]]: true,
+                                          })}
+                                      >
                                           <Image
                                               className={videoStyles.image}
                                               src={`https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`}
@@ -75,7 +133,22 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                               </SwiperSlide>
                           ))
                         : null}
-                </Swiper>
+                </ReactSwiper>
+                <div className={nextClass} onClick={() => swiper?.slideNext()}>
+                    <svg
+                        fill="#FFF"
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 52 52"
+                        data-name="Layer 1"
+                        id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g>
+                            <path d="M14,52a2,2,0,0,1-1.41-.59,2,2,0,0,1,0-2.82L36.17,26,12.59,2.41A2,2,0,0,1,15.41.59l24,24a2,2,0,0,1,0,2.82l-24,24A2,2,0,0,1,14,52Z" />
+                        </g>
+                    </svg>
+                </div>
             </div>
         </div>
     );
