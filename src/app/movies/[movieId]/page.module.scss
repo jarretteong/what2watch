@@ -10,71 +10,82 @@
     }
 
     .movieSummary {
-        display: flex;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-        z-index: 5;
-        margin-top: 120px;
+        .movieFullDetails {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            margin-top: 30px;
 
-        .moviePoster {
-            border-radius: 4px;
-            margin-right: 60px;
-            margin-left: 30px;
-        }
+            .moviePosterWrapper {
+                position: relative;
+                max-width: 400px;
+                max-height: 480px;
+                width: 400px;
+                height: 480px;
+                margin-bottom: 20px;
 
-        .movieInfo {
-            font-family: Montserrat;
-            max-width: 50%;
-            color: #fff;
-            line-height: 1.5;
-
-            > * {
-                margin-bottom: 16px;
+                .moviePoster {
+                    border-radius: 4px;
+                    width: 100%;
+                    height: 100%;
+                }
             }
 
-            .movieTitle {
-                font-size: 24px;
-                font-weight: 700;
-            }
+            .movieInfo {
+                font-family: Montserrat;
+                max-width: 80%;
+                color: #fff;
+                line-height: 1.5;
 
-            .movieMainMetadata {
-                display: flex;
-                font-size: 13px;
-                align-items: center;
-
-                > * {
-                    margin-right: 30px;
+                .movieMain {
+                    > * {
+                        margin-bottom: 14px;
+                    }
                 }
 
-                .trailerBtn {
+                .movieTitle {
+                    font-size: 24px;
+                    font-weight: 700;
+                }
+
+                .movieMainMetadata {
                     display: flex;
-                    padding: 6px 0;
+                    font-size: 13px;
                     align-items: center;
+
+                    > * {
+                        margin-right: 30px;
+                    }
+
+                    .trailerBtn {
+                        display: flex;
+                        padding: 6px 0;
+                        align-items: center;
+                    }
                 }
-            }
 
-            .movieInfoOverview {
-                font-size: 15px;
-            }
+                .movieInfoOverview {
+                    font-size: 15px;
+                }
 
-            .movieExtras {
-                padding-top: 12px;
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(4, 1fr);
-                grid-auto-flow: column;
-                font-size: 13px;
-                row-gap: 6px;
-                column-gap: 16px;
+                .movieExtras {
+                    padding-top: 20px;
+                    display: block;
+                    font-size: 13px;
 
-                .movieExtrasItem {
-                    > a {
-                        text-decoration: none;
-                        color: #fff;
+                    .movieExtrasItem {
+                        margin-bottom: 24px;
 
-                        &:hover {
-                            text-decoration: underline;
+                        > a {
+                            text-decoration: none;
+                            color: #fff;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
@@ -99,3 +110,467 @@
         }
     }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 991px){
+    .movie {
+        .coverImage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .movieSummary {
+            .movieFullDetails {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                z-index: 5;
+                margin-top: 30px;
+
+                .moviePosterWrapper {
+                    position: relative;
+                    max-width: 400px;
+                    max-height: 480px;
+                    width: 400px;
+                    height: 480px;
+                    margin-bottom: 20px;
+
+                    .moviePoster {
+                        border-radius: 4px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .movieInfo {
+                    font-family: Montserrat;
+                    max-width: 80%;
+                    color: #fff;
+                    line-height: 1.5;
+
+                    .movieMain {
+                        > * {
+                            margin-bottom: 14px;
+                        }
+                    }
+
+                    .movieTitle {
+                        font-size: 24px;
+                        font-weight: 700;
+                    }
+
+                    .movieMainMetadata {
+                        display: flex;
+                        font-size: 13px;
+                        align-items: center;
+
+                        > * {
+                            margin-right: 30px;
+                        }
+
+                        .trailerBtn {
+                            display: flex;
+                            padding: 6px 0;
+                            align-items: center;
+                        }
+                    }
+
+                    .movieInfoOverview {
+                        font-size: 15px;
+                    }
+
+                    .movieExtras {
+                        padding-top: 12px;
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-template-rows: repeat(4, 1fr);
+                        grid-auto-flow: column;
+                        font-size: 13px;
+                        row-gap: 6px;
+                        column-gap: 16px;
+
+                        .movieExtrasItem {
+                            margin-bottom: 24px;
+
+                            > a {
+                                text-decoration: none;
+                                color: #fff;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .movieOthers {
+            font-family: Montserrat;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .movieVids {
+                h3 {
+                    color: #fff;
+                    z-index: 10;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .movie {
+        .coverImage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .movieSummary {
+            margin-top: 60px;
+
+            .movieFullDetails {
+                display: flex;
+                flex-direction: row;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                z-index: 5;
+                margin: 30px;
+
+                .moviePosterWrapper {
+                    position: relative;
+                    max-width: 300px;
+                    max-height: 400px;
+                    width: 300px;
+                    height: 400px;
+                    margin: 0 40px;
+
+                    .moviePoster {
+                        border-radius: 4px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .movieInfo {
+                    font-family: Montserrat;
+                    max-width: 60%;
+                    color: #fff;
+                    line-height: 1.5;
+
+                    .movieMain {
+                        > * {
+                            margin-bottom: 14px;
+                        }
+                    }
+
+                    .movieTitle {
+                        font-size: 24px;
+                        font-weight: 700;
+                    }
+
+                    .movieMainMetadata {
+                        display: flex;
+                        font-size: 13px;
+                        align-items: center;
+
+                        > * {
+                            margin-right: 30px;
+                        }
+
+                        .trailerBtn {
+                            display: flex;
+                            padding: 6px 0;
+                            align-items: center;
+                        }
+                    }
+
+                    .movieInfoOverview {
+                        font-size: 15px;
+                    }
+
+                    .movieExtras {
+                        padding-top: 12px;
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-template-rows: repeat(4, 1fr);
+                        grid-auto-flow: column;
+                        font-size: 13px;
+                        row-gap: 6px;
+                        column-gap: 16px;
+
+                        .movieExtrasItem {
+                            margin-bottom: 0;
+                            > a {
+                                text-decoration: none;
+                                color: #fff;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .movieOthers {
+            font-family: Montserrat;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .movieVids {
+                h3 {
+                    color: #fff;
+                    z-index: 10;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .movie {
+        .coverImage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .movieSummary {
+            margin-top: 60px;
+
+            .movieFullDetails {
+                display: flex;
+                flex-direction: row;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                z-index: 5;
+                margin: 30px;
+
+                .moviePosterWrapper {
+                    position: relative;
+                    max-width: 300px;
+                    max-height: 400px;
+                    width: 300px;
+                    height: 400px;
+                    margin: 0 40px;
+
+                    .moviePoster {
+                        border-radius: 4px;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .movieInfo {
+                    font-family: Montserrat;
+                    max-width: 60%;
+                    color: #fff;
+                    line-height: 1.5;
+
+                    .movieMain {
+                        > * {
+                            margin-bottom: 14px;
+                        }
+                    }
+
+                    .movieTitle {
+                        font-size: 24px;
+                        font-weight: 700;
+                    }
+
+                    .movieMainMetadata {
+                        display: flex;
+                        font-size: 13px;
+                        align-items: center;
+
+                        > * {
+                            margin-right: 30px;
+                        }
+
+                        .trailerBtn {
+                            display: flex;
+                            padding: 6px 0;
+                            align-items: center;
+                        }
+                    }
+
+                    .movieInfoOverview {
+                        font-size: 15px;
+                    }
+
+                    .movieExtras {
+                        padding-top: 12px;
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-template-rows: repeat(4, 1fr);
+                        grid-auto-flow: column;
+                        font-size: 13px;
+                        row-gap: 6px;
+                        column-gap: 16px;
+
+                        .movieExtrasItem {
+                            margin-bottom: 0;
+                            > a {
+                                text-decoration: none;
+                                color: #fff;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .movieOthers {
+            font-family: Montserrat;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .movieVids {
+                h3 {
+                    color: #fff;
+                    z-index: 10;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+// .movie {
+//     .coverImage {
+//         position: fixed;
+//         inset: 0;
+//         width: 100%;
+//         height: 100%;
+//         max-height: 100vh;
+//         background-repeat: no-repeat;
+//         background-size: cover;
+//     }
+
+//     .movieSummary {
+//         display: flex;
+//         position: relative;
+//         justify-content: center;
+//         align-items: center;
+//         z-index: 5;
+//         margin-top: 120px;
+
+//         .moviePoster {
+//             border-radius: 4px;
+//             margin-right: 60px;
+//             margin-left: 30px;
+//         }
+
+//         .movieInfo {
+//             font-family: Montserrat;
+//             max-width: 50%;
+//             color: #fff;
+//             line-height: 1.5;
+
+//             > * {
+//                 margin-bottom: 16px;
+//             }
+
+//             .movieTitle {
+//                 font-size: 24px;
+//                 font-weight: 700;
+//             }
+
+//             .movieMainMetadata {
+//                 display: flex;
+//                 font-size: 13px;
+//                 align-items: center;
+
+//                 > * {
+//                     margin-right: 30px;
+//                 }
+
+//                 .trailerBtn {
+//                     display: flex;
+//                     padding: 6px 0;
+//                     align-items: center;
+//                 }
+//             }
+
+//             .movieInfoOverview {
+//                 font-size: 15px;
+//             }
+
+//             .movieExtras {
+//                 padding-top: 12px;
+//                 display: grid;
+//                 grid-template-columns: repeat(2, 1fr);
+//                 grid-template-rows: repeat(4, 1fr);
+//                 grid-auto-flow: column;
+//                 font-size: 13px;
+//                 row-gap: 6px;
+//                 column-gap: 16px;
+
+//                 .movieExtrasItem {
+//                     > a {
+//                         text-decoration: none;
+//                         color: #fff;
+
+//                         &:hover {
+//                             text-decoration: underline;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     .movieOthers {
+//         font-family: Montserrat;
+//         position: relative;
+//         z-index: 10;
+//         display: flex;
+//         flex-direction: column;
+//         width: 100%;
+
+//         .movieVids {
+//             h3 {
+//                 color: #fff;
+//                 z-index: 10;
+//                 font-size: 20px;
+//             }
+//         }
+//     }
+// }

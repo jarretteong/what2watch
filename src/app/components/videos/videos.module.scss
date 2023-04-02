@@ -13,6 +13,7 @@
         align-items: center;
 
         .back {
+            cursor: pointer;
             &.disabled {
                 visibility: hidden;
                 pointer-events: none;
@@ -20,6 +21,7 @@
         }
 
         .next {
+            cursor: pointer;
             &.disabled {
                 visibility: hidden;
                 pointer-events: none;
@@ -41,7 +43,7 @@
 
                     .videoImage {
                         position: relative;
-                        height: 320px;
+                        height: 400px;
                         border-radius: 10px;
 
                         &.slides3 {
@@ -67,6 +69,7 @@
                     }
                     .videoName {
                         color: #fff;
+                        margin: 6px 0;
                     }
                 }
 
