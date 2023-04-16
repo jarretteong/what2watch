@@ -36,7 +36,7 @@
 
             .movieInfo {
                 font-family: Montserrat;
-                max-width: 80%;
+                max-width: 90%;
                 color: #fff;
                 line-height: 1.5;
 
@@ -100,6 +100,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        max-width: 1500px;
 
         .movieVids {
             h3 {
@@ -150,7 +151,7 @@
 
                 .movieInfo {
                     font-family: Montserrat;
-                    max-width: 80%;
+                    max-width: 90%;
                     color: #fff;
                     line-height: 1.5;
 
@@ -461,6 +462,7 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+            max-width: 1500px;
 
             .movieVids {
                 h3 {

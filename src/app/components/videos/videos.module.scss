@@ -1,7 +1,7 @@
 .videos {
     display: flex;
     flex-direction: column;
-    width: 75%;
+    width: 90%;
     margin: 16px auto;
 
     .titleWrapper {
@@ -53,6 +53,10 @@
                         &.slides4 {
                             height: 200px;
                         }
+
+                        // .imageWrapper {
+
+                        // }
 
                         svg {
                             display: none;

@@ -32,14 +32,24 @@ export interface MovieGenre {
 }
 
 export interface Video {
-    iso_639_1: string,
-    iso_3166_1: string,
-    name: string,
-    key: string,
-    site: string,
-    size: number,
-    type: string,
-    official: boolean,
-    published_at: Date,
-    id: string,
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: Date;
+    id: string;
+}
+
+export interface ImageData {
+    aspect_ratio: number;
+    file_path: string;
+    height: number;
+    iso_639_1: string | null;
+    vote_average: number;
+    vote_count: number;
+    width: number;
 }

@@ -158,8 +158,8 @@ export default async function MovieComponent(request: any) {
                                 videos={videosList.results.filter(
                                     (v: Video) => v.type === "Trailer"
                                 )}
-                                slidesPerView={2}
                                 title="Trailers"
+                                type="Trailer"
                             />
                         </Suspense>
                     </div>
@@ -169,8 +169,9 @@ export default async function MovieComponent(request: any) {
                         <Suspense>
                             <Videos
                                 videos={videosList.results.filter((v: Video) => v.type === "Clip")}
-                                slidesPerView={4}
                                 title="Clips"
+                                type="Clip"
+
                             />
                         </Suspense>
                     </div>
@@ -182,8 +183,8 @@ export default async function MovieComponent(request: any) {
                                 videos={videosList.results.filter(
                                     (v: Video) => v.type === "Teaser"
                                 )}
-                                slidesPerView={3}
                                 title="Teasers"
+                                type="Teaser"
                             />
                         </Suspense>
                     </div>
@@ -195,8 +196,8 @@ export default async function MovieComponent(request: any) {
                                 videos={videosList.results.filter(
                                     (v: Video) => v.type === "Featurette"
                                 )}
-                                slidesPerView={3}
                                 title="Featurettes"
+                                type="Featurette"
                             />
                         </Suspense>
                     </div>

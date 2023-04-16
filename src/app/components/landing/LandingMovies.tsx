@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "swiper/css/effect-fade";
@@ -10,6 +10,9 @@ import { EffectFade, Navigation, Pagination } from "swiper";
 import styles from "../../movies/page.module.scss";
 import LandingMetadata from "./LandingMetadata";
 import ReactPlayer from "react-player/lazy";
+import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
+import "@splidejs/react-splide/css";
+import { useMediaQuery } from "usehooks-ts";
 
 type MoviesProps = {
     movies: any[];
@@ -17,10 +20,64 @@ type MoviesProps = {
 
 const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
     const [activeSlide, setActiveSlide] = useState<number>(-1);
+    const [imageType, setImageType] = useState<string>("");
+    const posterMedia = useMediaQuery("(min-width: 1px)");
+    const backdropMedia = useMediaQuery("(min-width: 768px)");
+
+    useEffect(() => {
+        switch (true) {
+            case backdropMedia:
+                setImageType("backdrop");
+                break;
+            case posterMedia:
+                setImageType("poster");
+                break;
+        }
+    }, [posterMedia, backdropMedia]);
 
     return (
         <div className={styles.landingContainer}>
             <Swiper
+                modules={[Navigation, Pagination, EffectFade]}
+                slidesPerView={1}
+                pagination={{ dynamicBullets: true }}
+                navigation
+                effect="fade"
+                fadeEffect={{ crossFade: true }}
+                onSlideChange={(swiper) => {
+                    setActiveSlide(swiper.activeIndex);
+                }}
+                onSwiper={(swiper) => setActiveSlide(swiper.activeIndex)}
+            >
+                {movies.map((movie: any, index: number) => {
+                    return (
+                        <SwiperSlide key={movie.id}>
+                            <img
+                                className={styles.backdropImage}
+                                alt={movie.title}
+                                src={`https://image.tmdb.org/t/p/original${
+                                    imageType === "backdrop"
+                                        ? movie.backdrop_path
+                                        : movie.poster_path
+                                }`}
+                            />
+                            <LandingMetadata movie={movie} />
+                            {activeSlide === index && movie.trailer && backdropMedia ? (
+                                <div className={styles.videoContainer}>
+                                    <ReactPlayer
+                                        playing
+                                        muted
+                                        width="100%"
+                                        height="100%"
+                                        url={`https://www.youtube.com/watch?v=${movie.trailer.key}`}
+                                    />
+                                </div>
+                            ) : null}
+                        </SwiperSlide>
+                    );
+                })}
+            </Swiper>
+            {/* <Swiper
                 modules={[Navigation, Pagination, EffectFade]}
                 slidesPerView={1}
                 pagination={{ dynamicBullets: true }}
@@ -56,7 +113,7 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                             </SwiperSlide>
                         );
                     })}
-            </Swiper>
+            </Swiper> */}
         </div>
     );
 };
