@@ -10,9 +10,10 @@ import { EffectFade, Navigation, Pagination } from "swiper";
 import styles from "../../movies/page.module.scss";
 import LandingMetadata from "./LandingMetadata";
 import ReactPlayer from "react-player/lazy";
-import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
 import { useMediaQuery } from "usehooks-ts";
+import Link from "next/link";
+import { parseMovieIdQuery } from "@/app/utils";
+import classNames from "classnames";
 
 type MoviesProps = {
     movies: any[];
@@ -23,6 +24,8 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
     const [imageType, setImageType] = useState<string>("");
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [showPlayer, setShowPlayer] = useState<boolean>(false);
 
     useEffect(() => {
         switch (true) {
@@ -46,26 +49,43 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                 fadeEffect={{ crossFade: true }}
                 onSlideChange={(swiper) => {
                     setActiveSlide(swiper.activeIndex);
+                    setIsPlaying(false);
+                    setShowPlayer(false);
                 }}
                 onSwiper={(swiper) => setActiveSlide(swiper.activeIndex)}
             >
                 {movies.map((movie: any, index: number) => {
                     return (
                         <SwiperSlide key={movie.id}>
-                            <img
-                                className={styles.backdropImage}
-                                alt={movie.title}
-                                src={`https://image.tmdb.org/t/p/original${
-                                    imageType === "backdrop"
-                                        ? movie.backdrop_path
-                                        : movie.poster_path
-                                }`}
-                            />
+                            {imageType ? (
+                                <Link href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}>
+                                    <img
+                                        className={styles.backdropImage}
+                                        alt={movie.title}
+                                        src={`https://image.tmdb.org/t/p/original${
+                                            imageType === "backdrop"
+                                                ? movie.backdrop_path
+                                                : movie.poster_path
+                                        }`}
+                                    />
+                                </Link>
+                            ) : null}
                             <LandingMetadata movie={movie} />
                             {activeSlide === index && movie.trailer && backdropMedia ? (
-                                <div className={styles.videoContainer}>
+                                <div
+                                    className={classNames({
+                                        [styles.videoContainer]: true,
+                                        [styles.hidden]: !showPlayer,
+                                    })}
+                                >
                                     <ReactPlayer
-                                        playing
+                                        onReady={() => setTimeout(() => setIsPlaying(true), 3000)}
+                                        onEnded={() => {
+                                            setIsPlaying(false);
+                                            setShowPlayer(false);
+                                        }}
+                                        onPlay={() => isPlaying && setShowPlayer(true)}
+                                        playing={isPlaying}
                                         muted
                                         width="100%"
                                         height="100%"

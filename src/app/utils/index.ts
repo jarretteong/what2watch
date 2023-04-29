@@ -15,8 +15,8 @@ export const videoSlidesCount = {
         Teaser: 1,
     },
     medium: {
-        Trailer: 1,
-        Clip: 1,
+        Trailer: 2,
+        Clip: 2,
         Featurette: 2,
         BehindTheScenes: 2,
         Teaser: 2,

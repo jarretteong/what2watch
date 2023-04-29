@@ -90,13 +90,8 @@ const Videos: React.FunctionComponent<VideosProps> = ({
         }
         if (swiper) {
             updateSliderButtons(swiper);
-            console.log(swiper);
         }
     }, [smallMedia, mediumMedia, largeMedia, xlMedia]);
-
-    useEffect(() => {
-        console.log(slideCount);
-    }, [slideCount]);
 
     return (
         <div className={videoStyles.videos}>

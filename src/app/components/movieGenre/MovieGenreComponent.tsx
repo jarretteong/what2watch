@@ -7,15 +7,24 @@ import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import styles from "../../movies/page.module.scss";
 
-import Swiper, { EffectFade, Navigation, Pagination } from "swiper";
+import Swiper, { EffectFade, Navigation, Pagination, SwiperOptions } from "swiper";
 import Image from "next/image";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-type MoviesProps = {
+type MovieGenreProps = {
     movies: any[];
+    slidesPerView?:
+        | {
+              [width: number]: SwiperOptions;
+              [ratio: string]: SwiperOptions;
+          }
+        | undefined;
+    imageType: "posters" | "backdrops";
 };
 
-const PopularMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
+const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
+    movies,
+}: MovieGenreProps) => {
     // const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } =
     //     useInfiniteQuery({
     //         queryKey: ["popularMovies"],
@@ -69,4 +78,4 @@ const PopularMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
     );
 };
 
-export default PopularMovies;
+export default MovieGenreComponent;

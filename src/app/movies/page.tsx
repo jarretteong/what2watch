@@ -3,6 +3,7 @@ import Popular from "../components/popular/Popular";
 import Trending from "../components/trending/Trending";
 import Landing from "../components/landing/Landing";
 import { Suspense } from "react";
+import MovieGenre from "../components/movieGenre/MovieGenre";
 
 export default async function Movies() {
     // const latestData = fetch(
@@ -12,24 +13,21 @@ export default async function Movies() {
 
     return (
         <div className={styles.movies}>
-            <div className={styles.landingContainer}>
-                <Suspense fallback="Loading...">
-                    {/* @ts-expect-error Async Server Components */}
-                    <Landing />
-                </Suspense>
-            </div>
-            <div className={styles.popularContainer}>
-                <Suspense>
-                    {/* @ts-expect-error Async Server Components */}
-                    <Popular />
-                </Suspense>
-            </div>
-            <div className={styles.trendingContainer}>
-                <Suspense>
-                    {/* @ts-expect-error Async Server Components */}
-                    <Trending />
-                </Suspense>
-            </div>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <Landing />
+            </Suspense>
+            <Suspense>
+                {/* <MovieGenre genre="Horror" imageType="backdrops"/> */}
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <Popular />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <Trending />
+            </Suspense>
         </div>
     );
 }

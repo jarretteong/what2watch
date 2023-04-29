@@ -3,6 +3,10 @@
     // flex-direction: column;
     .popularContainer {
         margin: 24px;
+
+        .popularSwiperWrapper {
+            
+        }
     }
 
     .trendingContainer {
@@ -75,6 +79,27 @@
                 height: 100%;
                 margin-left: -100%;
             }
+        }
+
+        .imagePlaceholder {
+            animation-duration: 1.25s;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+            animation-name: loading;
+            animation-timing-function: linear;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: -500px 0px;
+            }
+            100% {
+                background-position: 500px 0px;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     }
 
@@ -206,7 +231,7 @@
                 position: absolute;
                 bottom: 36px;
                 left: 48px;
-                max-width: 360px;
+                max-width: 400px;
                 z-index: 5;
 
                 .movieMetadata {
@@ -303,7 +328,7 @@
                 position: absolute;
                 bottom: 36px;
                 left: 48px;
-                max-width: 360px;
+                max-width: 400px;
                 z-index: 5;
 
                 .movieMetadata {

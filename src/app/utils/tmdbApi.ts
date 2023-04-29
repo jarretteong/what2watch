@@ -1,4 +1,5 @@
 import { Movie } from "@/interfaces/movie";
+import _ from "lodash";
 
 export const fetchTMDBTrendingMovies = async () => {
     const data = await fetch(
@@ -37,7 +38,30 @@ export const fetchTMDBMovieCredits = async (id: number) => {
 
 export const fetchTMDBMovieImages = async (id: number, language?: string) => {
     const data = await fetch(
-        `${process.env.TMDB_V3_URL}/movie/${id}/images?api_key=${process.env.TMDB_APIKEY}${language ? '&language=' + language : ''}`
+        `${process.env.TMDB_V3_URL}/movie/${id}/images?api_key=${process.env.TMDB_APIKEY}${
+            language ? "&language=" + language : ""
+        }`
     );
     return await data.json();
-}
+};
+
+export const fetchTMDBMovieGenres = async (type?: string) => {
+    const data = await fetch(
+        `${process.env.TMDB_V3_URL}/genre/movie/list?api_key=${process.env.TMDB_APIKEY}`
+    );
+    const genresData = await data.json();
+    if (type) {
+        const genreData = genresData.genres.find(
+            (genre: { id: number; name: string }) => _.startCase(genre.name) === _.startCase(type)
+        );
+        return genreData || genresData.genres;
+    }
+    return genresData.genres;
+};
+
+export const fetchTMDBMoviesByGenreId = async (genreId: number) => {
+    const data = await fetch(
+        `${process.env.TMDB_V3_URL}/discover/movie?api_key=${process.env.TMDB_APIKEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=1&with_genres=${genreId}`
+    );
+    return await data.json();
+};

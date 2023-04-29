@@ -43,7 +43,8 @@
 
                     .videoImage {
                         position: relative;
-                        height: 400px;
+                        height: 300px;
+                        // max-width: 480px;
                         border-radius: 10px;
 
                         &.slides3 {
