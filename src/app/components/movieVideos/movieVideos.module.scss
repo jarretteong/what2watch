@@ -1,0 +1,41 @@
+.movieVideos {
+  position: relative;
+
+  .trailerBtn {
+    display: flex;
+    padding: 6px 0;
+    align-items: center;
+  }
+}
+
+.movieModal {
+  border-radius: 6px;
+  position: relative;
+
+  .coverPoster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .videosList {
+    font-family: Montserrat;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1500px;
+
+    .movieVids {
+      h3 {
+        color: #fff;
+        z-index: 10;
+        font-size: 20px;
+      }
+    }
+  }
+}

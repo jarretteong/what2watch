@@ -15,12 +15,15 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Movie, MovieGenre, Video } from "@/interfaces/movie";
 import { Suspense } from "react";
 import Videos from "@/app/components/videos/Videos";
+import { Modal } from 'react-responsive-modal';
+import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
     if (id) {
         try {
             const movieData = await fetchTMDBMovieDetails(+id);
+            console.log(id, parseMovieIdQuery(+id, movieData.title))
             return movieId === parseMovieIdQuery(+id, movieData.title) ? +id : null;
         } catch (err) {
             return null;
@@ -64,10 +67,7 @@ export default async function MovieComponent(request: any) {
                         <div className={styles.movieMain}>
                             <h2 className={styles.movieTitle}>{movieDetails.title}</h2>
                             <div className={styles.movieMainMetadata}>
-                                <div className={styles.trailerBtn}>
-                                    <FontAwesomeIcon icon={faVideoCamera} />
-                                    &nbsp;Trailer
-                                </div>
+                                <MovieVideos videosList={videosList} movieDetails={movieDetails} />
                                 <div className={styles.avgRating}>
                                     IMDB: {Math.round(movieDetails.vote_average * 10) / 10}
                                 </div>
@@ -149,60 +149,6 @@ export default async function MovieComponent(request: any) {
                         </div>
                     </div>
                 </section>
-            </div>
-            <div className={styles.movieOthers}>
-                {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
-                    <div className={styles.movieVids}>
-                        <Suspense>
-                            <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Trailer"
-                                )}
-                                title="Trailers"
-                                type="Trailer"
-                            />
-                        </Suspense>
-                    </div>
-                ) : null}
-                {videosList.results.filter((v: Video) => v.type === "Clip").length > 0 ? (
-                    <div className={styles.movieVids}>
-                        <Suspense>
-                            <Videos
-                                videos={videosList.results.filter((v: Video) => v.type === "Clip")}
-                                title="Clips"
-                                type="Clip"
-
-                            />
-                        </Suspense>
-                    </div>
-                ) : null}
-                {videosList.results.filter((v: Video) => v.type === "Teaser").length > 0 ? (
-                    <div className={styles.movieVids}>
-                        <Suspense>
-                            <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Teaser"
-                                )}
-                                title="Teasers"
-                                type="Teaser"
-                            />
-                        </Suspense>
-                    </div>
-                ) : null}
-                {videosList.results.filter((v: Video) => v.type === "Featurette").length > 0 ? (
-                    <div className={styles.movieVids}>
-                        <Suspense>
-                            <Videos
-                                videos={videosList.results.filter(
-                                    (v: Video) => v.type === "Featurette"
-                                )}
-                                title="Featurettes"
-                                type="Featurette"
-                            />
-                        </Suspense>
-                    </div>
-                ) : null}
-                <div className={styles.movieBehindTheScenes}></div>
             </div>
         </div>
     );

@@ -43,21 +43,11 @@
 
                     .videoImage {
                         position: relative;
-                        height: 300px;
-                        // max-width: 480px;
-                        border-radius: 10px;
+                        aspect-ratio: 16 / 9;
 
-                        &.slides3 {
-                            height: 240px;
+                        .image {
+                            border-radius: 6px;
                         }
-
-                        &.slides4 {
-                            height: 200px;
-                        }
-
-                        // .imageWrapper {
-
-                        // }
 
                         svg {
                             display: none;

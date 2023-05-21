@@ -119,7 +119,7 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                 <ReactSwiper
                     className={videoStyles.videosSwiper}
                     slidesPerView={slideCount || slidesPerView}
-                    spaceBetween={24}
+                    spaceBetween={10}
                     modules={[Navigation]}
                     navigation
                     onSlideChange={(swiper) => updateSliderButtons(swiper)}
