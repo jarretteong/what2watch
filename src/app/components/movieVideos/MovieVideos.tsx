@@ -76,14 +76,20 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 classNames={{ modal: styles.movieModal }}
                 open={open}
                 onClose={() => setOpen(false)}
+                showCloseIcon={false}
                 center
             >
-                <div
-                    className={styles.coverPoster}
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.55)), url('https://image.tmdb.org/t/p/original${movieDetails.poster_path}')`,
-                    }}
-                ></div>
+                <div className={styles.coverImage}>
+                    <Image
+                        src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
+                        alt={movieDetails.title}
+                        fill
+                        style={{
+                            objectFit: "cover"
+                        }}
+                    />
+                </div>
+                <div className={styles.movieDescription}></div>
                 <div className={styles.videosList}>
                     {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
                         <div className={styles.movieVids}>

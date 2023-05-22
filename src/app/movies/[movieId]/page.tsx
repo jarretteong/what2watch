@@ -23,7 +23,6 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     if (id) {
         try {
             const movieData = await fetchTMDBMovieDetails(+id);
-            console.log(id, parseMovieIdQuery(+id, movieData.title))
             return movieId === parseMovieIdQuery(+id, movieData.title) ? +id : null;
         } catch (err) {
             return null;

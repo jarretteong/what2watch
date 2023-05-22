@@ -1,9 +1,13 @@
 import _ from "lodash";
 
 export const parseMovieIdQuery = (id: number, title: string) => {
-    console.log(id, title)
+    console.log(id, title);
     return _.toLower(
-        `${title.replace(/:/g, "").replace(/\s\s?/g, "-").replace(/\W^\-/g, "")}-${id}`
+        `${title
+            .replace(/:/g, "")
+            .replace(/\s\s?/g, "-")
+            .replace(/\&/g, "and")
+            .replace(/\W^\-/g, "")}-${id}`
     );
 };
 
@@ -36,4 +40,4 @@ export const videoSlidesCount = {
         BehindTheScenes: 3,
         Teaser: 3,
     },
-}
+};

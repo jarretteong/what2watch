@@ -11,14 +11,18 @@
 .movieModal {
   border-radius: 6px;
   position: relative;
+  padding: 0;
 
-  .coverPoster {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
+  .coverImage {
+    position: relative;
+
+    img {
+      position: relative !important;
+    }
+  }
+
+  .movieDescription {
+    border-bottom: 1px;
   }
 
   .videosList {
@@ -32,7 +36,7 @@
 
     .movieVids {
       h3 {
-        color: #fff;
+        color: #000;
         z-index: 10;
         font-size: 20px;
       }
