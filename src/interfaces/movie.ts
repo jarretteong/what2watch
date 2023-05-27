@@ -1,6 +1,7 @@
 export interface Movie {
     adult: boolean;
     backdrop_path: string;
+    backdrop_path_blur?: string;
     belongs_to_collection: any;
     budget: number;
     genres: MovieGenre[];
@@ -12,6 +13,7 @@ export interface Movie {
     overview: string;
     popularity: number;
     poster_path: string;
+    poster_path_blur?: string;
     production_companies: any[];
     production_countries: any[];
     release_date: string;
@@ -42,6 +44,12 @@ export interface Video {
     official: boolean;
     published_at: Date;
     id: string;
+    blurImage?: string;
+}
+
+export interface VideoRes {
+    id: number,
+    results: Video[],
 }
 
 export interface ImageData {

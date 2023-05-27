@@ -1,17 +1,12 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
-import { Swiper as ReactSwiper, SwiperSlide } from "swiper/react";
+import React, { Suspense, useState } from "react";
 import "swiper/swiper.css";
 import "swiper/scss/grid";
 import "node_modules/swiper/modules/navigation/navigation.scss";
-import Swiper, { Navigation } from "swiper";
-import videoStyles from "./videos.module.scss";
 import Image from "next/image";
-import classNames from "classnames";
 import _ from "lodash";
 import { useMediaQuery } from "usehooks-ts";
-import { videoSlidesCount } from "@/app/utils";
 import styles from "./movieVideos.module.scss";
 import Videos from "../videos/Videos";
 import Modal from "react-responsive-modal";
@@ -19,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import "react-responsive-modal/styles.css";
 import { Movie } from "@/interfaces/movie";
+import classNames from "classnames";
 
 export interface Video {
     name: string;
@@ -46,6 +42,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     const mediumMedia = useMediaQuery("(min-width: 768px)");
     const largeMedia = useMediaQuery("(min-width: 992px)");
     const xlMedia = useMediaQuery("(min-width: 1200px)");
+    const [loadedImage, setLoadedImage] = useState<number[]>([]);
 
     // useEffect(() => {
     //     switch (true) {
@@ -72,6 +69,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                     &nbsp;Trailer
                 </div>
             </div>
+            {console.log(movieDetails.backdrop_path_blur)}
             <Modal
                 classNames={{ modal: styles.movieModal }}
                 open={open}
@@ -79,13 +77,20 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 showCloseIcon={false}
                 center
             >
-                <div className={styles.coverImage}>
+                <div
+                    className={classNames({
+                        [styles.coverImage]: true,
+                        [styles.loading]: true,
+                    })}
+                >
                     <Image
                         src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
                         alt={movieDetails.title}
                         fill
+                        placeholder="blur"
+                        blurDataURL="/assets/images/light-gray.png"
                         style={{
-                            objectFit: "cover"
+                            objectFit: "cover",
                         }}
                     />
                 </div>

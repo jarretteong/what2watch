@@ -1,21 +1,16 @@
-import { parseMovieIdQuery } from "@/app/utils";
+import { addPlaceholderImagesMovieDetails, addPlaceholderImagesVideos, parseMovieIdQuery } from "@/app/utils";
 import {
     fetchTMDBMovieCredits,
     fetchTMDBMovieDetails,
     fetchTMDBMovieVideos,
     fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
-import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Movie, MovieGenre, Video } from "@/interfaces/movie";
-import { Suspense } from "react";
-import Videos from "@/app/components/videos/Videos";
-import { Modal } from 'react-responsive-modal';
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
@@ -39,10 +34,15 @@ export default async function MovieComponent(request: any) {
         return notFound();
     }
 
-    const videosList = await fetchTMDBMovieVideos(validId);
+    let videosList = await fetchTMDBMovieVideos(validId);
     const movieDetails = await fetchTMDBMovieDetails(validId);
     const movieCredits = await fetchTMDBMovieCredits(validId);
 
+    // videosList.results = await addPlaceholderImagesVideos(videosList.results);
+    // await addPlaceholderImagesMovieDetails(movieDetails);
+    console.log(videosList);
+    console.log(movieDetails);
+    console.log('done!!!!')
     return (
         <div className={styles.movie}>
             <div

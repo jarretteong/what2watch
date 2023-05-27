@@ -23,6 +23,7 @@ export interface Video {
     official: boolean;
     published_at: Date;
     id: string;
+    blurBase64?: string;
 }
 
 type VideosProps = {
@@ -138,6 +139,7 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                           className={classNames({
                                               [videoStyles.videoImage]: true,
                                               [videoStyles[`slides${slidesPerView}`]]: true,
+                                              [videoStyles.loading]: true,
                                           })}
                                       >
                                           {/* <div className={videoStyles.imageWrapper}> */}
@@ -146,6 +148,8 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               src={`https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`}
                                               alt={video.id}
                                               fill
+                                              placeholder="blur"
+                                              blurDataURL="/assets/images/light-gray.png"
                                           />
                                           {/* </div> */}
                                           <svg

@@ -1,4 +1,4 @@
-import { Movie } from "@/interfaces/movie";
+import { Movie, Video, VideoRes } from "@/interfaces/movie";
 import _ from "lodash";
 
 export const fetchTMDBTrendingMovies = async () => {
@@ -22,7 +22,7 @@ export const fetchTMDBMovieDetails = async (id: number): Promise<Movie> => {
     return await data.json();
 };
 
-export const fetchTMDBMovieVideos = async (id: number) => {
+export const fetchTMDBMovieVideos = async (id: number): Promise<VideoRes> => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/movie/${id}/videos?api_key=${process.env.TMDB_APIKEY}`
     );
