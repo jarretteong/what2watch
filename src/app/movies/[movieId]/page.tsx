@@ -1,4 +1,4 @@
-import { addPlaceholderImagesMovieDetails, addPlaceholderImagesVideos, parseMovieIdQuery } from "@/app/utils";
+import { parseMovieIdQuery } from "@/app/utils";
 import {
     fetchTMDBMovieCredits,
     fetchTMDBMovieDetails,
@@ -9,9 +9,9 @@ import _ from "lodash";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Movie, MovieGenre, Video } from "@/interfaces/movie";
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
+import { getPlaiceholder } from "plaiceholder";
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
@@ -26,6 +26,44 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     return null;
 };
 
+const addPlaceholderImagesMovieDetails = async (data: Movie) => {
+    if (data.backdrop_path) {
+        const src = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+        const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+        // const base64String = buffer.toString('base64');
+        const { base64 } = await getPlaiceholder(buffer);
+        data.backdrop_path_blur = base64;
+    }
+    if (data.poster_path) {
+        const src = `https://image.tmdb.org/t/p/original${data.poster_path}`;
+        const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+        // const base64String = buffer.toString('base64');
+        const { base64 } = await getPlaiceholder(buffer);
+        data.poster_path_blur = base64;
+    }
+    return data;
+};
+
+const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+    return await Promise.all(
+        data.map(async (video: Video) => {
+            if (video.key) {
+                const src = `https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`;
+                const buffer = await fetch(src).then(async (res) =>
+                    Buffer.from(await res.arrayBuffer())
+                );
+                // const base64String = buffer.toString('base64');
+                const { base64 } = await getPlaiceholder(buffer);
+                return {
+                    ...video,
+                    blurImage: base64,
+                };
+            }
+            return video;
+        })
+    );
+};
+
 export default async function MovieComponent(request: any) {
     const { movieId } = request.params;
     const validId = await checkValidParams(movieId);
@@ -38,11 +76,11 @@ export default async function MovieComponent(request: any) {
     const movieDetails = await fetchTMDBMovieDetails(validId);
     const movieCredits = await fetchTMDBMovieCredits(validId);
 
-    // videosList.results = await addPlaceholderImagesVideos(videosList.results);
-    // await addPlaceholderImagesMovieDetails(movieDetails);
+    videosList.results = await addPlaceholderImagesVideos(videosList.results);
+    await addPlaceholderImagesMovieDetails(movieDetails);
     console.log(videosList);
     console.log(movieDetails);
-    console.log('done!!!!')
+    console.log("done!!!!");
     return (
         <div className={styles.movie}>
             <div

@@ -88,7 +88,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         alt={movieDetails.title}
                         fill
                         placeholder="blur"
-                        blurDataURL="/assets/images/light-gray.png"
+                        blurDataURL={movieDetails.backdrop_path_blur}
                         style={{
                             objectFit: "cover",
                         }}
