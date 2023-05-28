@@ -26,7 +26,7 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     return null;
 };
 
-const addPlaceholderImagesMovieDetails = async (data: Movie) => {
+export const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
         const src = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
@@ -44,7 +44,7 @@ const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     return data;
 };
 
-const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+export const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
     return await Promise.all(
         data.map(async (video: Video) => {
             if (video.key) {
@@ -79,8 +79,6 @@ export default async function MovieComponent(request: any) {
     videosList.results = await addPlaceholderImagesVideos(videosList.results);
     await addPlaceholderImagesMovieDetails(movieDetails);
     console.log(videosList);
-    console.log(movieDetails);
-    console.log("done!!!!");
     return (
         <div className={styles.movie}>
             <div
@@ -104,7 +102,11 @@ export default async function MovieComponent(request: any) {
                         <div className={styles.movieMain}>
                             <h2 className={styles.movieTitle}>{movieDetails.title}</h2>
                             <div className={styles.movieMainMetadata}>
-                                <MovieVideos videosList={videosList} movieDetails={movieDetails} />
+                                <MovieVideos
+                                    videosList={videosList.results}
+                                    movieDetails={movieDetails}
+                                    movieCredits={movieCredits}
+                                />
                                 <div className={styles.avgRating}>
                                     IMDB: {Math.round(movieDetails.vote_average * 10) / 10}
                                 </div>

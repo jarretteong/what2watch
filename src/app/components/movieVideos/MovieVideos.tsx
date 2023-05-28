@@ -13,37 +13,26 @@ import Modal from "react-responsive-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import "react-responsive-modal/styles.css";
-import { Movie } from "@/interfaces/movie";
+import { Movie, Video, VideoRes } from "@/interfaces/movie";
 import classNames from "classnames";
 
-export interface Video {
-    name: string;
-    key: string;
-    site: string;
-    size: number;
-    type: string;
-    official: boolean;
-    published_at: Date;
-    id: string;
-}
-
 type MovieVideosProps = {
-    videosList: any;
+    videosList: Video[];
     movieDetails: Movie;
+    movieCredits: any
 };
 
 const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     videosList,
     movieDetails,
+    movieCredits,
 }: MovieVideosProps) => {
-    console.log(movieDetails);
     const [open, setOpen] = useState<boolean>(false);
     const smallMedia = useMediaQuery("(min-width: 480px)");
     const mediumMedia = useMediaQuery("(min-width: 768px)");
     const largeMedia = useMediaQuery("(min-width: 992px)");
     const xlMedia = useMediaQuery("(min-width: 1200px)");
-    const [loadedImage, setLoadedImage] = useState<number[]>([]);
-
+    
     // useEffect(() => {
     //     switch (true) {
     //         case xlMedia:
@@ -69,9 +58,12 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                     &nbsp;Trailer
                 </div>
             </div>
-            {console.log(movieDetails.backdrop_path_blur)}
             <Modal
-                classNames={{ modal: styles.movieModal }}
+                classNames={{
+                    modal: styles.movieModal,
+                    modalContainer: styles.movieModalContainer,
+                    overlay: styles.movieModalOverlay,
+                }}
                 open={open}
                 onClose={() => setOpen(false)}
                 showCloseIcon={false}
@@ -80,7 +72,6 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 <div
                     className={classNames({
                         [styles.coverImage]: true,
-                        [styles.loading]: true,
                     })}
                 >
                     <Image
@@ -94,13 +85,18 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         }}
                     />
                 </div>
-                <div className={styles.movieDescription}></div>
+                <div className={styles.movieDescription}>
+                    <h2>{movieDetails.title}</h2>
+                    <h4 className={styles.movieOverview}>{movieDetails.overview}</h4>
+                    <h4 className={styles.movieCast}>{movieDetails.overview}</h4>
+                    <h4 className={styles.movieMeta}>{movieDetails.overview}</h4>
+                </div>
                 <div className={styles.videosList}>
-                    {videosList.results.filter((v: Video) => v.type === "Trailer").length > 0 ? (
+                    {videosList.filter((v: Video) => v.type === "Trailer").length > 0 ? (
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.results.filter(
+                                    videos={videosList.filter(
                                         (v: Video) => v.type === "Trailer"
                                     )}
                                     title="Trailers"
@@ -109,11 +105,11 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             </Suspense>
                         </div>
                     ) : null}
-                    {videosList.results.filter((v: Video) => v.type === "Clip").length > 0 ? (
+                    {videosList.filter((v: Video) => v.type === "Clip").length > 0 ? (
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.results.filter(
+                                    videos={videosList.filter(
                                         (v: Video) => v.type === "Clip"
                                     )}
                                     title="Clips"
@@ -122,11 +118,11 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             </Suspense>
                         </div>
                     ) : null}
-                    {videosList.results.filter((v: Video) => v.type === "Teaser").length > 0 ? (
+                    {videosList.filter((v: Video) => v.type === "Teaser").length > 0 ? (
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.results.filter(
+                                    videos={videosList.filter(
                                         (v: Video) => v.type === "Teaser"
                                     )}
                                     title="Teasers"
@@ -135,11 +131,11 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             </Suspense>
                         </div>
                     ) : null}
-                    {videosList.results.filter((v: Video) => v.type === "Featurette").length > 0 ? (
+                    {videosList.filter((v: Video) => v.type === "Featurette").length > 0 ? (
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.results.filter(
+                                    videos={videosList.filter(
                                         (v: Video) => v.type === "Featurette"
                                     )}
                                     title="Featurettes"

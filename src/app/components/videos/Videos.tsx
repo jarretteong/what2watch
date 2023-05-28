@@ -13,18 +13,7 @@ import classNames from "classnames";
 import _ from "lodash";
 import { useMediaQuery } from "usehooks-ts";
 import { videoSlidesCount } from "@/app/utils";
-
-export interface Video {
-    name: string;
-    key: string;
-    site: string;
-    size: number;
-    type: string;
-    official: boolean;
-    published_at: Date;
-    id: string;
-    blurBase64?: string;
-}
+import { Video } from "@/interfaces/movie";
 
 type VideosProps = {
     videos: Video[];
@@ -139,7 +128,6 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                           className={classNames({
                                               [videoStyles.videoImage]: true,
                                               [videoStyles[`slides${slidesPerView}`]]: true,
-                                              [videoStyles.loading]: true,
                                           })}
                                       >
                                           {/* <div className={videoStyles.imageWrapper}> */}
@@ -149,7 +137,7 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               alt={video.id}
                                               fill
                                               placeholder="blur"
-                                              blurDataURL="/assets/images/light-gray.png"
+                                              blurDataURL={video.blurImage}
                                           />
                                           {/* </div> */}
                                           <svg

@@ -8,28 +8,34 @@
   }
 }
 
+.movieModalOverlay,
+.movieModalContainer {
+  animation-fill-mode: forwards !important;
+}
+
 .movieModal {
+  animation-fill-mode: forwards !important;
   border-radius: 6px;
   position: relative;
   padding: 0;
 
   .coverImage {
     position: relative;
+    width: 100%;
+    height: 450px;
 
-    &.loading {
-      background: linear-gradient(120deg, #e5e5e5 30%, #ffffff 38%, #f2f2f2 40%, #e5e5e5 48%);
-      background-size: 200% 100%;
-      background-position: 100% 0;
-      animation: load 1.4s infinite;
-      width: 100%;
-      height: 500px;
-  
-      @keyframes load {
-        100% {
-          background-position: -100% 0;
-        }
-      }
-    }
+    // &.loading {
+    //   background: linear-gradient(120deg, #e5e5e5 30%, #ffffff 38%, #f2f2f2 40%, #e5e5e5 48%);
+    //   background-size: 200% 100%;
+    //   background-position: 100% 0;
+    //   animation: load 1.4s infinite;
+
+    //   @keyframes load {
+    //     100% {
+    //       background-position: -100% 0;
+    //     }
+    //   }
+    // }
 
     img {
       position: relative !important;
@@ -37,17 +43,26 @@
   }
 
   .movieDescription {
-    border-bottom: 1px;
+    padding: 20px 0;
+    width: 90%;
+    margin: auto;
+
+    .movieOverview {
+      margin: 12px 0;
+      font-weight: normal;
+    }
+
+    .movieMeta {
+      
+    }
   }
 
   .videosList {
-    font-family: Montserrat;
     position: relative;
     z-index: 10;
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 1500px;
 
     .movieVids {
       h3 {
