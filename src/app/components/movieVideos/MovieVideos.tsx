@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import "swiper/swiper.css";
 import "swiper/scss/grid";
 import "node_modules/swiper/modules/navigation/navigation.scss";
@@ -15,11 +15,12 @@ import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import "react-responsive-modal/styles.css";
 import { Movie, Video, VideoRes } from "@/interfaces/movie";
 import classNames from "classnames";
+import { Cast, Credits, Crew } from "@/interfaces/credits";
 
 type MovieVideosProps = {
     videosList: Video[];
     movieDetails: Movie;
-    movieCredits: any
+    movieCredits: Credits;
 };
 
 const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
@@ -32,7 +33,9 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     const mediumMedia = useMediaQuery("(min-width: 768px)");
     const largeMedia = useMediaQuery("(min-width: 992px)");
     const xlMedia = useMediaQuery("(min-width: 1200px)");
-    
+    const [starring, setStarring] = useState<Cast[]>([]);
+    const [crew, setCrew] = useState<Crew[]>([]);
+
     // useEffect(() => {
     //     switch (true) {
     //         case xlMedia:
@@ -50,8 +53,17 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     //     }
     // }, [smallMedia, mediumMedia, largeMedia, xlMedia]);
 
+    useEffect(() => {
+        if (movieCredits.cast.length > 0) {
+            setStarring(_.orderBy(movieCredits.cast, "popularity", "desc").slice(0, 4));
+        }
+        if (movieCredits.crew.length > 0) {
+        }
+    }, [movieCredits]);
+
     return (
         <>
+            {            console.log(_.chain(movieCredits.crew))}
             <div className={styles.movieVideos}>
                 <div className={styles.trailerBtn} onClick={() => setOpen(true)}>
                     <FontAwesomeIcon icon={faVideoCamera} />
@@ -88,7 +100,9 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 <div className={styles.movieDescription}>
                     <h2>{movieDetails.title}</h2>
                     <h4 className={styles.movieOverview}>{movieDetails.overview}</h4>
-                    <h4 className={styles.movieCast}>{movieDetails.overview}</h4>
+                    <div className={styles.movieCast}>
+                        <h4>Starring:</h4>
+                    </div>
                     <h4 className={styles.movieMeta}>{movieDetails.overview}</h4>
                 </div>
                 <div className={styles.videosList}>
@@ -96,9 +110,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.filter(
-                                        (v: Video) => v.type === "Trailer"
-                                    )}
+                                    videos={videosList.filter((v: Video) => v.type === "Trailer")}
                                     title="Trailers"
                                     type="Trailer"
                                 />
@@ -109,9 +121,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.filter(
-                                        (v: Video) => v.type === "Clip"
-                                    )}
+                                    videos={videosList.filter((v: Video) => v.type === "Clip")}
                                     title="Clips"
                                     type="Clip"
                                 />
@@ -122,9 +132,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
-                                    videos={videosList.filter(
-                                        (v: Video) => v.type === "Teaser"
-                                    )}
+                                    videos={videosList.filter((v: Video) => v.type === "Teaser")}
                                     title="Teasers"
                                     type="Teaser"
                                 />

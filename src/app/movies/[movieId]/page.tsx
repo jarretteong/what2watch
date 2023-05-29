@@ -9,9 +9,10 @@ import _ from "lodash";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
-import { Movie, MovieGenre, Video } from "@/interfaces/movie";
+import { Movie, MovieGenre, Video, VideoRes } from "@/interfaces/movie";
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 import { getPlaiceholder } from "plaiceholder";
+import { Credits } from "@/interfaces/credits";
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
@@ -72,13 +73,13 @@ export default async function MovieComponent(request: any) {
         return notFound();
     }
 
-    let videosList = await fetchTMDBMovieVideos(validId);
-    const movieDetails = await fetchTMDBMovieDetails(validId);
-    const movieCredits = await fetchTMDBMovieCredits(validId);
+    const videosList: VideoRes = await fetchTMDBMovieVideos(validId);
+    const movieDetails: Movie = await fetchTMDBMovieDetails(validId);
+    const movieCredits: Credits = await fetchTMDBMovieCredits(validId);
 
     videosList.results = await addPlaceholderImagesVideos(videosList.results);
     await addPlaceholderImagesMovieDetails(movieDetails);
-    console.log(videosList);
+    
     return (
         <div className={styles.movie}>
             <div
