@@ -1,7 +1,6 @@
 import _ from "lodash";
 
 export const parseMovieIdQuery = (id: number, title: string) => {
-    console.log(id, title);
     return _.toLower(
         `${title
             .replace(/:/g, "")

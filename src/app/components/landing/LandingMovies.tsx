@@ -86,7 +86,6 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                         }}
                                         onPlay={() => isPlaying && setShowPlayer(true)}
                                         playing={isPlaying}
-                                        muted
                                         width="100%"
                                         height="100%"
                                         url={`https://www.youtube.com/watch?v=${movie.trailer.key}`}

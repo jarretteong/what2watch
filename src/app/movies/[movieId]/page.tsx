@@ -13,6 +13,12 @@ import { Movie, MovieGenre, Video, VideoRes } from "@/interfaces/movie";
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 import { getPlaiceholder } from "plaiceholder";
 import { Credits } from "@/interfaces/credits";
+import { Metadata } from "next";
+
+export type MovieMetadataParams = {
+    params: { movieId: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+  };
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
@@ -26,6 +32,23 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     }
     return null;
 };
+
+export async function generateMetadata({ params, searchParams }: MovieMetadataParams): Promise<Metadata> {
+    const { movieId } = params;
+    const validId = await checkValidParams(movieId);
+
+    if (!validId) {
+        return notFound();
+    }
+
+    const movieDetails: Movie = await fetchTMDBMovieDetails(validId);
+    return {
+      title: movieDetails.title,
+      openGraph: {
+        title: movieDetails.title,
+      },
+    };
+  }
 
 export const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
@@ -79,7 +102,7 @@ export default async function MovieComponent(request: any) {
 
     videosList.results = await addPlaceholderImagesVideos(videosList.results);
     await addPlaceholderImagesMovieDetails(movieDetails);
-    
+
     return (
         <div className={styles.movie}>
             <div

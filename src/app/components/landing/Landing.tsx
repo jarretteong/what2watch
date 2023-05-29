@@ -1,8 +1,7 @@
 import { fetchTMDBMovieDetails, fetchTMDBMovieImages, fetchTMDBMovieVideos, fetchTMDBTrendingMovies } from "@/app/utils/tmdbApi";
-import { ImageData } from "@/interfaces/movie";
+import { ImageData, Video } from "@/interfaces/movie";
 import _ from "lodash";
 import React from "react";
-import { Video } from "../videos/Videos";
 import LandingMovie from "./LandingMovies";
 
 const Popular = async () => {

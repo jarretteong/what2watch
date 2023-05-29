@@ -20,6 +20,7 @@ export interface Crew {
   credit_id: string;
   gender: boolean;
   id: number;
+  job?: string;
   known_for_department: string;
   name: string;
   order: number;

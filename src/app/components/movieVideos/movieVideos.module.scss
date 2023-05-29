@@ -46,15 +46,19 @@
     padding: 20px 0;
     width: 90%;
     margin: auto;
+    border-bottom: 1px solid #ccc;
 
     .movieOverview {
-      margin: 12px 0;
+      margin: 24px 0;
       font-weight: normal;
       line-height: 1.7;
     }
 
-    .movieMeta {
-
+    .movieCast {
+      line-height: 2;
+      .cast {
+        font-weight: normal;
+      }
     }
   }
 

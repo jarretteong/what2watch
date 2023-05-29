@@ -95,3 +95,19 @@
         }
     }
 }
+
+div.movieModalOverlay,
+div.movieModalContainer {
+    animation-fill-mode: forwards !important;
+    padding: 0;
+    margin: 0;
+}
+
+div.movieModal {
+    animation-fill-mode: forwards !important;
+    border-radius: 6px;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+}
