@@ -49,8 +49,7 @@ export async function generateMetadata({ params, searchParams }: MovieMetadataPa
       },
     };
   }
-
-export const addPlaceholderImagesMovieDetails = async (data: Movie) => {
+const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
         const src = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
@@ -68,7 +67,7 @@ export const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     return data;
 };
 
-export const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
     return await Promise.all(
         data.map(async (video: Video) => {
             if (video.key) {

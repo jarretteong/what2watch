@@ -5,11 +5,10 @@ import {
     fetchTMDBMovieVideos,
     fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
-import { ImageData } from "@/interfaces/movie";
+import { ImageData, Video } from "@/interfaces/movie";
 import _ from "lodash";
 import React from "react";
 import { SwiperOptions } from "swiper/types";
-import { Video } from "../videos/Videos";
 import MovieGenreComponent from "./MovieGenreComponent";
 
 type MovieGenreProps = {
