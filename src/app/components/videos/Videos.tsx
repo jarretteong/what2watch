@@ -84,7 +84,7 @@ const Videos: React.FunctionComponent<VideosProps> = ({
         if (swiper) {
             updateSliderButtons(swiper);
         }
-    }, [smallMedia, mediumMedia, largeMedia, xlMedia]);
+    }, [smallMedia, mediumMedia, largeMedia, xlMedia, swiper, type]);
 
     return (
         <div className={videoStyles.videos}>

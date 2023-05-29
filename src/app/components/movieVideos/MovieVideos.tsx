@@ -115,7 +115,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                         <h4>
                             Starring:{" "}
                             {starring.map((cast: Cast, i: number) => (
-                                <span className={styles.cast}>
+                                <span className={styles.cast} key={cast.name}>
                                     {cast.name} as {cast.character}
                                     {i === starring.length - 1 ? "" : ", "}
                                 </span>
@@ -127,7 +127,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             <h4>
                                 Directed by:{" "}
                                 {directors.map((cast: Crew, i: number) => (
-                                    <span className={styles.cast}>
+                                    <span className={styles.cast} key={cast.name}>
                                         {cast.name}
                                         {i === directors.length - 1 ? "" : ", "}
                                     </span>
@@ -140,7 +140,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             <h4>
                                 Produced by:{" "}
                                 {producers.map((cast: Crew, i: number) => (
-                                    <span className={styles.cast}>
+                                    <span className={styles.cast} key={cast.name}>
                                         {cast.name}
                                         {i === producers.length - 1 ? "" : ", "}
                                     </span>
