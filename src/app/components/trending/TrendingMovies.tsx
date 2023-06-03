@@ -6,7 +6,7 @@ import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import { Navigation, Pagination } from "swiper";
-import styles from '../../movies/page.module.scss'
+import styles from './styles/trending.module.scss'
 
 type MoviesProps = {
     movies: any[];

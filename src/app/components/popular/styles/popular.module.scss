@@ -1,0 +1,24 @@
+.popularContainer {
+  margin: 24px;
+
+  .popularSwiperWrapper {
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .popularContainer {
+    margin: 24px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .popularContainer {
+    margin: 24px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .popularContainer {
+    margin: 24px;
+  }
+}

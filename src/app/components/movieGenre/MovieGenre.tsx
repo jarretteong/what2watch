@@ -38,7 +38,7 @@ const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) 
                             if (_.isArray(images[key])) {
                                 filteredImages[key] = images[key].filter(
                                     (image: ImageData) =>
-                                        image.iso_639_1 === "en" || !image.iso_639_1
+                                        image.iso_639_1 === "en"
                                 );
                             } else if (key === "id") {
                                 filteredImages[key] = images[key];
@@ -51,8 +51,8 @@ const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) 
                 );
                 return {
                     ...movie,
+                    ...filteredImages,
                     trailer: officialTrailer,
-                    images: filteredImages,
                 };
             })
         );

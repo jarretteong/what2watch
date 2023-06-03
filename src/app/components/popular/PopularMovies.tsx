@@ -5,7 +5,7 @@ import { Swiper as ReactSwiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
-import styles from "../../movies/page.module.scss";
+import styles from "./styles/popular.module.scss";
 
 import Swiper, { EffectFade, Navigation, Pagination } from "swiper";
 import Image from "next/image";

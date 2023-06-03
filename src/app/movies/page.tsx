@@ -28,6 +28,18 @@ export default async function Movies() {
                 {/* @ts-expect-error Async Server Components */}
                 <Trending />
             </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="horror" imageType="backdrops" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="action" imageType="backdrops" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="mystery" imageType="backdrops" />
+            </Suspense>
         </div>
     );
 }

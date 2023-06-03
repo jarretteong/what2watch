@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper as ReactSwiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "swiper/css/effect-fade";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
-import { EffectFade, Navigation, Pagination } from "swiper";
-import styles from "../../movies/page.module.scss";
+import Swiper, { EffectFade, Navigation, Pagination } from "swiper";
+import styles from "./styles/landing.module.scss";
 import LandingMetadata from "./LandingMetadata";
 import ReactPlayer from "react-player/lazy";
 import { useMediaQuery } from "usehooks-ts";
@@ -26,6 +26,7 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
+    const swiper = useRef<SwiperRef>(null);
 
     useEffect(() => {
         switch (true) {
@@ -40,7 +41,8 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
 
     return (
         <div className={styles.landingContainer}>
-            <Swiper
+            <ReactSwiper
+                ref={swiper}
                 modules={[Navigation, Pagination, EffectFade]}
                 slidesPerView={1}
                 pagination={{ dynamicBullets: true }}
@@ -52,7 +54,9 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                     setIsPlaying(false);
                     setShowPlayer(false);
                 }}
-                onSwiper={(swiper) => setActiveSlide(swiper.activeIndex)}
+                onSwiper={(s) => {
+                    setActiveSlide(s.activeIndex);
+                }}
             >
                 {movies.map((movie: any, index: number) => {
                     return (
@@ -83,6 +87,11 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                         onEnded={() => {
                                             setIsPlaying(false);
                                             setShowPlayer(false);
+                                            setTimeout(() => {
+                                                if (swiper.current) {
+                                                    swiper.current.swiper.slideNext();
+                                                }
+                                            }, 3000);
                                         }}
                                         onPlay={() => isPlaying && setShowPlayer(true)}
                                         playing={isPlaying}
@@ -95,7 +104,7 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                         </SwiperSlide>
                     );
                 })}
-            </Swiper>
+            </ReactSwiper>
             {/* <Swiper
                 modules={[Navigation, Pagination, EffectFade]}
                 slidesPerView={1}

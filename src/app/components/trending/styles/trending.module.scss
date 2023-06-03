@@ -1,0 +1,21 @@
+.trendingContainer {
+  margin: 24px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .trendingContainer {
+    margin: 24px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .trendingContainer {
+    margin: 24px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .trendingContainer {
+    margin: 24px;
+  }
+}

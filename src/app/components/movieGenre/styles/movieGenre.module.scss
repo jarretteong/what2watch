@@ -1,0 +1,33 @@
+.genreContainer {
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+
+  .genreSwiperWrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: end;
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 36px;
+
+    .genreSwiper {
+      .slideImage {
+        position: relative;
+        width: 100%;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .movieBackdrop {
+    position: absolute;
+    height: 700px;
+
+    .backdropImage {
+      width: 100vw;
+      height: 100%;
+    }
+  }
+}
