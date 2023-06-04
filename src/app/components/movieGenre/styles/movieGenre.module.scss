@@ -2,17 +2,25 @@
   height: 700px;
   display: flex;
   flex-direction: column;
+  padding-bottom: 36px;
 
-  .genreSwiperWrapper {
+  .genreSwiper {
     display: flex;
     flex-direction: row;
     flex: 1;
     align-items: end;
     width: 90%;
     margin: 0 auto;
-    padding-bottom: 36px;
 
-    .genreSwiper {
+    :global(.swiper-wrapper) {
+      display: flex;
+      align-items: flex-end;
+      width: max-content;
+    }
+
+    .slide {
+      height: max-content;
+
       .slideImage {
         position: relative;
         width: 100%;

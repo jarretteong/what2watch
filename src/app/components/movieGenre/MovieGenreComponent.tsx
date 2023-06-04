@@ -35,7 +35,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [swiper, setSwiper] = useState<Swiper>();
     const [activeSlide, setActiveSlide] = useState<number>(-1);
     useEffect(() => {});
-    console.log(movies)
+
     return (
         <div className={styles.genreContainer}>
             {imageType === "backdrops" && activeSlide >= 0 && activeSlide < movies.length ? (
@@ -51,48 +51,46 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                     />
                 </div>
             ) : null}
-            <div className={styles.genreSwiperWrapper}>
-                <ReactSwiper
-                    className={styles.genreSwiper}
-                    breakpoints={{
-                        1: {
-                            slidesPerView: 2,
-                            spaceBetween: 18,
-                        },
-                        480: {
-                            slidesPerView: 3,
-                            spaceBetween: 18,
-                        },
-                        768: {
-                            slidesPerView: 4,
-                            spaceBetween: 18,
-                        },
-                        1200: {
-                            slidesPerView: 5,
-                            spaceBetween: 18,
-                        },
-                    }}
-                    onSlideChange={(swiper) => {
-                        setActiveSlide(swiper.activeIndex);
-                    }}
-                    onSwiper={(s) => {
-                        setActiveSlide(s.activeIndex);
-                    }}
-                >
-                    {movies.map((movie: any, index: number) => {
-                        return (
-                            <SwiperSlide key={movie.id}>
-                                <img
-                                    className={styles.slideImage}
-                                    alt={movie.title}
-                                    src={`https://image.tmdb.org/t/p/w342${movie.backdrop_path}`}
-                                    onClick={() => setActiveSlide(index)}
-                                />
-                            </SwiperSlide>
-                        );
-                    })}
-                </ReactSwiper>
-            </div>
+            <ReactSwiper
+                className={styles.genreSwiper}
+                breakpoints={{
+                    1: {
+                        slidesPerView: 2,
+                        spaceBetween: 18,
+                    },
+                    480: {
+                        slidesPerView: 3,
+                        spaceBetween: 18,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                        spaceBetween: 18,
+                    },
+                    1200: {
+                        slidesPerView: 5,
+                        spaceBetween: 18,
+                    },
+                }}
+                onSlideChange={(swiper) => {
+                    setActiveSlide(swiper.activeIndex);
+                }}
+                onSwiper={(s) => {
+                    setActiveSlide(s.activeIndex);
+                }}
+            >
+                {movies.map((movie: any, index: number) => {
+                    return (
+                        <SwiperSlide key={movie.id} className={styles.slide}>
+                            <img
+                                className={styles.slideImage}
+                                alt={movie.title}
+                                src={`https://image.tmdb.org/t/p/w342${movie.backdrop_path}`}
+                                onClick={() => setActiveSlide(index)}
+                            />
+                        </SwiperSlide>
+                    );
+                })}
+            </ReactSwiper>
         </div>
     );
 };
