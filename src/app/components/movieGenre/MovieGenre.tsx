@@ -58,6 +58,7 @@ const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) 
         );
         return (
             <MovieGenreComponent
+                genre={genreData}
                 movies={genreMovies}
                 slidesPerView={slidesPerView}
                 imageType={imageType}

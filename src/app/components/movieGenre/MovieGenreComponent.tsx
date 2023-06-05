@@ -20,11 +20,13 @@ type MovieGenreProps = {
           }
         | undefined;
     imageType: "posters" | "backdrops";
+    genre: any;
 };
 
 const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     movies,
     imageType,
+    genre,
 }: MovieGenreProps) => {
     // const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } =
     //     useInfiniteQuery({
@@ -51,6 +53,10 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                     />
                 </div>
             ) : null}
+            <div className={styles.movieDetails}>
+                <h5 className={styles.genre}>{genre.name}</h5>
+                <h3>{activeSlide >= 0 ? movies[activeSlide].title : ''}</h3>
+            </div>
             <ReactSwiper
                 className={styles.genreSwiper}
                 breakpoints={{
@@ -64,11 +70,15 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                     },
                     768: {
                         slidesPerView: 4,
-                        spaceBetween: 18,
+                        spaceBetween: 24,
                     },
                     1200: {
                         slidesPerView: 5,
-                        spaceBetween: 18,
+                        spaceBetween: 30,
+                    },
+                    1440: {
+                        slidesPerView: 6,
+                        spaceBetween: 30,
                     },
                 }}
                 onSlideChange={(swiper) => {
