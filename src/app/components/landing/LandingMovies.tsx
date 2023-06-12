@@ -14,6 +14,7 @@ import { useMediaQuery } from "usehooks-ts";
 import Link from "next/link";
 import { parseMovieIdQuery } from "@/app/utils";
 import classNames from "classnames";
+import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 
 type MoviesProps = {
     movies: any[];
@@ -75,6 +76,9 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                 </Link>
                             ) : null}
                             <LandingMetadata movie={movie} />
+                            {/* <div className={styles.playerControls}>
+                                <ReactPlayerControls />
+                            </div> */}
                             {activeSlide === index && movie.trailer && backdropMedia ? (
                                 <div
                                     className={classNames({

@@ -13,16 +13,10 @@ import MovieGenreComponent from "./MovieGenreComponent";
 
 type MovieGenreProps = {
     genre: string;
-    slidesPerView?:
-        | {
-              [width: number]: SwiperOptions;
-              [ratio: string]: SwiperOptions;
-          }
-        | undefined;
-    imageType: "posters" | "backdrops";
+    type?: "full" | "poster" | "backdrop";
 };
 
-const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) => {
+const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
     const genreData = await fetchTMDBMovieGenres(genre);
     if (genreData.id) {
         const movies = await fetchTMDBMoviesByGenreId(genreData.id);
@@ -33,12 +27,11 @@ const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) 
                 let filteredImages: any = {};
                 if (images) {
                     _.keys(images)
-                        .filter((key) => key === "id" || key === imageType)
+                        .filter((key) => key === "id" || key === "backdrops" || key === "posters")
                         .forEach((key) => {
                             if (_.isArray(images[key])) {
                                 filteredImages[key] = images[key].filter(
-                                    (image: ImageData) =>
-                                        image.iso_639_1 === "en"
+                                    (image: ImageData) => image.iso_639_1 === "en"
                                 );
                             } else if (key === "id") {
                                 filteredImages[key] = images[key];
@@ -56,14 +49,7 @@ const MovieGenre = async ({ genre, slidesPerView, imageType }: MovieGenreProps) 
                 };
             })
         );
-        return (
-            <MovieGenreComponent
-                genre={genreData}
-                movies={genreMovies}
-                slidesPerView={slidesPerView}
-                imageType={imageType}
-            />
-        );
+        return <MovieGenreComponent genre={genreData} movies={genreMovies} type={type || "full"} />;
     }
     return null;
 };

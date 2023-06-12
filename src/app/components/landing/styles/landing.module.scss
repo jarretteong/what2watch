@@ -49,6 +49,12 @@
     }
   }
 
+  .playerControls {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   .videoContainer {
     position: absolute;
     top: 0;
@@ -74,15 +80,6 @@
     animation-timing-function: linear;
   }
 
-  @keyframes loading {
-    0% {
-      background-position: -500px 0px;
-    }
-    100% {
-      background-position: 500px 0px;
-    }
-  }
-
   .hidden {
     display: none;
   }
@@ -98,256 +95,67 @@
   width: 100%;
   max-height: 100vh;
   aspect-ratio: 2/3;
+  display: block;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .landingContainer {
-    position: relative;
+/* Common styles for all media queries */
 
-    .landingMetadata {
-      position: absolute;
-      bottom: 36px;
-      left: 48px;
-      max-width: 320px;
-      z-index: 5;
-
-      .movieMetadata {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 6px 0;
-
-        .landingMetadataImageWrapper {
-          .landingMetadataImage {
-            width: 90%;
-            border-radius: 16px;
-            margin-bottom: 10px;
-          }
-        }
-
-        .landingMetadataOverview {
-          color: #fff;
-          overflow: hidden;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          margin-bottom: 10px;
-          font-size: 18px;
-          transition: 0.6s;
-          max-height: 85px;
-
-          &.metadataFull {
-            max-height: 350px;
-          }
-        }
-
-        .landingMetadataDetails {
-          width: 40%;
-          height: 36px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 16px;
-          cursor: pointer;
-          border: none;
-          outline: none;
-        }
-      }
-    }
-
-    .videoContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      max-height: 100vh;
-      aspect-ratio: 16 / 9;
-      pointer-events: none;
-
-      iframe {
-        width: 300%;
-        height: 100%;
-        margin-left: -100%;
-      }
-    }
+@media only screen and (min-width: 768px) {
+  .landingContainer .landingMetadata {
+    max-width: 320px;
   }
 
-  .posterImage {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    border-radius: 10px;
+  .landingContainer .landingMetadata .movieMetadata {
+    display: flex;
   }
 
-  .backdropImage {
-    width: 100%;
-    max-height: 100vh;
-    aspect-ratio: 16/9;
-  }
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .landingContainer {
-    position: relative;
-
-    .landingMetadata {
-      position: absolute;
-      bottom: 36px;
-      left: 48px;
-      max-width: 400px;
-      z-index: 5;
-
-      .movieMetadata {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 6px 0;
-
-        .landingMetadataImageWrapper {
-          .landingMetadataImage {
-            width: 90%;
-            border-radius: 16px;
-            margin-bottom: 10px;
-          }
-        }
-
-        .landingMetadataOverview {
-          color: #fff;
-          overflow: hidden;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          margin-bottom: 10px;
-          font-size: 18px;
-          transition: 0.6s;
-          max-height: 85px;
-
-          &.metadataFull {
-            max-height: 350px;
-          }
-        }
-
-        .landingMetadataDetails {
-          width: 40%;
-          height: 36px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 16px;
-          cursor: pointer;
-          border: none;
-          outline: none;
-        }
-      }
-    }
-
-    .videoContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      max-height: 100vh;
-      aspect-ratio: 16 / 9;
-      pointer-events: none;
-
-      iframe {
-        width: 300%;
-        height: 100%;
-        margin-left: -100%;
-      }
-    }
+  .landingContainer .landingMetadata .movieMetadata .landingMetadataImageWrapper .landingMetadataImage {
+    width: 90%;
   }
 
-  .posterImage {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    border-radius: 10px;
+  .landingContainer .landingMetadata .movieMetadata .landingMetadataOverview {
+    max-height: 85px;
   }
 
-  .backdropImage {
-    width: 100%;
-    max-height: 100vh;
+  .landingContainer .landingMetadata .movieMetadata .landingMetadataDetails {
+    width: 40%;
+  }
+
+  .videoContainer {
     aspect-ratio: 16 / 9;
   }
 }
+
+@media only screen and (min-width: 992px) {
+  .landingContainer .landingMetadata {
+    max-width: 400px;
+  }
+
+  .videoContainer {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Styles for large screens */
 
 @media only screen and (min-width: 1200px) {
-  .landingContainer {
-    position: relative;
-
-    .landingMetadata {
-      position: absolute;
-      bottom: 36px;
-      left: 48px;
-      max-width: 400px;
-      z-index: 5;
-
-      .movieMetadata {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 6px 0;
-
-        .landingMetadataImageWrapper {
-          .landingMetadataImage {
-            width: 100%;
-            border-radius: 16px;
-            margin-bottom: 10px;
-          }
-        }
-
-        .landingMetadataOverview {
-          color: #fff;
-          overflow: hidden;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          margin-bottom: 10px;
-          font-size: 18px;
-          transition: 0.6s;
-          max-height: 85px;
-
-          &.metadataFull {
-            max-height: 350px;
-          }
-        }
-
-        .landingMetadataDetails {
-          width: 40%;
-          height: 36px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 16px;
-          cursor: pointer;
-          border: none;
-          outline: none;
-        }
-      }
-    }
-
-    .videoContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      max-height: 100vh;
-      aspect-ratio: 16 / 9;
-      pointer-events: none;
-
-      iframe {
-        width: 300%;
-        height: 100%;
-        margin-left: -100%;
-      }
-    }
+  .landingContainer .landingMetadata {
+    max-width: 400px;
   }
 
-  .posterImage {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    border-radius: 10px;
-  }
-
-  .backdropImage {
-    width: 100%;
-    max-height: 100vh;
+  .videoContainer {
     aspect-ratio: 16 / 9;
     height: 100vh;
+  }
+}
+
+/* Keyframes and animation styles */
+
+@keyframes loading {
+  0% {
+    background-position: -500px 0px;
+  }
+  100% {
+    background-position: 500px 0px;
   }
 }

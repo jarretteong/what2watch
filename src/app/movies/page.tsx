@@ -10,6 +10,7 @@ export default async function Movies() {
     //     `${process.env.TMDB_V3_URL}/movie/latest?api_key=${process.env.TMDB_APIKEY}`
     // );
     // const popularMovies = await data.json();
+    const horrorGenre = await MovieGenre({ genre: "horror", type: "full" })
 
     return (
         <div className={styles.movies}>
@@ -18,27 +19,32 @@ export default async function Movies() {
                 <Landing />
             </Suspense>
             <Suspense>
-                {/* <MovieGenre genre="Horror" imageType="backdrops"/> */}
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="horror" type="poster" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <Popular />
+                <MovieGenre genre="action" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <Trending />
+                <MovieGenre genre="mystery" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <MovieGenre genre="horror" imageType="backdrops" />
+                <MovieGenre genre="thriller" type="poster" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <MovieGenre genre="action" imageType="backdrops" />
+                <MovieGenre genre="adventure" type="poster" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <MovieGenre genre="mystery" imageType="backdrops" />
+                <MovieGenre genre="comedy" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="science fiction" />
             </Suspense>
         </div>
     );

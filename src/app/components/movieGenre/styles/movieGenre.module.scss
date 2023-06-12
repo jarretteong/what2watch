@@ -1,9 +1,11 @@
-.genreContainer {
-  height: 700px;
+.genreFullContainer {
+  height: 600px;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   padding-bottom: 36px;
   position: relative;
+  max-width: 100%;
 
   .movieDetails {
     position: absolute;
@@ -13,13 +15,13 @@
     top: 30%;
 
     .genre {
-      color: #FFF;
+      color: #fff;
       position: relative;
       z-index: 50;
     }
 
     h3 {
-      color: #FFF;
+      color: #fff;
     }
   }
 
@@ -50,11 +52,95 @@
 
   .movieBackdrop {
     position: absolute;
-    height: 700px;
+    height: 600px;
 
     .backdropImage {
       width: 100vw;
+      margin: auto;
       height: 100%;
+      max-width: 100%;
     }
   }
+
+  @media only screen and (min-width: 768px) {
+    height: 600px;
+
+    .movieDetails {
+      top: 30%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 600px;
+    }
+  }
+
+  @media only screen and (min-width: 992px) {
+    height: 600px;
+
+    .movieDetails {
+      top: 30%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 600px;
+    }
+  }
+
+  @media only screen and (min-width: 1200px) {
+    height: 600px;
+
+    .movieDetails {
+      top: 30%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 600px;
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: -500px 0px;
+  }
+  100% {
+    background-position: 500px 0px;
+  }
+}
+
+.genrePosterContainer {
+  width: 95%;
+  margin: 0 auto 20px auto;
+
+  .genreTypeWrapper {
+    margin: 12px 0;
+  }
+
+  .genreSwiper {
+    .slideImage {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    margin-bottom: 20px;
+  }
+
+  .divider {
+    border-top: 0.5px solid rgba(0, 0, 0, 0.15);
+  }
+}
+
+.genreBackdropContainer {
 }
