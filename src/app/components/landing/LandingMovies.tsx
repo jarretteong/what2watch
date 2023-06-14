@@ -8,13 +8,13 @@ import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import Swiper, { EffectFade, Navigation, Pagination } from "swiper";
 import styles from "./styles/landing.module.scss";
-import LandingMetadata from "./LandingMetadata";
 import ReactPlayer from "react-player/lazy";
 import { useMediaQuery } from "usehooks-ts";
 import Link from "next/link";
 import { parseMovieIdQuery } from "@/app/utils";
 import classNames from "classnames";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
+import MovieMetadata from "../movieMetadata/MovieMetadata";
 
 type MoviesProps = {
     movies: any[];
@@ -75,7 +75,7 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                     />
                                 </Link>
                             ) : null}
-                            <LandingMetadata movie={movie} />
+                            <MovieMetadata movie={movie} />
                             {/* <div className={styles.playerControls}>
                                 <ReactPlayerControls />
                             </div> */}

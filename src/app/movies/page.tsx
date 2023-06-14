@@ -28,7 +28,7 @@ export default async function Movies() {
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <MovieGenre genre="mystery" />
+                <MovieGenre genre="mystery" type="backdrop" />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}

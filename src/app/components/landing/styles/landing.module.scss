@@ -1,54 +1,6 @@
 .landingContainer {
   position: relative;
 
-  .landingMetadata {
-    position: absolute;
-    bottom: 36px;
-    left: 48px;
-    max-width: 260px;
-    z-index: 5;
-
-    .movieMetadata {
-      flex-direction: column;
-      align-items: center;
-      padding: 6px 0;
-      display: none;
-
-      .landingMetadataImage {
-        width: 100%;
-        aspect-ratio: 7/8;
-        border-radius: 16px;
-        margin-bottom: 10px;
-      }
-
-      .landingMetadataOverview {
-        color: #fff;
-        overflow: hidden;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        margin-bottom: 10px;
-        font-size: 18px;
-        transition: 0.6s;
-        max-height: 85px;
-
-        &.metadataFull {
-          max-height: 350px;
-        }
-      }
-
-      .landingMetadataDetails {
-        width: 40%;
-        height: 36px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        outline: none;
-      }
-    }
-  }
-
   .playerControls {
     position: absolute;
     bottom: 0;
@@ -101,36 +53,12 @@
 /* Common styles for all media queries */
 
 @media only screen and (min-width: 768px) {
-  .landingContainer .landingMetadata {
-    max-width: 320px;
-  }
-
-  .landingContainer .landingMetadata .movieMetadata {
-    display: flex;
-  }
-
-  .landingContainer .landingMetadata .movieMetadata .landingMetadataImageWrapper .landingMetadataImage {
-    width: 90%;
-  }
-
-  .landingContainer .landingMetadata .movieMetadata .landingMetadataOverview {
-    max-height: 85px;
-  }
-
-  .landingContainer .landingMetadata .movieMetadata .landingMetadataDetails {
-    width: 40%;
-  }
-
   .videoContainer {
     aspect-ratio: 16 / 9;
   }
 }
 
 @media only screen and (min-width: 992px) {
-  .landingContainer .landingMetadata {
-    max-width: 400px;
-  }
-
   .videoContainer {
     aspect-ratio: 16 / 9;
   }
@@ -139,16 +67,11 @@
 /* Styles for large screens */
 
 @media only screen and (min-width: 1200px) {
-  .landingContainer .landingMetadata {
-    max-width: 400px;
-  }
-
   .videoContainer {
     aspect-ratio: 16 / 9;
     height: 100vh;
   }
 }
-
 /* Keyframes and animation styles */
 
 @keyframes loading {

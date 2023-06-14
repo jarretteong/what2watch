@@ -13,7 +13,7 @@ import MovieGenreComponent from "./MovieGenreComponent";
 
 type MovieGenreProps = {
     genre: string;
-    type?: "full" | "poster" | "backdrop";
+    type?: "full" | "poster" | "backdrop" | "overview";
 };
 
 const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
@@ -45,6 +45,9 @@ const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
                 return {
                     ...movie,
                     ...filteredImages,
+                    images: {
+                        ...filteredImages,
+                    },
                     trailer: officialTrailer,
                 };
             })
