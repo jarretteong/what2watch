@@ -7,7 +7,7 @@
   position: relative;
   max-width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 600px;
+  max-height: 700px;
 
   .movieDetails {
     position: absolute;
@@ -59,7 +59,7 @@
     .backdropImage {
       width: 100vw;
       margin: auto;
-      max-height: 600px;
+      max-height: 700px;
       // height: 100%;
       max-width: 100%;
       position: relative;
@@ -99,7 +99,7 @@
     }
 
     .movieBackdrop {
-      height: 600px;
+      height: 700px;
     }
   }
 
@@ -115,7 +115,7 @@
     }
 
     .movieBackdrop {
-      height: 600px;
+      height: 700px;
     }
   }
 
@@ -131,7 +131,7 @@
     }
 
     .movieBackdrop {
-      height: 600px;
+      height: 700px;
     }
   }
 }
@@ -172,7 +172,7 @@
   }
 
   .backdropImage {
-    height: 600px;
+    height: 700px;
   }
 }
 
