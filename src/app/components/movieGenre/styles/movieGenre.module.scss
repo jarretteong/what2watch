@@ -12,7 +12,7 @@
   .movieDetails {
     position: absolute;
     flex: 1;
-    width: 90%;
+    width: 420px;
     left: 5%;
     top: 30%;
 
@@ -22,8 +22,15 @@
       z-index: 50;
     }
 
-    h3 {
+    h2 {
       color: #fff;
+      font-size: 32px;
+      padding: 16px 0;
+    }
+
+    .movieMetadataOverview {
+      color: #FFF;
+      margin: 10px 0;
     }
   }
 
@@ -64,6 +71,7 @@
       max-width: 100%;
       position: relative;
       aspect-ratio: 16 / 9;
+      filter: brightness(0.7);
     }
   }
 
@@ -71,7 +79,31 @@
     aspect-ratio: 4/5;
 
     .movieDetails {
-      top: 30%;
+      width: 280px;
+      left: 5%;
+      top: 15%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      // height: 600px;
+
+      .backdropImage {
+        aspect-ratio: 4/5;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 480px) {
+    aspect-ratio: 4/5;
+
+    .movieDetails {
+      width: 320px;
+      left: 5%;
+      top: 15%;
     }
 
     .genreSwiper {
@@ -91,7 +123,9 @@
     // height: 600px;
 
     .movieDetails {
-      top: 30%;
+      width: 360px;
+      left: 5%;
+      top: 20%;
     }
 
     .genreSwiper {
@@ -107,6 +141,8 @@
     // height: 600px;
 
     .movieDetails {
+      width: 420px;
+      left: 5%;
       top: 30%;
     }
 
@@ -123,6 +159,8 @@
     // height: 600px;
 
     .movieDetails {
+      width: 420px;
+      left: 5%;
       top: 30%;
     }
 

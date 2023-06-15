@@ -37,7 +37,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     //         getNextPageParam: (lastPage, pages) => lastPage.nextCursor || undefined,
     //     });
     const posterMedia = useMediaQuery("(min-width: 1px)");
-    const backdropMedia = useMediaQuery("(min-width: 480px)");
+    const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [imageType, setImageType] = useState<string>("backdrop");
     const [activeSlide, setActiveSlide] = useState<number>(-1);
     useEffect(() => {
@@ -141,23 +141,6 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                         <ReactSwiper
                             className={styles.genreSwiper}
                             slidesPerView={1}
-                            // breakpoints={{
-                            //     1: {
-                            //         slidesPerView: 1,
-                            //     },
-                            //     480: {
-                            //         slidesPerView: 1,
-                            //     },
-                            //     768: {
-                            //         slidesPerView: 1,
-                            //     },
-                            //     1200: {
-                            //         slidesPerView: 1,
-                            //     },
-                            //     1440: {
-                            //         slidesPerView: 1,
-                            //     },
-                            // }}
                             onSlideChange={(swiper) => {
                                 setActiveSlide(swiper.activeIndex);
                             }}
@@ -242,10 +225,13 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     />
                                 </div>
                             ) : null}
-                            {imageType === "backdrop" ? (
+                            {imageType === "backdrop" && activeSlide >= 0 ? (
                                 <div className={styles.movieDetails}>
+                                    <h2>{movies[activeSlide].title}</h2>
                                     <h5 className={styles.genre}>{genre.name}</h5>
-                                    <h3>{activeSlide >= 0 ? movies[activeSlide].title : ""}</h3>
+                                    <p className={styles.movieMetadataOverview}>
+                                        {movies[activeSlide].overview}
+                                    </p>
                                 </div>
                             ) : null}
                             <ReactSwiper
