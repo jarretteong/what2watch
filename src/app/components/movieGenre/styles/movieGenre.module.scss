@@ -14,7 +14,7 @@
     flex: 1;
     width: 420px;
     left: 5%;
-    top: 30%;
+    bottom: 30%;
 
     .genre {
       color: #fff;
@@ -29,9 +29,16 @@
     }
 
     .movieMetadataOverview {
-      color: #FFF;
+      color: #fff;
       margin: 10px 0;
     }
+  }
+
+  .playerControls {
+    position: absolute;
+    bottom: 30%;
+    right: 5%;
+    z-index: 10;
   }
 
   .genreSwiper {
@@ -71,7 +78,15 @@
       max-width: 100%;
       position: relative;
       aspect-ratio: 16 / 9;
-      filter: brightness(0.7);
+    }
+
+    .imageOverlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
     }
   }
 
@@ -103,7 +118,7 @@
     .movieDetails {
       width: 320px;
       left: 5%;
-      top: 15%;
+      bottom: 15%;
     }
 
     .genreSwiper {
@@ -125,7 +140,7 @@
     .movieDetails {
       width: 360px;
       left: 5%;
-      top: 20%;
+      bottom: 20%;
     }
 
     .genreSwiper {
@@ -143,7 +158,7 @@
     .movieDetails {
       width: 420px;
       left: 5%;
-      top: 30%;
+      bottom: 30%;
     }
 
     .genreSwiper {
@@ -161,7 +176,7 @@
     .movieDetails {
       width: 420px;
       left: 5%;
-      top: 30%;
+      bottom: 30%;
     }
 
     .genreSwiper {
@@ -209,8 +224,22 @@
     margin: 12px 0;
   }
 
-  .backdropImage {
-    height: 700px;
+  .backdropWrapper {
+    position: relative;
+
+    .backdropImage {
+      height: 700px;
+      // filter: brightness(0.7);
+    }
+
+    .imageOverlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+    }
   }
 }
 

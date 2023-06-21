@@ -49,7 +49,12 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
                     {movie.overview}
                 </p>
                 <button className={styles.movieMetadataDetails}>
-                    <Link href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}>More</Link>
+                    <Link
+                        className={styles.moreDetails}
+                        href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}
+                    >
+                        More
+                    </Link>
                 </button>
             </div>
         </div>

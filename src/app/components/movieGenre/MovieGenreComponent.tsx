@@ -18,6 +18,7 @@ import LandingMetadata from "../landing/LandingMetadata";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
+import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 
 type MovieGenreProps = {
     movies: any[];
@@ -152,22 +153,25 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 return (
                                     <SwiperSlide key={movie.id}>
                                         {imageType ? (
-                                            <Link
-                                                href={`/movies/${parseMovieIdQuery(
-                                                    movie.id,
-                                                    movie.title
-                                                )}`}
-                                            >
-                                                <img
-                                                    className={styles.backdropImage}
-                                                    alt={movie.title}
-                                                    src={`https://image.tmdb.org/t/p/original${
-                                                        imageType === "backdrop"
-                                                            ? movie.backdrop_path
-                                                            : movie.poster_path
-                                                    }`}
-                                                />
-                                            </Link>
+                                            <div className={styles.backdropWrapper}>
+                                                <Link
+                                                    href={`/movies/${parseMovieIdQuery(
+                                                        movie.id,
+                                                        movie.title
+                                                    )}`}
+                                                >
+                                                    <img
+                                                        className={styles.backdropImage}
+                                                        alt={movie.title}
+                                                        src={`https://image.tmdb.org/t/p/original${
+                                                            imageType === "backdrop"
+                                                                ? movie.backdrop_path
+                                                                : movie.poster_path
+                                                        }`}
+                                                    />
+                                                </Link>
+                                                <div className={styles.imageOverlay}></div>
+                                            </div>
                                         ) : null}
                                         <MovieMetadata movie={movie} />
                                         {/* <div className={styles.playerControls}>
@@ -223,16 +227,22 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                 : movies[activeSlide].poster_path
                                         }`}
                                     />
+                                    <div className={styles.imageOverlay}></div>
                                 </div>
                             ) : null}
                             {imageType === "backdrop" && activeSlide >= 0 ? (
-                                <div className={styles.movieDetails}>
-                                    <h2>{movies[activeSlide].title}</h2>
-                                    <h5 className={styles.genre}>{genre.name}</h5>
-                                    <p className={styles.movieMetadataOverview}>
-                                        {movies[activeSlide].overview}
-                                    </p>
-                                </div>
+                                <>
+                                    <div className={styles.movieDetails}>
+                                        <h2>{movies[activeSlide].title}</h2>
+                                        <h5 className={styles.genre}>{genre.name}</h5>
+                                        <p className={styles.movieMetadataOverview}>
+                                            {movies[activeSlide].overview}
+                                        </p>
+                                    </div>
+                                    <div className={styles.playerControls}>
+                                        <ReactPlayerControls />
+                                    </div>
+                                </>
                             ) : null}
                             <ReactSwiper
                                 className={styles.genreSwiper}

@@ -3,8 +3,9 @@
 
   .playerControls {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 36px;
+    right: 48px;
+    z-index: 10;
   }
 
   .videoContainer {

@@ -76,9 +76,9 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                 </Link>
                             ) : null}
                             <MovieMetadata movie={movie} />
-                            {/* <div className={styles.playerControls}>
+                            <div className={styles.playerControls}>
                                 <ReactPlayerControls />
-                            </div> */}
+                            </div>
                             {activeSlide === index && movie.trailer && backdropMedia ? (
                                 <div
                                     className={classNames({
