@@ -1,6 +1,14 @@
 .movies {
-    // display: flex;
-    // flex-direction: column;
+    .backdropImageWrapper {
+        position: relative;
+        width: 100%;
+        max-height: 100vh;
+        aspect-ratio: 16 / 9;
+        display: block;
+
+        .backdropImage {
+        }
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -128,7 +136,6 @@
                     padding: 6px 0;
 
                     .landingMetadataImageWrapper {
-                        
                         .landingMetadataImage {
                             width: 90%;
                             border-radius: 16px;

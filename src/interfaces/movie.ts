@@ -33,6 +33,11 @@ export interface MovieGenre {
     name: string;
 }
 
+export interface MovieWithImagesVideos extends Movie {
+    trailer?: Video;
+    images?: any[]
+}
+
 export interface Video {
     iso_639_1: string;
     iso_3166_1: string;
@@ -60,4 +65,5 @@ export interface ImageData {
     vote_average: number;
     vote_count: number;
     width: number;
+    blur_file_path?: string;
 }

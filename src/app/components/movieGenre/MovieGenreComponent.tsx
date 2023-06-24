@@ -14,11 +14,12 @@ import { render } from "react-dom";
 import { useMediaQuery } from "usehooks-ts";
 import { parseMovieIdQuery } from "@/app/utils";
 import Link from "next/link";
-import LandingMetadata from "../landing/LandingMetadata";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
+import { Movie } from "@/interfaces/movie";
+import { Waypoint } from "react-waypoint";
 
 type MovieGenreProps = {
     movies: any[];
@@ -41,6 +42,10 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [imageType, setImageType] = useState<string>("backdrop");
     const [activeSlide, setActiveSlide] = useState<number>(-1);
+    const [isMuted, setIsMuted] = useState<boolean>(false);
+    const [showPlayer, setShowPlayer] = useState<boolean>(false);
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
     useEffect(() => {
         switch (true) {
             case backdropMedia:
@@ -51,6 +56,20 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                 break;
         }
     }, [posterMedia, backdropMedia]);
+
+    const changeSlide = (index: number, movie: Movie) => {
+        setActiveSlide(index);
+        setIsPlaying(false);
+        setShowPlayer(false);
+    };
+
+    const handleEnter = () => {
+        console.log("waypoint entered");
+    };
+
+    const handleLeave = () => {
+        console.log("waypoint left");
+    };
 
     const renderGenreContainer = () => {
         switch (type) {
@@ -173,10 +192,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                 <div className={styles.imageOverlay}></div>
                                             </div>
                                         ) : null}
-                                        <MovieMetadata movie={movie} />
-                                        {/* <div className={styles.playerControls}>
-                                <ReactPlayerControls />
-                            </div> */}
+                                        {/* <MovieMetadata movie={movie} /> */}
                                         {activeSlide === index && movie.trailer && backdropMedia ? (
                                             <div
                                                 className={classNames({
@@ -228,6 +244,30 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                         }`}
                                     />
                                     <div className={styles.imageOverlay}></div>
+
+                                    {movies[activeSlide].trailer ? (
+                                        <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+                                            <div className={styles.videoContainer}>
+                                                <ReactPlayer
+                                                    className={styles.reactPlayer}
+                                                    style={{ opacity: showPlayer ? 1 : 0 }}
+                                                    onReady={() =>
+                                                        setTimeout(() => setIsPlaying(true), 3000)
+                                                    }
+                                                    onEnded={() => {
+                                                        setIsPlaying(false);
+                                                        setShowPlayer(false);
+                                                    }}
+                                                    onPlay={() => isPlaying && setShowPlayer(true)}
+                                                    playing={isPlaying}
+                                                    muted={isMuted}
+                                                    width="100%"
+                                                    height="100%"
+                                                    url={`https://www.youtube.com/watch?v=${movies[activeSlide].trailer.key}`}
+                                                />
+                                            </div>
+                                        </Waypoint>
+                                    ) : null}
                                 </div>
                             ) : null}
                             {imageType === "backdrop" && activeSlide >= 0 ? (
@@ -240,7 +280,13 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                         </p>
                                     </div>
                                     <div className={styles.playerControls}>
-                                        <ReactPlayerControls />
+                                        <ReactPlayerControls
+                                            playing={showPlayer}
+                                            muted={isMuted}
+                                            setMuted={setIsMuted}
+                                            setPlayer={setShowPlayer}
+                                            setPlaying={setIsPlaying}
+                                        />
                                     </div>
                                 </>
                             ) : null}
@@ -286,7 +332,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                         ? movie.backdrops[1].file_path
                                                         : movie.backdrop_path
                                                 }`}
-                                                onClick={() => setActiveSlide(index)}
+                                                onClick={() => changeSlide(index, movie[index])}
                                             />
                                         </SwiperSlide>
                                     );

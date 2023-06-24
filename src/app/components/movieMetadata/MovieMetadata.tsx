@@ -9,6 +9,7 @@ import Link from "next/link";
 import _ from "lodash";
 import { parseMovieIdQuery } from "@/app/utils";
 import { ImageData } from "@/interfaces/movie";
+import Image from "next/image";
 
 type MovieProps = {
     movie: any;
@@ -22,7 +23,7 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
 
     useEffect(() => {
         if (movie.images?.backdrops?.length > 0) {
-            movie.images?.backdrops.length > 2
+            movie.images?.backdrops.length > 1
                 ? setPosterImage(movie.images?.backdrops[1])
                 : setPosterImage(movie.images?.backdrops[0]);
         }
@@ -36,6 +37,17 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
         >
             <div className={styles.movieMetadata}>
                 <picture className={styles.movieMetadataImageWrapper}>
+                    {/* <Image
+                        className={styles.movieMetadataImage}
+                        style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
+                        alt={movie.title}
+                        src={`https://image.tmdb.org/t/p/original/${
+                            posterImage?.file_path || movie.poster_path
+                        }`}
+                        fill
+                        placeholder="blur"
+                        blurDataURL={posterImage?.blur_file_path}
+                    /> */}
                     <img
                         className={styles.movieMetadataImage}
                         style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}

@@ -129,7 +129,6 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               [videoStyles[`slides${slidesPerView}`]]: true,
                                           })}
                                       >
-                                          {/* <div className={videoStyles.imageWrapper}> */}
                                           <Image
                                               className={videoStyles.image}
                                               src={`https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`}
@@ -138,7 +137,6 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               placeholder="blur"
                                               blurDataURL={video.blurImage}
                                           />
-                                          {/* </div> */}
                                           <svg
                                               xmlns="http://www.w3.org/2000/svg"
                                               viewBox="0 0 28 28"
