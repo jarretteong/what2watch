@@ -14,6 +14,7 @@ import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 import { getPlaiceholder } from "plaiceholder";
 import { Credits } from "@/interfaces/credits";
 import { Metadata } from "next";
+import MovieTrailer from "@/app/components/movieTrailer/MovieTrailer";
 
 export type MovieMetadataParams = {
     params: { movieId: string };
@@ -125,11 +126,7 @@ export default async function MovieComponent(request: any) {
                         <div className={styles.movieMain}>
                             <h2 className={styles.movieTitle}>{movieDetails.title}</h2>
                             <div className={styles.movieMainMetadata}>
-                                <MovieVideos
-                                    videosList={videosList.results}
-                                    movieDetails={movieDetails}
-                                    movieCredits={movieCredits}
-                                />
+                                <MovieTrailer />
                                 <div className={styles.avgRating}>
                                     IMDB: {Math.round(movieDetails.vote_average * 10) / 10}
                                 </div>

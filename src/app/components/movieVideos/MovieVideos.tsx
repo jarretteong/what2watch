@@ -1,207 +1,100 @@
-"use client";
-
-import React, { Suspense, useEffect, useState } from "react";
-import "swiper/swiper.css";
-import "swiper/scss/grid";
-import "node_modules/swiper/modules/navigation/navigation.scss";
-import Image from "next/image";
+import {
+    fetchTMDBMovieCredits,
+    fetchTMDBMovieDetails,
+    fetchTMDBMovieImages,
+    fetchTMDBMovieVideos,
+    fetchTMDBTrendingMovies,
+} from "@/app/utils/tmdbApi";
+import { ImageData, Movie, MovieCustom, Video, VideoRes } from "@/interfaces/movie";
 import _ from "lodash";
-import { useMediaQuery } from "usehooks-ts";
-import Modal from "react-responsive-modal";
-import styles from "./movieVideos.module.scss";
-import Videos from "../videos/Videos";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideoCamera } from "@fortawesome/free-solid-svg-icons";
-import "react-responsive-modal/styles.css";
-import { Movie, Video, VideoRes } from "@/interfaces/movie";
-import classNames from "classnames";
-import { Cast, Credits, Crew } from "@/interfaces/credits";
+import React from "react";
+// import { getPlaiceholder } from "plaiceholder";
+import { Credits } from "@/interfaces/credits";
+import MovieVideosClient from "./MovieVideosClient";
 
 type MovieVideosProps = {
-    videosList: Video[];
-    movieDetails: Movie;
-    movieCredits: Credits;
+    movie: MovieCustom;
+    open: boolean;
+    setOpen: any;
 };
 
-const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
-    videosList,
-    movieDetails,
-    movieCredits,
-}: MovieVideosProps) => {
-    const [open, setOpen] = useState<boolean>(false);
-    const smallMedia = useMediaQuery("(min-width: 480px)");
-    const mediumMedia = useMediaQuery("(min-width: 768px)");
-    const largeMedia = useMediaQuery("(min-width: 992px)");
-    const xlMedia = useMediaQuery("(min-width: 1200px)");
-    const [starring, setStarring] = useState<Cast[]>([]);
-    const [producers, setProducers] = useState<Crew[]>([]);
-    const [directors, setDirectors] = useState<Crew[]>([]);
-    const crewJobs = ["Director", "Producer"];
-    // useEffect(() => {
-    //     switch (true) {
-    //         case xlMedia:
-    //             setSlideCount(videoSlidesCount.xlarge[type]);
-    //             break;
-    //         case largeMedia:
-    //             setSlideCount(videoSlidesCount.large[type]);
-    //             break;
-    //         case mediumMedia:
-    //             setSlideCount(videoSlidesCount.medium[type]);
-    //             break;
-    //         case smallMedia:
-    //             setSlideCount(videoSlidesCount.small[type]);
-    //             break;
-    //     }
-    // }, [smallMedia, mediumMedia, largeMedia, xlMedia]);
+// const addPlaceholderImagesMovieDetails = async (data: Movie) => {
+//     if (data.backdrop_path) {
+//         const src = `https://image.tmdb.org/t/p/w342${data.backdrop_path}`;
+//         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+//         // const base64String = buffer.toString('base64');
+//         const { base64 } = await getPlaiceholder(buffer);
+//         data.backdrop_path_blur = base64;
+//     }
+//     if (data.poster_path) {
+//         const src = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
+//         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+//         // const base64String = buffer.toString('base64');
+//         const { base64 } = await getPlaiceholder(buffer);
+//         data.poster_path_blur = base64;
+//     }
+//     return data;
+// };
 
-    useEffect(() => {
-        if (movieCredits.cast.length > 0) {
-            setStarring(_.orderBy(movieCredits.cast, "popularity", "desc").slice(0, 4));
-        }
-        if (movieCredits.crew.length > 0) {
-            setProducers(
-                _.chain(_.orderBy(_.uniqBy(movieCredits.crew, "id"), "popularity", "desc"))
-                    .filter((crew: Crew) => _.toLower(crew.job) === "producer")
-                    .value()
-            );
-            setDirectors(
-                _.chain(_.orderBy(_.uniqBy(movieCredits.crew, "id"), "popularity", "desc"))
-                    .filter((crew: Crew) => _.toLower(crew.job) === "director")
-                    .value()
-            );
-        }
-    }, [movieCredits]);
+// const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+//     return await Promise.all(
+//         data.map(async (video: Video) => {
+//             if (video.key) {
+//                 const src = `https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`;
+//                 const buffer = await fetch(src).then(async (res) =>
+//                     Buffer.from(await res.arrayBuffer())
+//                 );
+//                 // const base64String = buffer.toString('base64');
+//                 const { base64 } = await getPlaiceholder(buffer);
+//                 return {
+//                     ...video,
+//                     blurImage: base64,
+//                 };
+//             }
+//             return video;
+//         })
+//     );
+// };
 
-    return (
-        <>
-            {console.log(starring)}
-            <div className={styles.movieVideos}>
-                <div className={styles.trailerBtn} onClick={() => setOpen(true)}>
-                    <FontAwesomeIcon icon={faVideoCamera} />
-                    &nbsp;Trailer
-                </div>
-            </div>
-            <Modal
-                classNames={{
-                    modal: styles.movieModal,
-                    modalContainer: styles.movieModalContainer,
-                    overlay: styles.movieModalOverlay,
-                }}
-                open={open}
-                onClose={() => setOpen(false)}
-                showCloseIcon={false}
-                center
-            >
-                <div
-                    className={classNames({
-                        [styles.coverImage]: true,
-                    })}
-                >
-                    <Image
-                        src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
-                        alt={movieDetails.title}
-                        fill
-                        placeholder="blur"
-                        blurDataURL={movieDetails.backdrop_path_blur}
-                        style={{
-                            objectFit: "cover",
-                        }}
-                    />
-                </div>
-                <div className={styles.movieDescription}>
-                    <h2>{movieDetails.title}</h2>
-                    <h4 className={styles.movieOverview}>{movieDetails.overview}</h4>
-                    <div className={styles.movieCast}>
-                        <h4>
-                            Starring:{" "}
-                            {starring.map((cast: Cast, i: number) => (
-                                <span className={styles.cast} key={cast.name}>
-                                    {cast.name} as {cast.character}
-                                    {i === starring.length - 1 ? "" : ", "}
-                                </span>
-                            ))}
-                        </h4>
-                    </div>
-                    {directors.length > 0 ? (
-                        <div className={styles.movieCast}>
-                            <h4>
-                                Directed by:{" "}
-                                {directors.map((cast: Crew, i: number) => (
-                                    <span className={styles.cast} key={cast.name}>
-                                        {cast.name}
-                                        {i === directors.length - 1 ? "" : ", "}
-                                    </span>
-                                ))}
-                            </h4>
-                        </div>
-                    ) : null}
-                    {producers.length > 0 ? (
-                        <div className={styles.movieCast}>
-                            <h4>
-                                Produced by:{" "}
-                                {producers.map((cast: Crew, i: number) => (
-                                    <span className={styles.cast} key={cast.name}>
-                                        {cast.name}
-                                        {i === producers.length - 1 ? "" : ", "}
-                                    </span>
-                                ))}
-                            </h4>
-                        </div>
-                    ) : null}
-                    <h4 className={styles.movieMeta}></h4>
-                </div>
-                <div className={styles.videosList}>
-                    {videosList.filter((v: Video) => v.type === "Trailer").length > 0 ? (
-                        <div className={styles.movieVids}>
-                            <Suspense>
-                                <Videos
-                                    videos={videosList.filter((v: Video) => v.type === "Trailer")}
-                                    title="Trailers"
-                                    type="Trailer"
-                                />
-                            </Suspense>
-                        </div>
-                    ) : null}
-                    {videosList.filter((v: Video) => v.type === "Clip").length > 0 ? (
-                        <div className={styles.movieVids}>
-                            <Suspense>
-                                <Videos
-                                    videos={videosList.filter((v: Video) => v.type === "Clip")}
-                                    title="Clips"
-                                    type="Clip"
-                                />
-                            </Suspense>
-                        </div>
-                    ) : null}
-                    {videosList.filter((v: Video) => v.type === "Teaser").length > 0 ? (
-                        <div className={styles.movieVids}>
-                            <Suspense>
-                                <Videos
-                                    videos={videosList.filter((v: Video) => v.type === "Teaser")}
-                                    title="Teasers"
-                                    type="Teaser"
-                                />
-                            </Suspense>
-                        </div>
-                    ) : null}
-                    {videosList.filter((v: Video) => v.type === "Featurette").length > 0 ? (
-                        <div className={styles.movieVids}>
-                            <Suspense>
-                                <Videos
-                                    videos={videosList.filter(
-                                        (v: Video) => v.type === "Featurette"
-                                    )}
-                                    title="Featurettes"
-                                    type="Featurette"
-                                />
-                            </Suspense>
-                        </div>
-                    ) : null}
-                    <div className={styles.movieBehindTheScenes}></div>
-                </div>
-            </Modal>
-        </>
-    );
+const MovieVideos = async ({ movie, open, setOpen }: MovieVideosProps) => {
+    // const videos: VideoRes = await fetchTMDBMovieVideos(movie.id);
+    // const images = await fetchTMDBMovieImages(movie.id);
+    // const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
+    // console.log(movieCredits)
+    // videos.results = await addPlaceholderImagesVideos(videos.results);
+    // movie = await addPlaceholderImagesMovieDetails(movie);
+    // movie.credits = movieCredits;
+    // if (images) {
+    //     // await Promise.all(
+    //     _.keys(images)
+    //         .map(async (key) => {
+    //             if (_.isArray(images[key])) {
+    //                 images[key];
+    //                 images[key]
+    //                     .filter((image: ImageData) => image.iso_639_1 === "en")
+    //                     .map(async (image: ImageData, index: number) => {
+    //                         // const blur_file_path =
+    //                         //     index <= 1
+    //                         //         ? await blurPlaceholderImage(
+    //                         //               `https://image.tmdb.org/t/p/original${image.file_path}`
+    //                         //           )
+    //                         //         : null;
+    //                         return {
+    //                             ...image,
+    //                             // blur_file_path,
+    //                         };
+    //                     });
+
+    //                 // console.log(images[key])
+    //                 // return images[key];
+    //             }
+    //             // return null;
+    //         })
+    //         .filter(Boolean);
+    //     // );
+    // }
+
+    return <MovieVideosClient movieDetails={movie} open={open} setOpen={setOpen} />;
 };
 
 export default MovieVideos;

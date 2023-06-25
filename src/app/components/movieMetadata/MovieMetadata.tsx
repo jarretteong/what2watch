@@ -10,12 +10,14 @@ import _ from "lodash";
 import { parseMovieIdQuery } from "@/app/utils";
 import { ImageData } from "@/interfaces/movie";
 import Image from "next/image";
+import MovieVideos from "../movieVideos/MovieVideos";
 
 type MovieProps = {
     movie: any;
 };
 
 const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProps) => {
+    const [open, setOpen] = useState<boolean>(false);
     const overviewRef: any = useRef(null);
     const [posterImage, setPosterImage] = useState<ImageData>();
     const onMetadataHoverStart = () => overviewRef.current?.classList.add(styles.metadataFull);
@@ -30,15 +32,16 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
     }, [movie]);
 
     return (
-        <div
-            className={styles.movieMetadataWrapper}
-            onMouseEnter={onMetadataHoverStart}
-            onMouseLeave={onMetadataHoverEnd}
-        >
-            <div className={styles.movieMetadata}>
-                {posterImage ? (
-                    <picture className={styles.movieMetadataImageWrapper}>
-                        {/* <Image
+        <>
+            <div
+                className={styles.movieMetadataWrapper}
+                onMouseEnter={onMetadataHoverStart}
+                onMouseLeave={onMetadataHoverEnd}
+            >
+                <div className={styles.movieMetadata}>
+                    {posterImage ? (
+                        <picture className={styles.movieMetadataImageWrapper}>
+                            {/* <Image
                             className={styles.movieMetadataImage}
                             style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
                             alt={movie.title}
@@ -47,29 +50,31 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
                             }`}
                             fill
                         /> */}
-                        <img
-                            className={styles.movieMetadataImage}
-                            style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
-                            alt={movie.title}
-                            src={`https://image.tmdb.org/t/p/w780${
-                                posterImage?.file_path || movie.poster_path
-                            }`}
-                        />
-                    </picture>
-                ) : null}
-                <p className={styles.movieMetadataOverview} ref={overviewRef}>
-                    {movie.overview}
-                </p>
-                <button className={styles.movieMetadataDetails}>
-                    <Link
-                        className={styles.moreDetails}
-                        href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}
-                    >
-                        More
-                    </Link>
-                </button>
+                            <img
+                                className={styles.movieMetadataImage}
+                                style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
+                                alt={movie.title}
+                                src={`https://image.tmdb.org/t/p/w780${
+                                    posterImage?.file_path || movie.poster_path
+                                }`}
+                            />
+                        </picture>
+                    ) : null}
+                    <p className={styles.movieMetadataOverview} ref={overviewRef}>
+                        {movie.overview}
+                    </p>
+                    <button className={styles.movieMetadataDetails}>
+                        <Link
+                            className={styles.moreDetails}
+                            href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}
+                        >
+                            More
+                        </Link>
+                    </button>
+                </div>
+                {/* <MovieVideos movie={movie} open={open} setOpen={setOpen} /> */}
             </div>
-        </div>
+        </>
     );
 };
 

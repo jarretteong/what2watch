@@ -53,7 +53,7 @@ export default async function Movies() {
     // let scifiMovies = null;
     // let mysteryMovies = null;
     // let romanceMovies = null;
-    
+
     // horrorMovies = await fetchTMDBMoviesByGenreId(horrorData.id);
     // actionMovies = await fetchTMDBMoviesByGenreId(actionData.id);
     // thrillerMovies = await fetchTMDBMoviesByGenreId(thrillerData.id);
@@ -62,23 +62,23 @@ export default async function Movies() {
     // scifiMovies = await fetchTMDBMoviesByGenreId(scifiData.id);
     // mysteryMovies = await fetchTMDBMoviesByGenreId(mysteryData.id);
     // romanceMovies = await fetchTMDBMoviesByGenreId(romanceData.id);
-    
+
     return (
         <div className={styles.movies}>
             <Suspense
-                // fallback={
-                //     <div className={styles.backdropImageWrapper}>
-                //         <Image
-                //             className={styles.backdropImage}
-                //             alt={movie?.title || ""}
-                //             src={movie?.backdrop_path_blur}
-                //             fill
-                //         />
-                //     </div>
-                // }
+            // fallback={
+            //     <div className={styles.backdropImageWrapper}>
+            //         <Image
+            //             className={styles.backdropImage}
+            //             alt={movie?.title || ""}
+            //             src={movie?.backdrop_path_blur}
+            //             fill
+            //         />
+            //     </div>
+            // }
             >
                 {/* @ts-expect-error Async Server Components */}
-                <Landing  />
+                <Landing />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}

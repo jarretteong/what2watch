@@ -1,3 +1,5 @@
+import { Credits } from "./credits";
+
 export interface Movie {
     adult: boolean;
     backdrop_path: string;
@@ -33,9 +35,11 @@ export interface MovieGenre {
     name: string;
 }
 
-export interface MovieWithImagesVideos extends Movie {
+export interface MovieCustom extends Movie {
     trailer?: Video;
-    images?: any[]
+    images?: any[];
+    videos?: Video[];
+    credits?: Credits;
 }
 
 export interface Video {

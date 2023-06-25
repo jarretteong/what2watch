@@ -1,14 +1,16 @@
 import {
+    fetchTMDBMovieCredits,
     fetchTMDBMovieDetails,
     fetchTMDBMovieImages,
     fetchTMDBMovieVideos,
     fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
-import { ImageData, Movie, Video } from "@/interfaces/movie";
+import { ImageData, Movie, Video, VideoRes } from "@/interfaces/movie";
 import _ from "lodash";
 import React from "react";
 import LandingMovie from "./LandingMovies";
 import { getPlaiceholder } from "plaiceholder";
+import { Credits } from "@/interfaces/credits";
 
 type LandingProps = {
     movies: any;
@@ -32,20 +34,32 @@ const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     return data;
 };
 
-const blurPlaceholderImage = async (src: string) => {
-    const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
-    // const base64String = buffer.toString('base64');
-    const { base64 } = await getPlaiceholder(buffer);
-    return base64;
+const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+    return await Promise.all(
+        data.map(async (video: Video) => {
+            if (video.key) {
+                const src = `https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`;
+                const buffer = await fetch(src).then(async (res) =>
+                    Buffer.from(await res.arrayBuffer())
+                );
+                // const base64String = buffer.toString('base64');
+                const { base64 } = await getPlaiceholder(buffer);
+                return {
+                    ...video,
+                    blurImage: base64,
+                };
+            }
+            return video;
+        })
+    );
 };
 
 const Landing = async () => {
     const movies = await fetchTMDBTrendingMovies();
     const landingMovies = await Promise.all(
         movies.results.map(async (movie: any) => {
-            const videos = await fetchTMDBMovieVideos(movie.id);
+            const videos: VideoRes = await fetchTMDBMovieVideos(movie.id);
             const images = await fetchTMDBMovieImages(movie.id);
-            // const blurredImages: any = { backdrops: [], posters: [], logos: [] };
 
             movie = await addPlaceholderImagesMovieDetails(movie);
             if (images) {

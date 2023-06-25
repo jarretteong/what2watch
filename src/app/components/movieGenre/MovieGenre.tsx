@@ -1,4 +1,5 @@
 import {
+    fetchTMDBMovieCredits,
     fetchTMDBMovieGenres,
     fetchTMDBMovieImages,
     fetchTMDBMoviesByGenreId,
@@ -11,6 +12,7 @@ import React from "react";
 import { SwiperOptions } from "swiper/types";
 import MovieGenreComponent from "./MovieGenreComponent";
 import { getPlaiceholder } from "plaiceholder";
+import { Credits } from "@/interfaces/credits";
 
 type MovieGenreProps = {
     genre: string;
@@ -35,10 +37,31 @@ const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     return data;
 };
 
+const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
+    return await Promise.all(
+        data.map(async (video: Video) => {
+            if (video.key) {
+                const src = `https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`;
+                const buffer = await fetch(src).then(async (res) =>
+                    Buffer.from(await res.arrayBuffer())
+                );
+                // const base64String = buffer.toString('base64');
+                const { base64 } = await getPlaiceholder(buffer);
+                return {
+                    ...video,
+                    blurImage: base64,
+                };
+            }
+            return video;
+        })
+    );
+};
+
 const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
     const genreData = await fetchTMDBMovieGenres(genre);
     if (genreData.id) {
         const movies = await fetchTMDBMoviesByGenreId(genreData.id);
+        
         const genreMovies = await Promise.all(
             movies.results.map(async (movie: any, index: number) => {
                 const videos = await fetchTMDBMovieVideos(movie.id);

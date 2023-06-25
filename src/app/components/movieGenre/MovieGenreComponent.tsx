@@ -48,6 +48,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [moviesList, setMoviesList] = useState<any[]>(movies);
+    const [currentWidth, setCurrentWidth] = useState<number>(0);
 
     useEffect(() => {
         switch (true) {
@@ -239,7 +240,12 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                         ) : null}
                                         <MovieMetadata movie={movie} />
                                         {activeSlide === index && movie.trailer && backdropMedia ? (
-                                            <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+                                            <Waypoint
+                                                onEnter={handleEnter}
+                                                onLeave={handleLeave}
+                                                topOffset="30%"
+                                                bottomOffset="50%"
+                                            >
                                                 <div className={styles.videoContainer}>
                                                     <ReactPlayer
                                                         className={styles.reactPlayer}
@@ -285,7 +291,12 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     <div className={styles.imageOverlay}></div>
 
                                     {movies[activeSlide].trailer ? (
-                                        <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+                                        <Waypoint
+                                            onEnter={handleEnter}
+                                            onLeave={handleLeave}
+                                            topOffset="30%"
+                                            bottomOffset="50%"
+                                        >
                                             <div className={styles.videoContainer}>
                                                 <ReactPlayer
                                                     className={styles.reactPlayer}
@@ -350,16 +361,31 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                         spaceBetween: 30,
                                     },
                                 }}
+                                onClick={(swiper: any) => {
+                                    setCurrentWidth(swiper.slidesSizesGrid?.[activeSlide]);
+                                }}
                                 onSlideChange={(swiper) => {
                                     setActiveSlide(swiper.activeIndex);
+                                    console.log(swiper);
                                 }}
-                                onSwiper={(s) => {
+                                onSwiper={(s: any) => {
                                     setActiveSlide(s.activeIndex);
+                                    setCurrentWidth(s.slidesSizesGrid?.[s.activeIndex]);
                                 }}
                             >
                                 {movies.map((movie: any, index: number) => {
                                     return (
-                                        <SwiperSlide key={movie.id} className={styles.slide}>
+                                        <SwiperSlide
+                                            key={movie.id}
+                                            className={classNames({
+                                                [styles.slide]: true,
+                                            })}
+                                            style={{
+                                                width: `calc(${currentWidth}px ${
+                                                    activeSlide === index ? "+ 40px" : ""
+                                                })`,
+                                            }}
+                                        >
                                             <img
                                                 className={styles.slideImage}
                                                 alt={movie.title}

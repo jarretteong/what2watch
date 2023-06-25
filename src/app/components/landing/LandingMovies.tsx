@@ -15,12 +15,12 @@ import { parseMovieIdQuery } from "@/app/utils";
 import classNames from "classnames";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
-import { MovieWithImagesVideos } from "@/interfaces/movie";
+import { MovieCustom } from "@/interfaces/movie";
 import Image from "next/image";
 import { Waypoint } from "react-waypoint";
 
 type MoviesProps = {
-    movies: MovieWithImagesVideos[];
+    movies: MovieCustom[];
 };
 
 const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
@@ -47,18 +47,18 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
     const handleEnter = useCallback(() => {
         setTimeout(() => {
             setIsPlaying(true);
-        }, 3000)
+        }, 3000);
     }, []);
 
     const handleLeave = useCallback(() => {
         setTimeout(() => {
             setIsPlaying(false);
             setShowPlayer(false);
-        }, 1000)
+        }, 1000);
     }, []);
 
     return (
-        <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+        <Waypoint onEnter={handleEnter} onLeave={handleLeave} topOffset="30%" bottomOffset="50%">
             <div className={styles.landingContainer}>
                 <ReactSwiper
                     ref={swiper}
