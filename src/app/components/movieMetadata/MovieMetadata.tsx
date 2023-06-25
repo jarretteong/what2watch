@@ -36,27 +36,27 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
             onMouseLeave={onMetadataHoverEnd}
         >
             <div className={styles.movieMetadata}>
-                <picture className={styles.movieMetadataImageWrapper}>
-                    {/* <Image
-                        className={styles.movieMetadataImage}
-                        style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
-                        alt={movie.title}
-                        src={`https://image.tmdb.org/t/p/original/${
-                            posterImage?.file_path || movie.poster_path
-                        }`}
-                        fill
-                        placeholder="blur"
-                        blurDataURL={posterImage?.blur_file_path}
-                    /> */}
-                    <img
-                        className={styles.movieMetadataImage}
-                        style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
-                        alt={movie.title}
-                        src={`https://image.tmdb.org/t/p/original/${
-                            posterImage?.file_path || movie.poster_path
-                        }`}
-                    />
-                </picture>
+                {posterImage ? (
+                    <picture className={styles.movieMetadataImageWrapper}>
+                        {/* <Image
+                            className={styles.movieMetadataImage}
+                            style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
+                            alt={movie.title}
+                            src={`https://image.tmdb.org/t/p/w780${
+                                posterImage?.file_path || movie.poster_path
+                            }`}
+                            fill
+                        /> */}
+                        <img
+                            className={styles.movieMetadataImage}
+                            style={{ aspectRatio: posterImage?.aspect_ratio || 4 / 3 }}
+                            alt={movie.title}
+                            src={`https://image.tmdb.org/t/p/w780${
+                                posterImage?.file_path || movie.poster_path
+                            }`}
+                        />
+                    </picture>
+                ) : null}
                 <p className={styles.movieMetadataOverview} ref={overviewRef}>
                     {movie.overview}
                 </p>

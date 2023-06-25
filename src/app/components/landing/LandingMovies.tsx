@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Swiper as ReactSwiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "swiper/css/effect-fade";
@@ -17,6 +17,7 @@ import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
 import { MovieWithImagesVideos } from "@/interfaces/movie";
 import Image from "next/image";
+import { Waypoint } from "react-waypoint";
 
 type MoviesProps = {
     movies: MovieWithImagesVideos[];
@@ -24,11 +25,11 @@ type MoviesProps = {
 
 const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
     const [activeSlide, setActiveSlide] = useState<number>(-1);
-    const [imageType, setImageType] = useState<string>("");
+    const [imageType, setImageType] = useState<string>("backdrop");
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    const [isMuted, setIsMuted] = useState<boolean>(false);
+    const [isMuted, setIsMuted] = useState<boolean>(true);
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const swiper = useRef<SwiperRef>(null);
 
@@ -43,31 +44,44 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
         }
     }, [posterMedia, backdropMedia]);
 
+    const handleEnter = useCallback(() => {
+        setTimeout(() => {
+            setIsPlaying(true);
+        }, 3000)
+    }, []);
+
+    const handleLeave = useCallback(() => {
+        setTimeout(() => {
+            setIsPlaying(false);
+            setShowPlayer(false);
+        }, 1000)
+    }, []);
+
     return (
-        <div className={styles.landingContainer}>
-            <ReactSwiper
-                ref={swiper}
-                modules={[Navigation, Pagination, EffectFade]}
-                slidesPerView={1}
-                pagination={{ dynamicBullets: true }}
-                navigation
-                effect="fade"
-                fadeEffect={{ crossFade: true }}
-                onSlideChange={(swiper) => {
-                    setActiveSlide(swiper.activeIndex);
-                    setIsPlaying(false);
-                    setShowPlayer(false);
-                }}
-                onSwiper={(s) => {
-                    setActiveSlide(s.activeIndex);
-                }}
-            >
-                {movies.map((movie: any, index: number) => {
-                    return (
-                        <SwiperSlide key={movie.id}>
-                            
-                            <Link href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}>
-                                {/* <img
+        <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+            <div className={styles.landingContainer}>
+                <ReactSwiper
+                    ref={swiper}
+                    modules={[Navigation, Pagination, EffectFade]}
+                    slidesPerView={1}
+                    pagination={{ dynamicBullets: true }}
+                    navigation
+                    effect="fade"
+                    fadeEffect={{ crossFade: true }}
+                    onSlideChange={(swiper) => {
+                        setActiveSlide(swiper.activeIndex);
+                        setIsPlaying(false);
+                        setShowPlayer(false);
+                    }}
+                    onSwiper={(s) => {
+                        setActiveSlide(s.activeIndex);
+                    }}
+                >
+                    {movies.map((movie: any, index: number) => {
+                        return (
+                            <SwiperSlide key={movie.id}>
+                                <Link href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}>
+                                    {/* <img
                                         className={styles.backdropImage}
                                         alt={movie.title}
                                         src={`https://image.tmdb.org/t/p/original${
@@ -76,67 +90,69 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                                 : movie.poster_path
                                         }`}
                                     /> */}
-                                <div className={styles.backdropImageWrapper}>
-                                    {imageType ? (
-                                        <Image
-                                            className={styles.backdropImage}
-                                            alt={movie.title}
-                                            src={`https://image.tmdb.org/t/p/original${
-                                                imageType === "backdrop"
-                                                    ? movie.backdrop_path
-                                                    : movie.poster_path
-                                            }`}
-                                            fill
-                                            placeholder="blur"
-                                            blurDataURL={
-                                                imageType === "backdrop"
-                                                    ? movie.backdrop_path_blur
-                                                    : movie.poster_path_blur
-                                            }
-                                        />
-                                    ) : null}
-                                </div>
-                            </Link>
-                            
-                            <MovieMetadata movie={movie} />
-                            <div className={styles.playerControls}>
-                                <ReactPlayerControls
-                                    playing={showPlayer}
-                                    muted={isMuted}
-                                    setMuted={setIsMuted}
-                                    setPlayer={setShowPlayer}
-                                    setPlaying={setIsPlaying}
-                                />
-                            </div>
-                            {activeSlide === index && movie.trailer && backdropMedia ? (
-                                <div className={styles.videoContainer}>
-                                    <ReactPlayer
-                                        className={styles.reactPlayer}
-                                        style={{ opacity: showPlayer ? 1 : 0 }}
-                                        onReady={() => setTimeout(() => setIsPlaying(true), 3000)}
-                                        onEnded={() => {
-                                            setIsPlaying(false);
-                                            setShowPlayer(false);
-                                            setTimeout(() => {
-                                                if (swiper.current) {
-                                                    swiper.current.swiper.slideNext();
-                                                }
-                                            }, 3000);
-                                        }}
-                                        onPlay={() => isPlaying && setShowPlayer(true)}
-                                        playing={isPlaying}
+                                    <div className={styles.backdropImageWrapper}>
+                                        {imageType ? (
+                                            <Image
+                                                className={styles.backdropImage}
+                                                alt={movie.title}
+                                                src={`https://image.tmdb.org/t/p/original${
+                                                    imageType === "backdrop"
+                                                        ? movie.backdrop_path
+                                                        : movie.poster_path
+                                                }`}
+                                                fill
+                                                placeholder="blur"
+                                                blurDataURL={movie.backdrop_path_blur}
+                                            />
+                                        ) : null}
+                                    </div>
+                                </Link>
+
+                                <MovieMetadata movie={movie} />
+                                <div className={styles.playerControls}>
+                                    <ReactPlayerControls
+                                        playing={showPlayer}
                                         muted={isMuted}
-                                        width="100%"
-                                        height="100%"
-                                        url={`https://www.youtube.com/watch?v=${movie.trailer.key}`}
+                                        setMuted={setIsMuted}
+                                        setPlayer={setShowPlayer}
+                                        setPlaying={setIsPlaying}
                                     />
                                 </div>
-                            ) : null}
-                        </SwiperSlide>
-                    );
-                })}
-            </ReactSwiper>
-        </div>
+                                {activeSlide === index && movie.trailer && backdropMedia ? (
+                                    <div className={styles.videoContainer}>
+                                        <ReactPlayer
+                                            className={styles.reactPlayer}
+                                            style={{ opacity: showPlayer ? 1 : 0 }}
+                                            onReady={() =>
+                                                setTimeout(() => {
+                                                    setIsPlaying(true);
+                                                    console.log("ready player!");
+                                                }, 3000)
+                                            }
+                                            onEnded={() => {
+                                                setIsPlaying(false);
+                                                setShowPlayer(false);
+                                                setTimeout(() => {
+                                                    if (swiper.current) {
+                                                        swiper.current.swiper.slideNext();
+                                                    }
+                                                }, 3000);
+                                            }}
+                                            onPlay={() => isPlaying && setShowPlayer(true)}
+                                            playing={isPlaying}
+                                            muted={isMuted}
+                                            width="100%"
+                                            height="100%"
+                                            url={`https://www.youtube.com/watch?v=${movie.trailer.key}`}
+                                        />
+                                    </div>
+                                ) : null}
+                            </SwiperSlide>
+                        );
+                    })}
+                </ReactSwiper>
+            </div>
+        </Waypoint>
     );
 };
 

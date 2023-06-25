@@ -5,57 +5,80 @@ import Landing from "../components/landing/Landing";
 import { Suspense } from "react";
 import MovieGenre from "../components/movieGenre/MovieGenre";
 import Image from "next/image";
-import { fetchTMDBTrendingMovies } from "../utils/tmdbApi";
+import {
+    fetchTMDBMovieGenres,
+    fetchTMDBMoviesByGenreId,
+    fetchTMDBTrendingMovies,
+} from "../utils/tmdbApi";
 import _ from "lodash";
 import { getPlaiceholder } from "plaiceholder";
 
-const addPlaceholderImagesMovieDetails = async (data: any) => {
-    if (data.backdrop_path) {
-        const src = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
-        const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
-        // const base64String = buffer.toString('base64');
-        const { base64 } = await getPlaiceholder(buffer);
-        data.backdrop_path_blur = base64;
-    }
-    if (data.poster_path) {
-        const src = `https://image.tmdb.org/t/p/original${data.poster_path}`;
-        const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
-        // const base64String = buffer.toString('base64');
-        const { base64 } = await getPlaiceholder(buffer);
-        data.poster_path_blur = base64;
-    }
-    return data;
-};
+// const addPlaceholderImagesMovieDetails = async (data: any) => {
+//     if (data.backdrop_path) {
+//         const src = `https://image.tmdb.org/t/p/w342${data.backdrop_path}`;
+//         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+//         // const base64String = buffer.toString('base64');
+//         const { base64 } = await getPlaiceholder(buffer);
+//         data.backdrop_path_blur = base64;
+//     }
+//     if (data.poster_path) {
+//         const src = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
+//         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
+//         // const base64String = buffer.toString('base64');
+//         const { base64 } = await getPlaiceholder(buffer);
+//         data.poster_path_blur = base64;
+//     }
+//     return data;
+// };
 
 export default async function Movies() {
-    const movies = await fetchTMDBTrendingMovies();
-    let movie: any = _.first(movies.results);
-    // const latestData = fetch(
-    //     `${process.env.TMDB_V3_URL}/movie/latest?api_key=${process.env.TMDB_APIKEY}`
-    // );
-    // const popularMovies = await data.json();
     // const horrorGenre = await MovieGenre({ genre: "horror", type: "full" });
-    console.log(movie)
-    movie = await addPlaceholderImagesMovieDetails(movie);
+    // const landingMovies = await fetchTMDBTrendingMovies();
+    // let movie: any = _.first(landingMovies.results);
+    // movie = await addPlaceholderImagesMovieDetails(movie);
 
+    // const horrorData = await fetchTMDBMovieGenres("horror");
+    // const actionData = await fetchTMDBMovieGenres("action");
+    // const thrillerData = await fetchTMDBMovieGenres("thriller");
+    // const adventureData = await fetchTMDBMovieGenres("adventure");
+    // const comedyData = await fetchTMDBMovieGenres("comedy");
+    // const scifiData = await fetchTMDBMovieGenres("science fiction");
+    // const mysteryData = await fetchTMDBMovieGenres("mystery");
+    // const romanceData = await fetchTMDBMovieGenres("romance");
+    // let horrorMovies = null;
+    // let actionMovies = null;
+    // let thrillerMovies = null;
+    // let adventureMovies = null;
+    // let comedyMovies = null;
+    // let scifiMovies = null;
+    // let mysteryMovies = null;
+    // let romanceMovies = null;
+    
+    // horrorMovies = await fetchTMDBMoviesByGenreId(horrorData.id);
+    // actionMovies = await fetchTMDBMoviesByGenreId(actionData.id);
+    // thrillerMovies = await fetchTMDBMoviesByGenreId(thrillerData.id);
+    // adventureMovies = await fetchTMDBMoviesByGenreId(adventureData.id);
+    // comedyMovies = await fetchTMDBMoviesByGenreId(comedyData.id);
+    // scifiMovies = await fetchTMDBMoviesByGenreId(scifiData.id);
+    // mysteryMovies = await fetchTMDBMoviesByGenreId(mysteryData.id);
+    // romanceMovies = await fetchTMDBMoviesByGenreId(romanceData.id);
+    
     return (
         <div className={styles.movies}>
             <Suspense
-                fallback={
-                    <div className={styles.backdropImageWrapper}>
-                        <Image
-                            className={styles.backdropImage}
-                            alt={movie?.title || ""}
-                            src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`}
-                            fill
-                            placeholder="blur"
-                            blurDataURL={movie?.backdrop_path_blur}
-                        />
-                    </div>
-                }
+                // fallback={
+                //     <div className={styles.backdropImageWrapper}>
+                //         <Image
+                //             className={styles.backdropImage}
+                //             alt={movie?.title || ""}
+                //             src={movie?.backdrop_path_blur}
+                //             fill
+                //         />
+                //     </div>
+                // }
             >
                 {/* @ts-expect-error Async Server Components */}
-                <Landing />
+                <Landing  />
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
@@ -83,7 +106,11 @@ export default async function Movies() {
             </Suspense>
             <Suspense>
                 {/* @ts-expect-error Async Server Components */}
-                <MovieGenre genre="science fiction" />
+                <MovieGenre genre="science fiction" type="backdrop" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="romance" />
             </Suspense>
         </div>
     );

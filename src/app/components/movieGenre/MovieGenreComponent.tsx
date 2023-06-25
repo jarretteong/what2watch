@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Swiper as ReactSwiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
@@ -20,6 +20,7 @@ import MovieMetadata from "../movieMetadata/MovieMetadata";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 import { Movie } from "@/interfaces/movie";
 import { Waypoint } from "react-waypoint";
+import _ from "lodash";
 
 type MovieGenreProps = {
     movies: any[];
@@ -40,11 +41,13 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     //     });
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
+    const [slidesPerView, setSlidesPerView] = useState<number>(1);
     const [imageType, setImageType] = useState<string>("backdrop");
     const [activeSlide, setActiveSlide] = useState<number>(-1);
-    const [isMuted, setIsMuted] = useState<boolean>(false);
+    const [isMuted, setIsMuted] = useState<boolean>(true);
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [moviesList, setMoviesList] = useState<any[]>(movies);
 
     useEffect(() => {
         switch (true) {
@@ -63,13 +66,18 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
         setShowPlayer(false);
     };
 
-    const handleEnter = () => {
-        console.log("waypoint entered");
-    };
+    const handleEnter = useCallback(() => {
+        setTimeout(() => {
+            setIsPlaying(true);
+        }, 3000);
+    }, []);
 
-    const handleLeave = () => {
-        console.log("waypoint left");
-    };
+    const handleLeave = useCallback(() => {
+        setTimeout(() => {
+            setIsPlaying(false);
+            setShowPlayer(false);
+        }, 1000);
+    }, []);
 
     const renderGenreContainer = () => {
         switch (type) {
@@ -120,18 +128,55 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 setActiveSlide(swiper.activeIndex);
                             }}
                             onSwiper={(s) => {
+                                setSlidesPerView(
+                                    _.isNumber(s.params.slidesPerView) ? s.params.slidesPerView : 1
+                                );
                                 setActiveSlide(s.activeIndex);
                             }}
                         >
-                            {movies.map((movie: any, index: number) => {
+                            {moviesList.map((movie: any, index: number) => {
                                 return (
                                     <SwiperSlide key={movie.id} className={styles.slide}>
-                                        <img
+                                        <div className={styles.backdropImageWrapper}>
+                                            {movie.poster_path_blur ? (
+                                                <>
+                                                    {/* <div className="swiper-lazy-preloader">
+                                                        <Image
+                                                            className={styles.slideImage}
+                                                            alt={movie.title}
+                                                            src={movie.poster_path_blur}
+                                                            onClick={() => setActiveSlide(index)}
+                                                            fill
+                                                            loading="lazy"
+                                                        />
+                                                    </div> */}
+                                                    <Image
+                                                        className={styles.slideImage}
+                                                        alt={movie.title}
+                                                        src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                                                        onClick={() => setActiveSlide(index)}
+                                                        fill
+                                                        placeholder="blur"
+                                                        blurDataURL={movie.poster_path_blur}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <Image
+                                                    className={styles.slideImage}
+                                                    alt={movie.title}
+                                                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                                                    onClick={() => setActiveSlide(index)}
+                                                    fill
+                                                    loading="lazy"
+                                                />
+                                            )}
+                                        </div>
+                                        {/* <img
                                             className={styles.slideImage}
                                             alt={movie.title}
                                             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
                                             onClick={() => setActiveSlide(index)}
-                                        />
+                                        /> */}
                                     </SwiperSlide>
                                 );
                             })}
@@ -182,7 +227,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                     <img
                                                         className={styles.backdropImage}
                                                         alt={movie.title}
-                                                        src={`https://image.tmdb.org/t/p/original${
+                                                        src={`https://image.tmdb.org/t/p/w1280${
                                                             imageType === "backdrop"
                                                                 ? movie.backdrop_path
                                                                 : movie.poster_path
@@ -192,34 +237,28 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                 <div className={styles.imageOverlay}></div>
                                             </div>
                                         ) : null}
-                                        {/* <MovieMetadata movie={movie} /> */}
+                                        <MovieMetadata movie={movie} />
                                         {activeSlide === index && movie.trailer && backdropMedia ? (
-                                            <div
-                                                className={classNames({
-                                                    [styles.videoContainer]: true,
-                                                    // [styles.hidden]: !showPlayer,
-                                                })}
-                                            >
-                                                {/* <ReactPlayer
-                                                    onReady={() =>
-                                                        setTimeout(() => setIsPlaying(true), 3000)
-                                                    }
-                                                    onEnded={() => {
-                                                        setIsPlaying(false);
-                                                        setShowPlayer(false);
-                                                        setTimeout(() => {
-                                                            if (swiper.current) {
-                                                                swiper.current.swiper.slideNext();
-                                                            }
-                                                        }, 3000);
-                                                    }}
-                                                    onPlay={() => isPlaying && setShowPlayer(true)}
-                                                    playing={isPlaying}
-                                                    width="100%"
-                                                    height="100%"
-                                                    url={`https://www.youtube.com/watch?v=${movie.trailer.key}`}
-                                                /> */}
-                                            </div>
+                                            <Waypoint onEnter={handleEnter} onLeave={handleLeave}>
+                                                <div className={styles.videoContainer}>
+                                                    <ReactPlayer
+                                                        className={styles.reactPlayer}
+                                                        style={{ opacity: showPlayer ? 1 : 0 }}
+                                                        onEnded={() => {
+                                                            setIsPlaying(false);
+                                                            setShowPlayer(false);
+                                                        }}
+                                                        onPlay={() =>
+                                                            isPlaying && setShowPlayer(true)
+                                                        }
+                                                        playing={isPlaying}
+                                                        muted={isMuted}
+                                                        width="100%"
+                                                        height="100%"
+                                                        url={`https://www.youtube.com/watch?v=${movies[activeSlide].trailer.key}`}
+                                                    />
+                                                </div>
+                                            </Waypoint>
                                         ) : null}
                                     </SwiperSlide>
                                 );
@@ -237,7 +276,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     <img
                                         className={styles.backdropImage}
                                         alt={movies[activeSlide].title}
-                                        src={`https://image.tmdb.org/t/p/original${
+                                        src={`https://image.tmdb.org/t/p/w1280${
                                             imageType === "backdrop"
                                                 ? movies[activeSlide].backdrop_path
                                                 : movies[activeSlide].poster_path
@@ -251,9 +290,6 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                 <ReactPlayer
                                                     className={styles.reactPlayer}
                                                     style={{ opacity: showPlayer ? 1 : 0 }}
-                                                    onReady={() =>
-                                                        setTimeout(() => setIsPlaying(true), 3000)
-                                                    }
                                                     onEnded={() => {
                                                         setIsPlaying(false);
                                                         setShowPlayer(false);

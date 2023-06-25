@@ -10,16 +10,20 @@ import React from "react";
 import LandingMovie from "./LandingMovies";
 import { getPlaiceholder } from "plaiceholder";
 
+type LandingProps = {
+    movies: any;
+}
+
 const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
-        const src = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+        const src = `https://image.tmdb.org/t/p/w342${data.backdrop_path}`;
         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
         // const base64String = buffer.toString('base64');
         const { base64 } = await getPlaiceholder(buffer);
         data.backdrop_path_blur = base64;
     }
     if (data.poster_path) {
-        const src = `https://image.tmdb.org/t/p/original${data.poster_path}`;
+        const src = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
         const buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()));
         // const base64String = buffer.toString('base64');
         const { base64 } = await getPlaiceholder(buffer);
