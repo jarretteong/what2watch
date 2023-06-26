@@ -11,6 +11,7 @@ import { parseMovieIdQuery } from "@/app/utils";
 import { ImageData } from "@/interfaces/movie";
 import Image from "next/image";
 import MovieVideos from "../movieVideos/MovieVideos";
+import MovieVideosClient from "../movieVideos/MovieVideosClient";
 
 type MovieProps = {
     movie: any;
@@ -63,16 +64,16 @@ const MovieMetadata: React.FunctionComponent<MovieProps> = ({ movie }: MovieProp
                     <p className={styles.movieMetadataOverview} ref={overviewRef}>
                         {movie.overview}
                     </p>
-                    <button className={styles.movieMetadataDetails}>
-                        <Link
+                    <button className={styles.movieMetadataDetails} onClick={() => setOpen(true)}>
+                        {/* <Link
                             className={styles.moreDetails}
                             href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}
-                        >
+                        > */}
                             More
-                        </Link>
+                        {/* </Link> */}
                     </button>
                 </div>
-                {/* <MovieVideos movie={movie} open={open} setOpen={setOpen} /> */}
+                <MovieVideosClient movieDetails={movie} open={open} setOpen={setOpen} />
             </div>
         </>
     );

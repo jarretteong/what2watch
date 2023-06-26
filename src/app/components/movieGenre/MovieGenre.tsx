@@ -41,7 +41,7 @@ const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
     return await Promise.all(
         data.map(async (video: Video) => {
             if (video.key) {
-                const src = `https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`;
+                const src = `https://i.ytimg.com/vi/${video.key}/default.jpg`;
                 const buffer = await fetch(src).then(async (res) =>
                     Buffer.from(await res.arrayBuffer())
                 );
@@ -61,13 +61,15 @@ const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
     const genreData = await fetchTMDBMovieGenres(genre);
     if (genreData.id) {
         const movies = await fetchTMDBMoviesByGenreId(genreData.id);
-        
+
         const genreMovies = await Promise.all(
             movies.results.map(async (movie: any, index: number) => {
                 const videos = await fetchTMDBMovieVideos(movie.id);
                 const images = await fetchTMDBMovieImages(movie.id);
+                const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
 
                 if (index <= 5) {
+                    // videos.results = await addPlaceholderImagesVideos(videos.results);
                     movie = await addPlaceholderImagesMovieDetails(movie);
                 }
 
@@ -95,7 +97,9 @@ const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
                     images: {
                         ...filteredImages,
                     },
+                    videos: videos.results,
                     trailer: officialTrailer,
+                    credits: movieCredits,
                 };
             })
         );

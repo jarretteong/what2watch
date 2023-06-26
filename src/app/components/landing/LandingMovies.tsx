@@ -107,7 +107,6 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                         ) : null}
                                     </div>
                                 </Link>
-
                                 <MovieMetadata movie={movie} />
                                 <div className={styles.playerControls}>
                                     <ReactPlayerControls

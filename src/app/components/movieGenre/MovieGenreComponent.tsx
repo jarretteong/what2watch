@@ -18,9 +18,10 @@ import classNames from "classnames";
 import ReactPlayer from "react-player";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
-import { Movie } from "@/interfaces/movie";
+import { Movie, MovieCustom } from "@/interfaces/movie";
 import { Waypoint } from "react-waypoint";
 import _ from "lodash";
+import MovieVideosClient from "../movieVideos/MovieVideosClient";
 
 type MovieGenreProps = {
     movies: any[];
@@ -39,6 +40,8 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     //         queryFn: ({ pageParam = defaultUrl }) => fetchPopularMovies(pageParam),
     //         getNextPageParam: (lastPage, pages) => lastPage.nextCursor || undefined,
     //     });
+    const [open, setOpen] = useState<boolean>(false);
+    const [selectedMovie, setSelectedMovie] = useState<MovieCustom>(_.first(movies));
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [slidesPerView, setSlidesPerView] = useState<number>(1);
@@ -47,7 +50,6 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [isMuted, setIsMuted] = useState<boolean>(true);
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    const [moviesList, setMoviesList] = useState<any[]>(movies);
     const [currentWidth, setCurrentWidth] = useState<number>(0);
 
     useEffect(() => {
@@ -125,6 +127,10 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     spaceBetween: 18,
                                 },
                             }}
+                            onClick={(swiper) => {
+                                setSelectedMovie(movies?.[swiper.clickedIndex] || _.first(movies))
+                                setOpen(true);
+                            }}
                             onSlideChange={(swiper) => {
                                 setActiveSlide(swiper.activeIndex);
                             }}
@@ -135,7 +141,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 setActiveSlide(s.activeIndex);
                             }}
                         >
-                            {moviesList.map((movie: any, index: number) => {
+                            {movies.map((movie: any, index: number) => {
                                 return (
                                     <SwiperSlide key={movie.id} className={styles.slide}>
                                         <div className={styles.backdropImageWrapper}>
@@ -182,6 +188,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 );
                             })}
                         </ReactSwiper>
+                        <MovieVideosClient movieDetails={selectedMovie} open={open} setOpen={setOpen} />
                         <div className={styles.divider}></div>
                     </div>
                 );

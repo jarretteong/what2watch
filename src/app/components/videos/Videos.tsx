@@ -134,8 +134,8 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               src={`https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`}
                                               alt={video.id}
                                               fill
-                                              placeholder="blur"
-                                              blurDataURL={video.blurImage}
+                                            //   placeholder="blur"
+                                            //   blurDataURL={video.blurImage}
                                           />
                                           <svg
                                               xmlns="http://www.w3.org/2000/svg"

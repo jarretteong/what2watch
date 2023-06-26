@@ -78,8 +78,8 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                     src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
                     alt={movieDetails.title}
                     fill
-                    placeholder="blur"
-                    blurDataURL={movieDetails.backdrop_path_blur}
+                    // placeholder="blur"
+                    // blurDataURL={movieDetails.backdrop_path_blur}
                     style={{
                         objectFit: "cover",
                     }}
@@ -173,7 +173,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                             </Suspense>
                         </div>
                     ) : null}
-                    {videos.filter((v: Video) => v.type === "Featurette").length > 0 ? (
+                    {videos.filter((v: Video) => v.type === "BehindTheScenes").length > 0 ? (
                         <div className={styles.movieVids}>
                             <Suspense>
                                 <Videos
