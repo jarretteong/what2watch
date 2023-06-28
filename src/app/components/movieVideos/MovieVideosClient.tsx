@@ -33,7 +33,6 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     // const largeMedia = useMediaQuery("(min-width: 992px)");
     // const xlMedia = useMediaQuery("(min-width: 1200px)");
     const { videos, credits } = movieDetails;
-    console.log(movieDetails)
     const [starring, setStarring] = useState<Cast[]>([]);
     const [producers, setProducers] = useState<Crew[]>([]);
     const [directors, setDirectors] = useState<Crew[]>([]);

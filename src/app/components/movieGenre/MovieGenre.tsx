@@ -10,7 +10,7 @@ import { ImageData, Movie, Video } from "@/interfaces/movie";
 import _ from "lodash";
 import React from "react";
 import { SwiperOptions } from "swiper/types";
-import MovieGenreComponent from "./MovieGenreComponent";
+import MovieGenreComponent from "./MovieGenreClient";
 import { getPlaiceholder } from "plaiceholder";
 import { Credits } from "@/interfaces/credits";
 
@@ -68,10 +68,10 @@ const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
                 const images = await fetchTMDBMovieImages(movie.id);
                 const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
 
-                if (index <= 5) {
-                    // videos.results = await addPlaceholderImagesVideos(videos.results);
-                    movie = await addPlaceholderImagesMovieDetails(movie);
-                }
+                // if (index <= 5) {
+                //     // videos.results = await addPlaceholderImagesVideos(videos.results);
+                //     movie = await addPlaceholderImagesMovieDetails(movie);
+                // }
 
                 let filteredImages: any = {};
                 if (images) {
@@ -103,6 +103,7 @@ const MovieGenre = async ({ genre, type }: MovieGenreProps) => {
                 };
             })
         );
+        
         return <MovieGenreComponent genre={genreData} movies={genreMovies} type={type || "full"} />;
     }
     return null;

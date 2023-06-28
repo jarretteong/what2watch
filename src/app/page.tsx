@@ -8,9 +8,9 @@ export default async function Home() {
     // const popularMovies = await data.json();
 
     return (
-            <main className={styles.main}>
+        <main className={styles.main}>
                 {/* @ts-expect-error Async Server Component */}
                 <Movies />
-            </main>
+        </main>
     );
 }

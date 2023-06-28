@@ -11,7 +11,7 @@ import styles from "./styles/landing.module.scss";
 import ReactPlayer from "react-player/lazy";
 import { useMediaQuery } from "usehooks-ts";
 import Link from "next/link";
-import { parseMovieIdQuery } from "@/app/utils";
+import { getPlaceholderImageURL, parseMovieIdQuery } from "@/app/utils";
 import classNames from "classnames";
 import ReactPlayerControls from "../reactPlayerControls/ReactPlayerControls";
 import MovieMetadata from "../movieMetadata/MovieMetadata";
@@ -102,7 +102,9 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                                 }`}
                                                 fill
                                                 placeholder="blur"
-                                                blurDataURL={movie.backdrop_path_blur}
+                                                blurDataURL={getPlaceholderImageURL(
+                                                    `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`
+                                                )}
                                             />
                                         ) : null}
                                     </div>
@@ -125,7 +127,6 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                             onReady={() =>
                                                 setTimeout(() => {
                                                     setIsPlaying(true);
-                                                    console.log("ready player!");
                                                 }, 3000)
                                             }
                                             onEnded={() => {

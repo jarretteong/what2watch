@@ -40,3 +40,15 @@ export const videoSlidesCount = {
         Teaser: 3,
     },
 };
+
+export const getPlaceholderImageURL = (url: string) => {
+    return `/_next/image?url=${encodeURIComponent(url)}&q=70&w=8`
+}
+
+export const fetchNewMovies = async (genreId: number, page: number = 1) => {
+    const data = await fetch(
+        `/api/movies/genre?id=${genreId}&page=${page}`,
+        { next: { revalidate: 60 } }
+    );
+    return await data.json();
+}

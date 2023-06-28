@@ -14,7 +14,7 @@ import { Credits } from "@/interfaces/credits";
 
 type LandingProps = {
     movies: any;
-}
+};
 
 const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
@@ -61,34 +61,17 @@ const Landing = async () => {
             const videos: VideoRes = await fetchTMDBMovieVideos(movie.id);
             const images = await fetchTMDBMovieImages(movie.id);
             const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
-            movie = await addPlaceholderImagesMovieDetails(movie);
+            // movie = await addPlaceholderImagesMovieDetails(movie);
             // videos.results = await addPlaceholderImagesVideos(videos.results)
             if (images) {
                 // await Promise.all(
-                    _.keys(images).map(async (key) => {
-                        if (_.isArray(images[key])) {
-                            images[key] 
-                                images[key]
-                                    .filter((image: ImageData) => image.iso_639_1 === "en")
-                                    .map(async (image: ImageData, index: number) => {
-                                        // const blur_file_path =
-                                        //     index <= 1
-                                        //         ? await blurPlaceholderImage(
-                                        //               `https://image.tmdb.org/t/p/original${image.file_path}`
-                                        //           )
-                                        //         : null;
-                                        return {
-                                            ...image,
-                                            // blur_file_path,
-                                        };
-                                    })
-                            
-                            // console.log(images[key])
-                            // return images[key];
-                        }
-                        // return null;
-                    }).filter(Boolean)
-                // );
+                _.keys(images).forEach((key) => {
+                    if (_.isArray(images[key])) {
+                        images[key] = images[key].filter(
+                            (image: ImageData) => image.iso_639_1 === "en"
+                        );
+                    }
+                });
             }
             const officialTrailer = _.first(
                 videos.results.filter((video: Video) => video.type === "Trailer")

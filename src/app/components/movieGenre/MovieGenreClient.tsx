@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { render } from "react-dom";
 import { useMediaQuery } from "usehooks-ts";
-import { parseMovieIdQuery } from "@/app/utils";
+import { fetchNewMovies, getPlaceholderImageURL, parseMovieIdQuery } from "@/app/utils";
 import Link from "next/link";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
@@ -24,7 +24,7 @@ import _ from "lodash";
 import MovieVideosClient from "../movieVideos/MovieVideosClient";
 
 type MovieGenreProps = {
-    movies: any[];
+    movies: MovieCustom[];
     type: "full" | "poster" | "backdrop" | "overview";
     genre: any;
 };
@@ -41,7 +41,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     //         getNextPageParam: (lastPage, pages) => lastPage.nextCursor || undefined,
     //     });
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedMovie, setSelectedMovie] = useState<MovieCustom>(_.first(movies));
+    const [selectedMovie, setSelectedMovie] = useState<MovieCustom>();
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [slidesPerView, setSlidesPerView] = useState<number>(1);
@@ -51,6 +51,29 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [currentWidth, setCurrentWidth] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
+    const [movieList, setMovieList] = useState<MovieCustom[]>(movies);
+
+    const {
+        fetchNextPage,
+        fetchPreviousPage,
+        hasNextPage,
+        hasPreviousPage,
+        isFetchingNextPage,
+        isFetchingPreviousPage,
+        ...result
+    } = useInfiniteQuery({
+        queryKey: ["genre", genre.id, page],
+        queryFn: ({ pageParam = 1 }) => {
+            setPage(pageParam);
+            return fetchNewMovies(genre.id, pageParam);
+        },
+        getNextPageParam: (lastPage) => {
+            // setMovieList(() => [...movies, ])
+            return lastPage.nextPage;
+        },
+        getPreviousPageParam: (firstPage) => firstPage.prevPage,
+    });
 
     useEffect(() => {
         switch (true) {
@@ -81,6 +104,13 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
             setShowPlayer(false);
         }, 1000);
     }, []);
+
+    useEffect(() => {
+        if (!result.isError && _.flatMap(result.data?.pages, "data").length !== movieList.length) {
+            console.log(_.flatMap(result.data?.pages, "data"));
+            setMovieList(_.flatMap(result.data?.pages, "data"));
+        }
+    }, [result]);
 
     const renderGenreContainer = () => {
         switch (type) {
@@ -128,67 +158,60 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 },
                             }}
                             onClick={(swiper) => {
-                                setSelectedMovie(movies?.[swiper.clickedIndex] || _.first(movies))
+                                setSelectedMovie(
+                                    movieList?.[swiper.clickedIndex] || _.first(movieList)
+                                );
                                 setOpen(true);
                             }}
-                            onSlideChange={(swiper) => {
+                            onSlideChange={async (swiper) => {
                                 setActiveSlide(swiper.activeIndex);
+                                if (movieList.length - swiper.activeIndex <= 10) {
+                                    await fetchNextPage();
+                                }
                             }}
                             onSwiper={(s) => {
                                 setSlidesPerView(
                                     _.isNumber(s.params.slidesPerView) ? s.params.slidesPerView : 1
                                 );
                                 setActiveSlide(s.activeIndex);
+                                setSelectedMovie(movieList?.[s.activeIndex] || _.first(movieList));
                             }}
                         >
-                            {movies.map((movie: any, index: number) => {
-                                return (
-                                    <SwiperSlide key={movie.id} className={styles.slide}>
-                                        <div className={styles.backdropImageWrapper}>
-                                            {movie.poster_path_blur ? (
-                                                <>
-                                                    {/* <div className="swiper-lazy-preloader">
-                                                        <Image
-                                                            className={styles.slideImage}
-                                                            alt={movie.title}
-                                                            src={movie.poster_path_blur}
-                                                            onClick={() => setActiveSlide(index)}
-                                                            fill
-                                                            loading="lazy"
-                                                        />
-                                                    </div> */}
-                                                    <Image
-                                                        className={styles.slideImage}
-                                                        alt={movie.title}
-                                                        src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
-                                                        onClick={() => setActiveSlide(index)}
-                                                        fill
-                                                        placeholder="blur"
-                                                        blurDataURL={movie.poster_path_blur}
-                                                    />
-                                                </>
-                                            ) : (
-                                                <Image
-                                                    className={styles.slideImage}
-                                                    alt={movie.title}
-                                                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
-                                                    onClick={() => setActiveSlide(index)}
-                                                    fill
-                                                    loading="lazy"
-                                                />
-                                            )}
-                                        </div>
-                                        {/* <img
+                            {movieList.length > 0
+                                ? movieList.map((movie: any, index: number) => {
+                                      return (
+                                          <SwiperSlide key={movie.id} className={styles.slide}>
+                                              <div className={styles.backdropImageWrapper}>
+                                                  <Image
+                                                      className={styles.slideImage}
+                                                      alt={movie.title}
+                                                      src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                                                      onClick={() => setActiveSlide(index)}
+                                                      fill
+                                                      placeholder="blur"
+                                                      blurDataURL={getPlaceholderImageURL(
+                                                          `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+                                                      )}
+                                                  />
+                                              </div>
+                                              {/* <img
                                             className={styles.slideImage}
                                             alt={movie.title}
                                             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
                                             onClick={() => setActiveSlide(index)}
                                         /> */}
-                                    </SwiperSlide>
-                                );
-                            })}
+                                          </SwiperSlide>
+                                      );
+                                  })
+                                : null}
                         </ReactSwiper>
-                        <MovieVideosClient movieDetails={selectedMovie} open={open} setOpen={setOpen} />
+                        {selectedMovie ? (
+                            <MovieVideosClient
+                                movieDetails={selectedMovie}
+                                open={open}
+                                setOpen={setOpen}
+                            />
+                        ) : null}
                         <div className={styles.divider}></div>
                     </div>
                 );
@@ -221,61 +244,67 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 setActiveSlide(s.activeIndex);
                             }}
                         >
-                            {movies.map((movie: any, index: number) => {
-                                return (
-                                    <SwiperSlide key={movie.id}>
-                                        {imageType ? (
-                                            <div className={styles.backdropWrapper}>
-                                                <Link
-                                                    href={`/movies/${parseMovieIdQuery(
-                                                        movie.id,
-                                                        movie.title
-                                                    )}`}
-                                                >
-                                                    <img
-                                                        className={styles.backdropImage}
-                                                        alt={movie.title}
-                                                        src={`https://image.tmdb.org/t/p/w1280${
-                                                            imageType === "backdrop"
-                                                                ? movie.backdrop_path
-                                                                : movie.poster_path
-                                                        }`}
-                                                    />
-                                                </Link>
-                                                <div className={styles.imageOverlay}></div>
-                                            </div>
-                                        ) : null}
-                                        <MovieMetadata movie={movie} />
-                                        {activeSlide === index && movie.trailer && backdropMedia ? (
-                                            <Waypoint
-                                                onEnter={handleEnter}
-                                                onLeave={handleLeave}
-                                                topOffset="30%"
-                                                bottomOffset="50%"
-                                            >
-                                                <div className={styles.videoContainer}>
-                                                    <ReactPlayer
-                                                        className={styles.reactPlayer}
-                                                        style={{ opacity: showPlayer ? 1 : 0 }}
-                                                        onEnded={() => {
-                                                            setIsPlaying(false);
-                                                            setShowPlayer(false);
-                                                        }}
-                                                        onPlay={() =>
-                                                            isPlaying && setShowPlayer(true)
-                                                        }
-                                                        playing={isPlaying}
-                                                        muted={isMuted}
-                                                        width="100%"
-                                                        height="100%"
-                                                        url={`https://www.youtube.com/watch?v=${movies[activeSlide].trailer.key}`}
-                                                    />
-                                                </div>
-                                            </Waypoint>
-                                        ) : null}
-                                    </SwiperSlide>
-                                );
-                            })}
+                            {movieList.length > 0
+                                ? movieList.map((movie: any, index: number) => {
+                                      return (
+                                          <SwiperSlide key={movie.id}>
+                                              {imageType ? (
+                                                  <div className={styles.backdropWrapper}>
+                                                      <Link
+                                                          href={`/movies/${parseMovieIdQuery(
+                                                              movie.id,
+                                                              movie.title
+                                                          )}`}
+                                                      >
+                                                          <img
+                                                              className={styles.backdropImage}
+                                                              alt={movie.title}
+                                                              src={`https://image.tmdb.org/t/p/w1280${
+                                                                  imageType === "backdrop"
+                                                                      ? movie.backdrop_path
+                                                                      : movie.poster_path
+                                                              }`}
+                                                          />
+                                                      </Link>
+                                                      <div className={styles.imageOverlay}></div>
+                                                  </div>
+                                              ) : null}
+                                              <MovieMetadata movie={movie} />
+                                              {activeSlide === index &&
+                                              movie.trailer &&
+                                              backdropMedia ? (
+                                                  <Waypoint
+                                                      onEnter={handleEnter}
+                                                      onLeave={handleLeave}
+                                                      topOffset="30%"
+                                                      bottomOffset="50%"
+                                                  >
+                                                      <div className={styles.videoContainer}>
+                                                          <ReactPlayer
+                                                              className={styles.reactPlayer}
+                                                              style={{
+                                                                  opacity: showPlayer ? 1 : 0,
+                                                              }}
+                                                              onEnded={() => {
+                                                                  setIsPlaying(false);
+                                                                  setShowPlayer(false);
+                                                              }}
+                                                              onPlay={() =>
+                                                                  isPlaying && setShowPlayer(true)
+                                                              }
+                                                              playing={isPlaying}
+                                                              muted={isMuted}
+                                                              width="100%"
+                                                              height="100%"
+                                                              url={`https://www.youtube.com/watch?v=${movieList[activeSlide].trailer?.key}`}
+                                                          />
+                                                      </div>
+                                                  </Waypoint>
+                                              ) : null}
+                                          </SwiperSlide>
+                                      );
+                                  })
+                                : null}
                         </ReactSwiper>
                         <div className={styles.divider}></div>
                     </div>
@@ -284,20 +313,20 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                 return (
                     <>
                         <div className={styles.genreFullContainer}>
-                            {activeSlide >= 0 && activeSlide < movies.length ? (
+                            {activeSlide >= 0 && activeSlide < movieList.length ? (
                                 <div className={styles.movieBackdrop}>
                                     <img
                                         className={styles.backdropImage}
-                                        alt={movies[activeSlide].title}
+                                        alt={movieList[activeSlide].title}
                                         src={`https://image.tmdb.org/t/p/w1280${
                                             imageType === "backdrop"
-                                                ? movies[activeSlide].backdrop_path
-                                                : movies[activeSlide].poster_path
+                                                ? movieList[activeSlide].backdrop_path
+                                                : movieList[activeSlide].poster_path
                                         }`}
                                     />
                                     <div className={styles.imageOverlay}></div>
 
-                                    {movies[activeSlide].trailer ? (
+                                    {movieList[activeSlide].trailer ? (
                                         <Waypoint
                                             onEnter={handleEnter}
                                             onLeave={handleLeave}
@@ -317,20 +346,20 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                     muted={isMuted}
                                                     width="100%"
                                                     height="100%"
-                                                    url={`https://www.youtube.com/watch?v=${movies[activeSlide].trailer.key}`}
+                                                    url={`https://www.youtube.com/watch?v=${movieList[activeSlide].trailer?.key}`}
                                                 />
                                             </div>
                                         </Waypoint>
                                     ) : null}
                                 </div>
                             ) : null}
-                            {imageType === "backdrop" && activeSlide >= 0 ? (
+                            {imageType === "backdrop" && activeSlide >= 0 && movieList.length > 0 ? (
                                 <>
                                     <div className={styles.movieDetails}>
-                                        <h2>{movies[activeSlide].title}</h2>
+                                        <h2>{movieList[activeSlide].title}</h2>
                                         <h5 className={styles.genre}>{genre.name}</h5>
                                         <p className={styles.movieMetadataOverview}>
-                                            {movies[activeSlide].overview}
+                                            {movieList[activeSlide].overview}
                                         </p>
                                     </div>
                                     <div className={styles.playerControls}>
@@ -345,6 +374,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 </>
                             ) : null}
                             <ReactSwiper
+                                observer
                                 className={styles.genreSwiper}
                                 breakpoints={{
                                     1: {
@@ -368,44 +398,42 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                         spaceBetween: 30,
                                     },
                                 }}
-                                onClick={(swiper: any) => {
-                                    setCurrentWidth(swiper.slidesSizesGrid?.[activeSlide]);
-                                }}
-                                onSlideChange={(swiper) => {
-                                    setActiveSlide(swiper.activeIndex);
-                                    console.log(swiper);
-                                }}
-                                onSwiper={(s: any) => {
-                                    setActiveSlide(s.activeIndex);
-                                    setCurrentWidth(s.slidesSizesGrid?.[s.activeIndex]);
-                                }}
+                                onClick={(swiper: any) =>
+                                    setCurrentWidth(swiper.slidesSizesGrid?.[activeSlide])
+                                }
+                                onSlideChange={(swiper) => setActiveSlide(swiper.activeIndex)}
+                                onSwiper={(s: any) => setActiveSlide(s.activeIndex)}
                             >
-                                {movies.map((movie: any, index: number) => {
-                                    return (
-                                        <SwiperSlide
-                                            key={movie.id}
-                                            className={classNames({
-                                                [styles.slide]: true,
-                                            })}
-                                            style={{
-                                                width: `calc(${currentWidth}px ${
-                                                    activeSlide === index ? "+ 40px" : ""
-                                                })`,
-                                            }}
-                                        >
-                                            <img
-                                                className={styles.slideImage}
-                                                alt={movie.title}
-                                                src={`https://image.tmdb.org/t/p/w342${
-                                                    movie.backdrops?.length > 1
-                                                        ? movie.backdrops[1].file_path
-                                                        : movie.backdrop_path
-                                                }`}
-                                                onClick={() => changeSlide(index, movie[index])}
-                                            />
-                                        </SwiperSlide>
-                                    );
-                                })}
+                                {activeSlide >= 0
+                                    ? movieList.map((movie: any, index: number) => {
+                                          return (
+                                              <SwiperSlide
+                                                  key={movie.id}
+                                                  className={classNames({
+                                                      [styles.slide]: true,
+                                                  })}
+                                                  style={{
+                                                      width: `calc(${currentWidth}px ${
+                                                          activeSlide === index ? "+ 40px" : ""
+                                                      })`,
+                                                  }}
+                                              >
+                                                  <img
+                                                      className={styles.slideImage}
+                                                      alt={movie.title}
+                                                      src={`https://image.tmdb.org/t/p/w342${
+                                                          movie.backdrops?.length > 1
+                                                              ? movie.backdrops[1].file_path
+                                                              : movie.backdrop_path
+                                                      }`}
+                                                      onClick={() =>
+                                                          changeSlide(index, movie[index])
+                                                      }
+                                                  />
+                                              </SwiperSlide>
+                                          );
+                                      })
+                                    : null}
                             </ReactSwiper>
                         </div>
                         <div className={styles.divider}></div>

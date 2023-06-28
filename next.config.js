@@ -1,4 +1,3 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     transpilePackages: ["plaiceholder"],
@@ -6,6 +5,9 @@ const nextConfig = {
         appDir: true,
     },
     images: {
+        dangerouslyAllowSVG: true,
+        contentDispositionType: "attachment",
+        contentSecurityPolicy: "default-src 'self'; script-src 'none';",
         remotePatterns: [
             {
                 protocol: "https",
