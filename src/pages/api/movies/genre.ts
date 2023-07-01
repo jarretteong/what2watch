@@ -21,8 +21,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<GenreMovieData>
                 ? _.first(req.query.id)
                 : req.query.id;
         const page = +req.query.page!;
+        console.log({page})
         const movies = await fetchTMDBMoviesByGenreId(+genreId!, page);
-
+        console.log({"movies.page": movies.page})
         const genreMovies = await Promise.all(
             movies.results.map(async (movie: any, index: number) => {
                 const videos = await fetchTMDBMovieVideos(movie.id);

@@ -16,6 +16,7 @@ import "react-responsive-modal/styles.css";
 import { MovieCustom, Video, VideoRes } from "@/interfaces/movie";
 import classNames from "classnames";
 import { Cast, Credits, Crew } from "@/interfaces/credits";
+import { getPlaceholderImageURL } from "@/app/utils";
 
 type MovieVideosProps = {
     movieDetails: MovieCustom;
@@ -29,13 +30,14 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
     setOpen,
 }: MovieVideosProps) => {
     // const smallMedia = useMediaQuery("(min-width: 480px)");
-    // const mediumMedia = useMediaQuery("(min-width: 768px)");
+    const mediumMedia = useMediaQuery("(min-width: 768px)");
     // const largeMedia = useMediaQuery("(min-width: 992px)");
     // const xlMedia = useMediaQuery("(min-width: 1200px)");
     const { videos, credits } = movieDetails;
     const [starring, setStarring] = useState<Cast[]>([]);
     const [producers, setProducers] = useState<Crew[]>([]);
     const [directors, setDirectors] = useState<Crew[]>([]);
+    const [backdropMedia, setBackdropMedia] = useState<boolean>(true);
     // const crewJobs = ["Director", "Producer"];
 
     useEffect(() => {
@@ -56,6 +58,10 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
         }
     }, [movieDetails.credits]);
 
+    useEffect(() => {
+        setBackdropMedia(!mediumMedia);
+    }, [mediumMedia]);
+
     return (
         <Modal
             classNames={{
@@ -74,11 +80,15 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 })}
             >
                 <Image
-                    src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
+                    src={`https://image.tmdb.org/t/p/original${
+                        backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
+                    }`}
                     alt={movieDetails.title}
                     fill
-                    // placeholder="blur"
-                    // blurDataURL={movieDetails.backdrop_path_blur}
+                    placeholder="blur"
+                    blurDataURL={getPlaceholderImageURL(`https://image.tmdb.org/t/p/w342${
+                        backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
+                    }`)}
                     style={{
                         objectFit: "cover",
                     }}

@@ -11,7 +11,7 @@ import Image from "next/image";
 import classNames from "classnames";
 import _ from "lodash";
 import { useMediaQuery } from "usehooks-ts";
-import { videoSlidesCount } from "@/app/utils";
+import { getPlaceholderImageURL, videoSlidesCount } from "@/app/utils";
 import { Video } from "@/interfaces/movie";
 import Modal from "react-responsive-modal";
 import videoStyles from "./videos.module.scss";
@@ -134,8 +134,10 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                                               src={`https://i.ytimg.com/vi/${video.key}/hqdefault.jpg`}
                                               alt={video.id}
                                               fill
-                                            //   placeholder="blur"
-                                            //   blurDataURL={video.blurImage}
+                                              placeholder="blur"
+                                              blurDataURL={getPlaceholderImageURL(
+                                                  `https://i.ytimg.com/vi/${video.key}/default.jpg`
+                                              )}
                                           />
                                           <svg
                                               xmlns="http://www.w3.org/2000/svg"
@@ -181,23 +183,6 @@ const Videos: React.FunctionComponent<VideosProps> = ({
                         />
                     </Modal>
                 ) : null}
-                {/* {swiper ? (
-                    <div className={nextClass} onClick={() => swiper?.slideNext()}>
-                        <svg
-                            fill="#FFF"
-                            width="32px"
-                            height="32px"
-                            viewBox="0 0 52 52"
-                            data-name="Layer 1"
-                            id="Layer_1"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <g>
-                                <path d="M14,52a2,2,0,0,1-1.41-.59,2,2,0,0,1,0-2.82L36.17,26,12.59,2.41A2,2,0,0,1,15.41.59l24,24a2,2,0,0,1,0,2.82l-24,24A2,2,0,0,1,14,52Z" />
-                            </g>
-                        </svg>
-                    </div>
-                ) : null} */}
             </div>
         </div>
     );

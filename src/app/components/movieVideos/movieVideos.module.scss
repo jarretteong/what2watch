@@ -18,6 +18,7 @@
   border-radius: 6px;
   position: relative;
   padding: 0;
+  max-width: 80%;
 
   .coverImage {
     position: relative;
@@ -76,5 +77,21 @@
         font-size: 20px;
       }
     }
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px){
+  
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .movieModal {
+    max-width: 800px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .movieModal {
+    max-width: 800px;
   }
 }

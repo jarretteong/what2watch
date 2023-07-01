@@ -34,7 +34,7 @@
     }
 
     .movieMetadataDetails {
-      width: 120px;
+      width: 140px;
       height: 36px;
       border-radius: 8px;
       font-weight: 700;
@@ -42,6 +42,15 @@
       cursor: pointer;
       border: none;
       outline: none;
+
+      span {
+        vertical-align: middle;
+      }
+
+      svg {
+        vertical-align: middle;
+        margin-right: 6px;
+      }
 
       .moreDetails {
         text-decoration: none;

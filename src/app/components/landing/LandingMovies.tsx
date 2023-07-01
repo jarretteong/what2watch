@@ -92,20 +92,23 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                                     /> */}
                                     <div className={styles.backdropImageWrapper}>
                                         {imageType ? (
-                                            <Image
-                                                className={styles.backdropImage}
-                                                alt={movie.title}
-                                                src={`https://image.tmdb.org/t/p/original${
-                                                    imageType === "backdrop"
-                                                        ? movie.backdrop_path
-                                                        : movie.poster_path
-                                                }`}
-                                                fill
-                                                placeholder="blur"
-                                                blurDataURL={getPlaceholderImageURL(
-                                                    `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`
-                                                )}
-                                            />
+                                            <>
+                                                <Image
+                                                    className={styles.backdropImage}
+                                                    alt={movie.title}
+                                                    src={`https://image.tmdb.org/t/p/original${
+                                                        imageType === "backdrop"
+                                                            ? movie.backdrop_path
+                                                            : movie.poster_path
+                                                    }`}
+                                                    fill
+                                                    placeholder="blur"
+                                                    blurDataURL={getPlaceholderImageURL(
+                                                        `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`
+                                                    )}
+                                                />
+                                                <div className={styles.imageOverlay}></div>
+                                            </>
                                         ) : null}
                                     </div>
                                 </Link>
