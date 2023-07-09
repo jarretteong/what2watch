@@ -80,18 +80,15 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 })}
             >
                 <Image
-                    src={`https://image.tmdb.org/t/p/original${
-                        backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
+                    src={`https://image.tmdb.org/t/p/w1280${
+                        !backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
                     }`}
                     alt={movieDetails.title}
                     fill
                     placeholder="blur"
                     blurDataURL={getPlaceholderImageURL(`https://image.tmdb.org/t/p/w342${
-                        backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
+                        !backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
                     }`)}
-                    style={{
-                        objectFit: "cover",
-                    }}
                 />
             </div>
             <div className={styles.movieDescription}>

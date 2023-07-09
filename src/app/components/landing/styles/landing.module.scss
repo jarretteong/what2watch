@@ -6,6 +6,7 @@
     bottom: 36px;
     right: 48px;
     z-index: 10;
+    display: none;
   }
 
   .videoContainer {
@@ -21,7 +22,7 @@
     .reactPlayer {
       opacity: 0;
       transition: opacity 0.5s ease;
-      
+
       iframe {
         width: 300%;
         height: 100%;
@@ -52,7 +53,7 @@
 .backdropImageWrapper {
   width: 100%;
   max-height: 100vh;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 4;
   display: block;
 
   .backdropImage {
@@ -72,23 +73,43 @@
 /* Common styles for all media queries */
 
 @media only screen and (min-width: 768px) {
-  .videoContainer {
-    aspect-ratio: 16 / 9;
+  .landingContainer {
+
+    .playerControls {
+      display: block;
+    }
+
+    .videoContainer {
+      aspect-ratio: 16 / 9;
+    }
   }
 }
 
 @media only screen and (min-width: 992px) {
-  .videoContainer {
-    aspect-ratio: 16 / 9;
+  .landingContainer {
+
+    .playerControls {
+      display: block;
+    }
+
+    .videoContainer {
+      aspect-ratio: 16 / 9;
+    }
   }
 }
 
 /* Styles for large screens */
 
 @media only screen and (min-width: 1200px) {
-  .videoContainer {
-    aspect-ratio: 16 / 9;
-    height: 100vh;
+  .landingContainer {
+
+    .playerControls {
+      display: block;
+    }
+
+    .videoContainer {
+      aspect-ratio: 16 / 9;
+    }
   }
 }
 /* Keyframes and animation styles */

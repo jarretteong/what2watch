@@ -25,24 +25,27 @@ type MoviesProps = {
 
 const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesProps) => {
     const [activeSlide, setActiveSlide] = useState<number>(-1);
-    const [imageType, setImageType] = useState<string>("backdrop");
-    const posterMedia = useMediaQuery("(min-width: 1px)");
+    // const posterMedia = useMediaQuery("(min-width: 1px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [isMuted, setIsMuted] = useState<boolean>(true);
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const swiper = useRef<SwiperRef>(null);
+    const [isBackdropMedia, setIsBackdropMedia] = useState<boolean>(true);
 
+    // useEffect(() => {
+    //     switch (true) {
+    //         case backdropMedia:
+    //             setImageType("backdrop");
+    //             break;
+    //         case posterMedia:
+    //             setImageType("poster");
+    //             break;
+    //     }
+    // }, [posterMedia, backdropMedia]);
     useEffect(() => {
-        switch (true) {
-            case backdropMedia:
-                setImageType("backdrop");
-                break;
-            case posterMedia:
-                setImageType("poster");
-                break;
-        }
-    }, [posterMedia, backdropMedia]);
+        setIsBackdropMedia(backdropMedia);
+    }, [backdropMedia]);
 
     const handleEnter = useCallback(() => {
         setTimeout(() => {
@@ -81,38 +84,27 @@ const LandingMovies: React.FunctionComponent<MoviesProps> = ({ movies }: MoviesP
                         return (
                             <SwiperSlide key={movie.id}>
                                 <Link href={`/movies/${parseMovieIdQuery(movie.id, movie.title)}`}>
-                                    {/* <img
-                                        className={styles.backdropImage}
-                                        alt={movie.title}
-                                        src={`https://image.tmdb.org/t/p/original${
-                                            imageType === "backdrop"
-                                                ? movie.backdrop_path
-                                                : movie.poster_path
-                                        }`}
-                                    /> */}
                                     <div className={styles.backdropImageWrapper}>
-                                        {imageType ? (
-                                            <>
-                                                <Image
-                                                    className={styles.backdropImage}
-                                                    alt={movie.title}
-                                                    src={`https://image.tmdb.org/t/p/original${
-                                                        imageType === "backdrop"
-                                                            ? movie.backdrop_path
-                                                            : movie.poster_path
-                                                    }`}
-                                                    fill
-                                                    placeholder="blur"
-                                                    blurDataURL={getPlaceholderImageURL(
-                                                        `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`
-                                                    )}
-                                                />
-                                                <div className={styles.imageOverlay}></div>
-                                            </>
-                                        ) : null}
+                                        <>
+                                            <Image
+                                                className={styles.backdropImage}
+                                                alt={movie.title}
+                                                src={`https://image.tmdb.org/t/p/original${
+                                                    isBackdropMedia
+                                                        ? movie.backdrop_path
+                                                        : movie.poster_path
+                                                }`}
+                                                fill
+                                                placeholder="blur"
+                                                blurDataURL={getPlaceholderImageURL(
+                                                    `https://image.tmdb.org/t/p/w342${movie.backdrop_path}`
+                                                )}
+                                            />
+                                            <div className={styles.imageOverlay}></div>
+                                        </>
                                     </div>
                                 </Link>
-                                <MovieMetadata movie={movie} />
+                                {!showPlayer ? <MovieMetadata movie={movie} /> : null}
                                 <div className={styles.playerControls}>
                                     <ReactPlayerControls
                                         playing={showPlayer}

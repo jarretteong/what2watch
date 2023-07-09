@@ -1,12 +1,11 @@
 .genreFullContainer {
-  // height: 600px;
   width: 100vw;
   display: flex;
   flex-direction: column;
   padding-bottom: 36px;
   position: relative;
   max-width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 5;
   max-height: 700px;
 
   .movieDetails {
@@ -65,7 +64,7 @@
           position: relative;
           width: 100%;
           border-radius: 10px;
-          background: #DDD;
+          background: #ddd;
         }
 
         svg {
@@ -81,13 +80,11 @@
     position: absolute;
     opacity: 1;
     transition: opacity 0.5s ease 0s;
-    // height: 600px;
 
     .backdropImage {
       width: 100vw;
       margin: auto;
       max-height: 700px;
-      // height: 100%;
       max-width: 100%;
       position: relative;
       aspect-ratio: 16 / 9;
@@ -125,117 +122,10 @@
       }
     }
   }
-
-  @media only screen and (min-width: 1px) and (max-width: 480px) {
-    aspect-ratio: 4/5;
-
-    .movieDetails {
-      width: 280px;
-      left: 5%;
-      top: 15%;
-    }
-
-    .genreSwiper {
-      width: 90%;
-    }
-
-    .movieBackdrop {
-      // height: 600px;
-
-      .backdropImage {
-        aspect-ratio: 4/5;
-      }
-    }
-  }
-
-  @media only screen and (min-width: 480px) {
-    aspect-ratio: 4/5;
-
-    .movieDetails {
-      width: 320px;
-      left: 5%;
-      bottom: 15%;
-    }
-
-    .genreSwiper {
-      width: 90%;
-    }
-
-    .movieBackdrop {
-      // height: 600px;
-
-      .backdropImage {
-        aspect-ratio: 4/5;
-      }
-    }
-  }
-
-  @media only screen and (min-width: 768px) {
-    // height: 600px;
-
-    .movieDetails {
-      width: 360px;
-      left: 5%;
-      bottom: 20%;
-    }
-
-    .genreSwiper {
-      width: 90%;
-    }
-
-    .movieBackdrop {
-      height: 700px;
-    }
-  }
-
-  @media only screen and (min-width: 992px) {
-    // height: 600px;
-
-    .movieDetails {
-      width: 420px;
-      left: 5%;
-      bottom: 30%;
-    }
-
-    .genreSwiper {
-      width: 90%;
-    }
-
-    .movieBackdrop {
-      height: 700px;
-    }
-  }
-
-  @media only screen and (min-width: 1200px) {
-    // height: 600px;
-
-    .movieDetails {
-      width: 420px;
-      left: 5%;
-      bottom: 30%;
-    }
-
-    .genreSwiper {
-      width: 90%;
-    }
-
-    .movieBackdrop {
-      height: 700px;
-    }
-  }
-}
-
-@keyframes loading {
-  0% {
-    background-position: -500px 0px;
-  }
-  100% {
-    background-position: 500px 0px;
-  }
 }
 
 .genrePosterContainer {
-  width: 95%;
+  width: 90%;
   margin: 0 auto 20px auto;
 
   .genreTypeWrapper {
@@ -251,11 +141,11 @@
     .backdropImageWrapper {
       width: 100%;
       aspect-ratio: 2 / 3;
-      // border-radius: 10px;
+
       .slideImage {
         width: 100%;
         border-radius: 10px;
-        background: #DDD;
+        background: #ddd;
       }
     }
 
@@ -264,7 +154,7 @@
 }
 
 .genreBackdropContainer {
-  width: 95%;
+  width: 90%;
   margin: 0 auto 20px auto;
 
   .genreTypeWrapper {
@@ -300,8 +190,9 @@
     position: relative;
 
     .backdropImage {
-      height: 700px;
-      // filter: brightness(0.7);
+      max-height: 400px;
+      width: 100%;
+      aspect-ratio: 3 / 4;
     }
 
     .imageOverlay {
@@ -326,15 +217,145 @@
   border-top: 0.5px solid rgba(0, 0, 0, 0.15);
 }
 
-.posterImage {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  border-radius: 10px;
+@keyframes loading {
+  0% {
+    background-position: -500px 0px;
+  }
+  100% {
+    background-position: 500px 0px;
+  }
 }
 
-.backdropImage {
-  width: 100%;
-  position: relative;
-  aspect-ratio: 16/9;
-  display: block;
+@media only screen and (min-width: 480px) {
+  .genreFullContainer {
+    aspect-ratio: 4/5;
+
+    .movieDetails {
+      width: 320px;
+      left: 5%;
+      bottom: 15%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop .backdropImage {
+      aspect-ratio: 4/5;
+    }
+  }
+
+  .genreBackdropContainer {
+    .backdropWrapper {
+      position: relative;
+
+      .backdropImage {
+        max-height: 500px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .genreFullContainer {
+    .movieDetails {
+      width: 360px;
+      left: 5%;
+      bottom: 20%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 700px;
+    }
+  }
+
+  .genrePosterContainer {
+    width: 95%;
+  }
+
+  .genreBackdropContainer {
+    width: 95%;
+    .backdropWrapper {
+      position: relative;
+
+      .backdropImage {
+        max-height: 600px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .genreFullContainer {
+    .movieDetails {
+      width: 420px;
+      left: 5%;
+      bottom: 30%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 700px;
+    }
+  }
+
+  .genrePosterContainer {
+    width: 95%;
+  }
+
+  .genreBackdropContainer {
+    width: 95%;
+    .backdropWrapper {
+      position: relative;
+
+      .backdropImage {
+        max-height: 700px;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .genreFullContainer {
+    .movieDetails {
+      width: 420px;
+      left: 5%;
+      bottom: 30%;
+    }
+
+    .genreSwiper {
+      width: 90%;
+    }
+
+    .movieBackdrop {
+      height: 700px;
+    }
+  }
+
+  .genrePosterContainer {
+    width: 95%;
+  }
+
+  .genreBackdropContainer {
+    width: 95%;
+    
+    .backdropWrapper {
+      position: relative;
+
+      .backdropImage {
+        max-height: 700px;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+      }
+    }
+  }
 }

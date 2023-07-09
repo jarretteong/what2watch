@@ -132,24 +132,24 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                             className={styles.genreSwiper}
                             breakpoints={{
                                 1: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 8,
+                                    slidesPerView: 2.2,
+                                    spaceBetween: 18,
                                 },
                                 480: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 12,
+                                    slidesPerView: 3.2,
+                                    spaceBetween: 18,
                                 },
                                 768: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 14,
+                                    slidesPerView: 4.3,
+                                    spaceBetween: 24,
                                 },
                                 1200: {
-                                    slidesPerView: 5,
-                                    spaceBetween: 16,
+                                    slidesPerView: 5.3,
+                                    spaceBetween: 30,
                                 },
                                 1440: {
-                                    slidesPerView: 6,
-                                    spaceBetween: 18,
+                                    slidesPerView: 6.3,
+                                    spaceBetween: 30,
                                 },
                             }}
                             onClick={(swiper) => {
@@ -281,7 +281,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                                       <div className={styles.imageOverlay}></div>
                                                   </div>
                                               ) : null}
-                                              <MovieMetadata movie={movie} />
+                                              {!showPlayer ? <MovieMetadata movie={movie} /> : null}
                                               {movieList[activeSlide]?.trailer ? (
                                                   <div className={styles.playerControls}>
                                                       <ReactPlayerControls
@@ -414,28 +414,28 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 className={styles.genreSwiper}
                                 breakpoints={{
                                     1: {
-                                        slidesPerView: 2,
+                                        slidesPerView: 2.2,
                                         spaceBetween: 18,
                                     },
                                     480: {
-                                        slidesPerView: 3,
+                                        slidesPerView: 3.2,
                                         spaceBetween: 18,
                                     },
                                     768: {
-                                        slidesPerView: 4,
+                                        slidesPerView: 4.3,
                                         spaceBetween: 24,
                                     },
                                     1200: {
-                                        slidesPerView: 5,
+                                        slidesPerView: 5.3,
                                         spaceBetween: 30,
                                     },
                                     1440: {
-                                        slidesPerView: 6,
+                                        slidesPerView: 6.3,
                                         spaceBetween: 30,
                                     },
                                 }}
                                 onClick={(swiper: any) => {
-                                    setCurrentWidth(swiper.slidesSizesGrid?.[activeSlide])
+                                    setCurrentWidth(swiper.slidesSizesGrid?.[activeSlide]);
                                     setSelectedMovie(
                                         movieList?.[swiper.clickedIndex] || _.first(movieList)
                                     );
