@@ -17,6 +17,14 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "i.ytimg.com",
             },
+            {
+                protocol: "https",
+                hostname: "i.ytimg.com",
+            },
+            {
+                protocol: "https",
+                hostname: "test2domain.fun",
+            },
         ],
     },
 };
