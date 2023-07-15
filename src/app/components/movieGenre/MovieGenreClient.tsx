@@ -178,12 +178,13 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                         >
                             {movieList.length > 0
                                 ? movieList.map((movie: any, index: number) => {
+                                    {console.log(getPlaceholderImageURL(
+                                        `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+                                    ))}
                                       return (
                                           <SwiperSlide key={movie.id} className={styles.slide}>
-                                            {console.log(getPlaceholderImageURL(
-                                                          `https://image.tmdb.org/t/p/w342${movie.poster_path}`
-                                                      ))}
                                               <div className={styles.backdropImageWrapper}>
+
                                                   <Image
                                                       className={styles.slideImage}
                                                       alt={movie.title}
