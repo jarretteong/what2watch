@@ -112,6 +112,22 @@ export default async function Movies() {
                 {/* @ts-expect-error Async Server Components */}
                 <MovieGenre genre="romance" />
             </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="crime" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="fantasy" type="backdrop" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="family" type="poster" />
+            </Suspense>
+            <Suspense>
+                {/* @ts-expect-error Async Server Components */}
+                <MovieGenre genre="music" />
+            </Suspense>
         </div>
     );
 }

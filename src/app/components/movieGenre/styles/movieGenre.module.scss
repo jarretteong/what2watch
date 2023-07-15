@@ -6,7 +6,7 @@
   position: relative;
   max-width: 100%;
   aspect-ratio: 4 / 5;
-  max-height: 700px;
+  max-height: 500px;
 
   .movieDetails {
     position: absolute;
@@ -38,6 +38,12 @@
     bottom: 30%;
     right: 5%;
     z-index: 10;
+    transition: bottom 1s ease;
+
+    &.playing {
+      transition: bottom 1s ease;
+      bottom: 16px;
+    }
   }
 
   .genreSwiper {
@@ -52,6 +58,10 @@
       display: flex;
       align-items: flex-end;
       width: max-content;
+    }
+
+    &.playing {
+      display: none;
     }
 
     .slide {
@@ -80,14 +90,16 @@
     position: absolute;
     opacity: 1;
     transition: opacity 0.5s ease 0s;
+    max-height: 500px;
 
     .backdropImage {
+      display: block;
       width: 100vw;
       margin: auto;
-      max-height: 700px;
+      max-height: 500px;
       max-width: 100%;
       position: relative;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 4 / 5;
     }
 
     .imageOverlay {
@@ -162,6 +174,8 @@
   }
 
   .genreSwiper {
+    margin-bottom: 20px;
+
     .videoContainer {
       position: absolute;
       top: 0;
@@ -242,6 +256,7 @@
 
     .movieBackdrop .backdropImage {
       aspect-ratio: 4/5;
+      max-height: 500px;
     }
   }
 
@@ -261,7 +276,7 @@
     .movieDetails {
       width: 360px;
       left: 5%;
-      bottom: 20%;
+      bottom: 30%;
     }
 
     .genreSwiper {
@@ -269,7 +284,7 @@
     }
 
     .movieBackdrop {
-      height: 700px;
+      max-height: 500px;
     }
   }
 
@@ -291,6 +306,8 @@
 
 @media only screen and (min-width: 992px) {
   .genreFullContainer {
+    max-height: 700px;
+
     .movieDetails {
       width: 420px;
       left: 5%;
@@ -302,7 +319,15 @@
     }
 
     .movieBackdrop {
-      height: 700px;
+      max-height: 700px;
+
+      .backdropImage {
+        max-height: 700px;
+      }
+
+      .imageOverlay {
+        max-height: 700px;
+      }
     }
   }
 
@@ -326,6 +351,8 @@
 
 @media only screen and (min-width: 1200px) {
   .genreFullContainer {
+    max-height: 700px;
+
     .movieDetails {
       width: 420px;
       left: 5%;
@@ -337,7 +364,15 @@
     }
 
     .movieBackdrop {
-      height: 700px;
+      max-height: 700px;
+
+      .backdropImage {
+        max-height: 700px;
+      }
+
+      .imageOverlay {
+        max-height: 700px;
+      }
     }
   }
 
@@ -347,7 +382,7 @@
 
   .genreBackdropContainer {
     width: 95%;
-    
+
     .backdropWrapper {
       position: relative;
 

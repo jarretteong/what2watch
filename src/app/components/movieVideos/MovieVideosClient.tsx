@@ -56,7 +56,7 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                     .value()
             );
         }
-    }, [movieDetails.credits]);
+    }, [credits]);
 
     useEffect(() => {
         setBackdropMedia(!mediumMedia);

@@ -43,6 +43,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [open, setOpen] = useState<boolean>(false);
     const [selectedMovie, setSelectedMovie] = useState<MovieCustom>();
     const posterMedia = useMediaQuery("(min-width: 1px)");
+    const mobileMedia = useMediaQuery("(max-width: 480px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
     const [slidesPerView, setSlidesPerView] = useState<number>(1);
     const [imageType, setImageType] = useState<string>("backdrop");
@@ -51,10 +52,9 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [currentWidth, setCurrentWidth] = useState<number>(0);
-    const [movieList, setMovieList] = useState<MovieCustom[]>(movies);
+    const [movieList, setMovieList] = useState<MovieCustom[]>(movies.filter((m) => m.backdrop_path));
 
     const fetchNewMovies = async (genreId: number, page: number = 1) => {
-        console.log({ page });
         const data = await fetch(`/api/movies/genre?id=${genreId}&page=${page}`);
         return data.json();
     };
@@ -386,19 +386,26 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     ) : null}
                                 </div>
                             ) : null}
-                            {imageType === "backdrop" &&
-                            activeSlide >= 0 &&
-                            movieList.length > 0 ? (
+                            {activeSlide >= 0 && movieList.length > 0 ? (
                                 <>
-                                    <div className={styles.movieDetails}>
-                                        <h2>{movieList[activeSlide].title}</h2>
-                                        <h5 className={styles.genre}>{genre.name}</h5>
-                                        <p className={styles.movieMetadataOverview}>
-                                            {movieList[activeSlide].overview}
-                                        </p>
-                                    </div>
+                                    {backdropMedia && !showPlayer ? (
+                                        <div className={styles.movieDetails}>
+                                            <>
+                                                <h2>{movieList[activeSlide].title}</h2>
+                                                <h5 className={styles.genre}>{genre.name}</h5>
+                                                <p className={styles.movieMetadataOverview}>
+                                                    {movieList[activeSlide].overview}
+                                                </p>
+                                            </>
+                                        </div>
+                                    ) : null}
                                     {movieList[activeSlide].trailer ? (
-                                        <div className={styles.playerControls}>
+                                        <div
+                                            className={classNames({
+                                                [styles.playerControls]: true,
+                                                [styles.playing]: showPlayer,
+                                            })}
+                                        >
                                             <ReactPlayerControls
                                                 playing={showPlayer}
                                                 muted={isMuted}
@@ -411,7 +418,10 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                 </>
                             ) : null}
                             <ReactSwiper
-                                className={styles.genreSwiper}
+                                className={classNames({
+                                    [styles.genreSwiper]: true,
+                                    [styles.playing]: showPlayer
+                                })}
                                 breakpoints={{
                                     1: {
                                         slidesPerView: 2.2,
