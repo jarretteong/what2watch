@@ -42,7 +42,7 @@ export const videoSlidesCount = {
 };
 
 export const getPlaceholderImageURL = (url: string) => {
-    console.log(url)
+    console.log(`/_next/image?url=${encodeURIComponent(url)}&q=70&w=8`)
     return `/_next/image?url=${encodeURIComponent(url)}&q=70&w=8`
 }
 
