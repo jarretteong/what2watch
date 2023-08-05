@@ -119,7 +119,6 @@ export default async function MovieComponent(request: any) {
                             src={`https://image.tmdb.org/t/p/original${movieDetails.poster_path}`}
                             alt={movieDetails.title}
                             fill
-                            style={{ objectFit: "cover" }}
                         />
                     </div>
                     <div className={styles.movieInfo}>

@@ -60,7 +60,6 @@ const MovieVideos = async ({ movie, open, setOpen }: MovieVideosProps) => {
     // const videos: VideoRes = await fetchTMDBMovieVideos(movie.id);
     // const images = await fetchTMDBMovieImages(movie.id);
     // const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
-    // console.log(movieCredits)
     // videos.results = await addPlaceholderImagesVideos(videos.results);
     // movie = await addPlaceholderImagesMovieDetails(movie);
     // movie.credits = movieCredits;
@@ -84,8 +83,6 @@ const MovieVideos = async ({ movie, open, setOpen }: MovieVideosProps) => {
     //                             // blur_file_path,
     //                         };
     //                     });
-
-    //                 // console.log(images[key])
     //                 // return images[key];
     //             }
     //             // return null;

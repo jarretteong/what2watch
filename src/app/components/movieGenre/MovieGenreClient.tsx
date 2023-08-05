@@ -22,6 +22,7 @@ import { Movie, MovieCustom } from "@/interfaces/movie";
 import { Waypoint } from "react-waypoint";
 import _ from "lodash";
 import MovieVideosClient from "../movieVideos/MovieVideosClient";
+import BlurImage from "../BlurImage/BlurImage";
 
 type MovieGenreProps = {
     movies: MovieCustom[];
@@ -52,7 +53,9 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const [showPlayer, setShowPlayer] = useState<boolean>(false);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [currentWidth, setCurrentWidth] = useState<number>(0);
-    const [movieList, setMovieList] = useState<MovieCustom[]>(movies.filter((m) => m.backdrop_path));
+    const [movieList, setMovieList] = useState<MovieCustom[]>(
+        movies.filter((m) => m.backdrop_path)
+    );
 
     const fetchNewMovies = async (genreId: number, page: number = 1) => {
         const data = await fetch(`/api/movies/genre?id=${genreId}&page=${page}`);
@@ -161,7 +164,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                             onSlideChange={async (swiper) => {
                                 setActiveSlide(swiper.activeIndex);
                                 if (
-                                    movieList.length - swiper.activeIndex <= 10 &&
+                                    movieList.length - swiper.activeIndex <= 20 &&
                                     hasNextPage &&
                                     !isFetching
                                 ) {
@@ -178,23 +181,16 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                         >
                             {movieList.length > 0
                                 ? movieList.map((movie: any, index: number) => {
-                                    {console.log(getPlaceholderImageURL(
-                                        `https://image.tmdb.org/t/p/w342${movie.poster_path}`
-                                    ))}
                                       return (
                                           <SwiperSlide key={movie.id} className={styles.slide}>
                                               <div className={styles.backdropImageWrapper}>
-
-                                                  <Image
+                                                  <BlurImage
                                                       className={styles.slideImage}
+                                                      id={movie.poster_path}
                                                       alt={movie.title}
                                                       src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
                                                       onClick={() => setActiveSlide(index)}
-                                                      fill
                                                       placeholder="blur"
-                                                      blurDataURL={getPlaceholderImageURL(
-                                                          `https://image.tmdb.org/t/p/w342${movie.poster_path}`
-                                                      )}
                                                   />
                                               </div>
                                               {/* <img
@@ -424,7 +420,7 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                             <ReactSwiper
                                 className={classNames({
                                     [styles.genreSwiper]: true,
-                                    [styles.playing]: showPlayer
+                                    [styles.playing]: showPlayer,
                                 })}
                                 breakpoints={{
                                     1: {
@@ -467,7 +463,6 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
                                     }
                                 }}
                                 onSwiper={(s: any) => {
-                                    console.log(s.slidesSizesGrid);
                                     setActiveSlide(s.activeIndex);
                                     setCurrentWidth(s.slidesSizesGrid?.[0] || 0);
                                 }}

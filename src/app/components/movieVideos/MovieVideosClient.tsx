@@ -16,7 +16,8 @@ import "react-responsive-modal/styles.css";
 import { MovieCustom, Video, VideoRes } from "@/interfaces/movie";
 import classNames from "classnames";
 import { Cast, Credits, Crew } from "@/interfaces/credits";
-import { getPlaceholderImageURL } from "@/app/utils";
+import { getPlaceholderImageURL, parseMovieIdQuery } from "@/app/utils";
+import Link from "next/link";
 
 type MovieVideosProps = {
     movieDetails: MovieCustom;
@@ -69,6 +70,9 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                 modalContainer: styles.movieModalContainer,
                 overlay: styles.movieModalOverlay,
             }}
+            styles={{
+                modal: { padding: 0 },
+            }}
             open={open}
             onClose={() => setOpen(false)}
             showCloseIcon={false}
@@ -86,13 +90,20 @@ const MovieVideos: React.FunctionComponent<MovieVideosProps> = ({
                     alt={movieDetails.title}
                     fill
                     placeholder="blur"
-                    blurDataURL={getPlaceholderImageURL(`https://image.tmdb.org/t/p/w342${
-                        !backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
-                    }`)}
+                    blurDataURL={getPlaceholderImageURL(
+                        `https://image.tmdb.org/t/p/w342${
+                            !backdropMedia ? movieDetails.backdrop_path : movieDetails.poster_path
+                        }`
+                    )}
                 />
             </div>
             <div className={styles.movieDescription}>
-                <h2>{movieDetails.title}</h2>
+                <Link
+                    href={`/movies/${parseMovieIdQuery(movieDetails.id, movieDetails.title)}`}
+                    className={styles.movieTitle}
+                >
+                    <h2>{movieDetails.title}</h2>
+                </Link>
                 <h4 className={styles.movieOverview}>{movieDetails.overview}</h4>
                 <div className={styles.movieCast}>
                     <h4>

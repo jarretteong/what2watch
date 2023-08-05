@@ -49,6 +49,12 @@
     margin: auto;
     border-bottom: 1px solid #ccc;
 
+    .movieTitle {
+      outline: none;
+      color: #000;
+      text-decoration: none;
+    }
+
     .movieOverview {
       margin: 24px 0;
       font-weight: normal;
