@@ -1,0 +1,53 @@
+.genrePosterContainer {
+    width: 90%;
+    margin: 0 auto 20px auto;
+
+    .genreTypeWrapper {
+        margin: 12px 0;
+    }
+
+    .genreSwiper {
+        .slide {
+            width: 16%;
+            margin-right: 18px;
+        }
+
+        .backdropImageWrapper {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+
+            .slideImage {
+                width: 100%;
+                border-radius: 10px;
+                background: #ddd;
+            }
+        }
+
+        margin-bottom: 20px;
+    }
+}
+
+.divider {
+    border-top: 0.5px solid rgba(0, 0, 0, 0.15);
+}
+
+@media only screen and (min-width: 480px) {
+}
+
+@media only screen and (min-width: 768px) {
+    .genrePosterContainer {
+        width: 95%;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .genrePosterContainer {
+        width: 95%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .genrePosterContainer {
+        width: 95%;
+    }
+}

@@ -208,6 +208,9 @@ export default async function MovieComponent(request: any) {
                     </div>
                 </section>
             </div>
+            <div className={styles.movieRecommendation}>
+
+            </div>
         </div>
     );
 }

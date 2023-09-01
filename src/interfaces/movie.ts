@@ -71,3 +71,8 @@ export interface ImageData {
     width: number;
     blur_file_path?: string;
 }
+
+export interface Genre {
+    id: number;
+    name: string;
+}
