@@ -2,24 +2,27 @@ import { parseMovieIdQuery } from "@/app/utils";
 import {
     fetchTMDBMovieCredits,
     fetchTMDBMovieDetails,
+    fetchTMDBMovieImages,
     fetchTMDBMovieVideos,
+    fetchTMDBRecommendedMovies,
     fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
 import _ from "lodash";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
-import { Movie, MovieGenre, Video, VideoRes } from "@/interfaces/movie";
+import { ImageData, Movie, MovieCustom, MovieGenre, MovieRes, Video, VideoRes } from "@/interfaces/movie";
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 import { getPlaiceholder } from "plaiceholder";
 import { Credits } from "@/interfaces/credits";
 import { Metadata } from "next";
 import MovieTrailer from "@/app/components/movieTrailer/MovieTrailer";
+import MoviePoster from "@/app/components/moviePoster/moviePoster";
 
 export type MovieMetadataParams = {
     params: { movieId: string };
     searchParams: { [key: string]: string | string[] | undefined };
-  };
+};
 
 const checkValidParams = async (movieId: string): Promise<number | null> => {
     const id = _.last(movieId.split("-"));
@@ -34,7 +37,10 @@ const checkValidParams = async (movieId: string): Promise<number | null> => {
     return null;
 };
 
-export async function generateMetadata({ params, searchParams }: MovieMetadataParams): Promise<Metadata> {
+export async function generateMetadata({
+    params,
+    searchParams,
+}: MovieMetadataParams): Promise<Metadata> {
     const { movieId } = params;
     const validId = await checkValidParams(movieId);
 
@@ -44,12 +50,12 @@ export async function generateMetadata({ params, searchParams }: MovieMetadataPa
 
     const movieDetails: Movie = await fetchTMDBMovieDetails(validId);
     return {
-      title: movieDetails.title,
-      openGraph: {
         title: movieDetails.title,
-      },
+        openGraph: {
+            title: movieDetails.title,
+        },
     };
-  }
+}
 const addPlaceholderImagesMovieDetails = async (data: Movie) => {
     if (data.backdrop_path) {
         const src = `https://image.tmdb.org/t/p/w342${data.backdrop_path}`;
@@ -96,12 +102,56 @@ export default async function MovieComponent(request: any) {
         return notFound();
     }
 
-    const videosList: VideoRes = await fetchTMDBMovieVideos(validId);
+    // const videosList: VideoRes = await fetchTMDBMovieVideos(validId);
     const movieDetails: Movie = await fetchTMDBMovieDetails(validId);
     const movieCredits: Credits = await fetchTMDBMovieCredits(validId);
+    console.log(validId)
+    const movies: MovieRes = await fetchTMDBRecommendedMovies(validId, 1);
 
-    videosList.results = await addPlaceholderImagesVideos(videosList.results);
-    await addPlaceholderImagesMovieDetails(movieDetails);
+    const recommendedMovies: MovieCustom[] = await Promise.all(
+        movies.results.map(async (movie: any, index: number) => {
+            const videos = await fetchTMDBMovieVideos(movie.id);
+            const images = await fetchTMDBMovieImages(movie.id);
+            const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
+
+            // if (index <= 5) {
+            //     // videos.results = await addPlaceholderImagesVideos(videos.results);
+            //     movie = await addPlaceholderImagesMovieDetails(movie);
+            // }
+
+            let filteredImages: any = {};
+            if (images) {
+                _.keys(images)
+                    .filter((key) => key === "id" || key === "backdrops" || key === "posters")
+                    .forEach((key) => {
+                        if (_.isArray(images[key])) {
+                            filteredImages[key] = images[key].filter(
+                                (image: ImageData) => image.iso_639_1 === "en"
+                            );
+                        } else if (key === "id") {
+                            filteredImages[key] = images[key];
+                        }
+                        return null;
+                    });
+            }
+            const officialTrailer = _.first(
+                videos.results.filter((video: Video) => video.type === "Trailer")
+            );
+            return {
+                ...movie,
+                ...filteredImages,
+                images: {
+                    ...filteredImages,
+                },
+                videos: videos.results,
+                trailer: officialTrailer,
+                credits: movieCredits,
+            };
+        })
+    );
+
+    // videosList.results = await addPlaceholderImagesVideos(videosList.results);
+    // await addPlaceholderImagesMovieDetails(movieDetails);
 
     return (
         <div className={styles.movie}>
@@ -209,7 +259,11 @@ export default async function MovieComponent(request: any) {
                 </section>
             </div>
             <div className={styles.movieRecommendation}>
-
+                <MoviePoster
+                    type="recommendations"
+                    movieList={recommendedMovies}
+                    movieId={validId}
+                />
             </div>
         </div>
     );

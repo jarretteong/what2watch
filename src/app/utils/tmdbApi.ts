@@ -1,8 +1,8 @@
 import { Credits } from "@/interfaces/credits";
-import { Movie, Video, VideoRes } from "@/interfaces/movie";
+import { Movie, MovieRes, Video, VideoRes } from "@/interfaces/movie";
 import _ from "lodash";
 
-export const fetchTMDBTrendingMovies = async () => {
+export const fetchTMDBTrendingMovies = async (): Promise<MovieRes> => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/trending/movie/week?api_key=${process.env.TMDB_APIKEY}`,
         { next: { revalidate: 60 } }
@@ -10,7 +10,7 @@ export const fetchTMDBTrendingMovies = async () => {
     return await data.json();
 };
 
-export const fetchTMDBPopularMovies = async () => {
+export const fetchTMDBPopularMovies = async (): Promise<MovieRes> => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/movie/popular?api_key=${process.env.TMDB_APIKEY}`,
         { next: { revalidate: 60 } }
@@ -67,9 +67,23 @@ export const fetchTMDBMovieGenres = async (type?: string) => {
     return genresData.genres;
 };
 
-export const fetchTMDBMoviesByGenreId = async (genreId: number, page: number = 1) => {
+export const fetchTMDBMoviesByGenreId = async (
+    genreId: number,
+    page: number = 1
+): Promise<MovieRes> => {
     const data = await fetch(
         `${process.env.TMDB_V3_URL}/discover/movie?api_key=${process.env.TMDB_APIKEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=${page}&with_genres=${genreId}`,
+        { next: { revalidate: 60 } }
+    );
+    return await data.json();
+};
+
+export const fetchTMDBRecommendedMovies = async (
+    movieId: number,
+    page: number = 1
+): Promise<MovieRes> => {
+    const data = await fetch(
+        `${process.env.TMDB_V3_URL}/movie/${movieId}/recommendations?api_key=${process.env.TMDB_APIKEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=${page}`,
         { next: { revalidate: 60 } }
     );
     return await data.json();

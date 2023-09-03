@@ -6,13 +6,9 @@ import "swiper/swiper.css";
 import "node_modules/swiper/modules/navigation/navigation.scss";
 import "node_modules/swiper/modules/pagination/pagination.min.css";
 import styles from "./styles/movieGenre.module.scss";
-
-import Swiper, { EffectFade, Manipulation, Navigation, Pagination, SwiperOptions } from "swiper";
-import Image from "next/image";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { render } from "react-dom";
 import { useMediaQuery } from "usehooks-ts";
-import { getPlaceholderImageURL, parseMovieIdQuery } from "@/app/utils";
+import { parseMovieIdQuery } from "@/app/utils";
 import Link from "next/link";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
@@ -22,7 +18,6 @@ import { Movie, MovieCustom } from "@/interfaces/movie";
 import { Waypoint } from "react-waypoint";
 import _ from "lodash";
 import MovieVideosClient from "../movieVideos/MovieVideosClient";
-import BlurImage from "../BlurImage/BlurImage";
 import MoviePoster from "../moviePoster/moviePoster";
 
 type MovieGenreProps = {
@@ -48,7 +43,6 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
     const posterMedia = useMediaQuery("(min-width: 1px)");
     const mobileMedia = useMediaQuery("(max-width: 480px)");
     const backdropMedia = useMediaQuery("(min-width: 768px)");
-    const [slidesPerView, setSlidesPerView] = useState<number>(1);
     const [imageType, setImageType] = useState<string>("backdrop");
     const [activeSlide, setActiveSlide] = useState<number>(-1);
     const [isMuted, setIsMuted] = useState<boolean>(true);
@@ -102,32 +96,16 @@ const MovieGenreComponent: React.FunctionComponent<MovieGenreProps> = ({
         }, 1000);
     }, []);
 
-    if (
-        !isLoading &&
-        !isError &&
-        _.flatMap(data?.pages, "data").filter((m) => m.backdrop_path).length !==
-            movieList.filter((m) => m.backdrop_path).length
-    ) {
-        const updatedMovies = _.flatMap(data?.pages, "data").filter((m) => m.backdrop_path);
-        setMovieList(updatedMovies);
-    }
+    
 
     const renderGenreContainer = () => {
         switch (type) {
             case "poster":
                 return (
                     <MoviePoster
+                        type="genre"
                         genre={genre}
                         movieList={movieList}
-                        setSelectedMovie={setSelectedMovie}
-                        selectedMovie={selectedMovie}
-                        open={open}
-                        setOpen={setOpen}
-                        setActiveSlide={setActiveSlide}
-                        hasNextPage={hasNextPage}
-                        isFetching={isFetching}
-                        fetchNextPage={fetchNextPage}
-                        setSlidesPerView={setSlidesPerView}
                     />
                 );
             case "backdrop":

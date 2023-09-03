@@ -1,5 +1,12 @@
 import { Credits } from "./credits";
 
+export interface MovieRes {
+    page: number;
+    results: MovieCustom[];
+    total_pages: number;
+    total_results: number;
+}
+
 export interface Movie {
     adult: boolean;
     backdrop_path: string;

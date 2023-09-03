@@ -17,23 +17,24 @@ const BlurImage: React.FunctionComponent<CustomImageProps> = ({
     onClick,
     placeholder,
 }) => {
+    console.log("ID", id);
     const [isLoading, setLoading] = useState(true);
     const [blurDataURL, setBlurDataURL] = useState("");
 
     const fetchBlurURL = useCallback(async (imageId: string) => {
         const data = await fetch(`/api/images/${imageId}`);
         const imageData = await data.json();
-        console.log(imageData)
+        console.log(imageData);
         setBlurDataURL(imageData.blurDataURL);
         setLoading(false);
     }, []);
 
     useEffect(() => {
-        const imageId = id.replace("/", "");
-        fetchBlurURL(imageId);
+        const imageId = id?.replace("/", "");
+        if (imageId) fetchBlurURL(imageId);
     }, [id]);
 
-    return isLoading ? null : (
+    return !isLoading && blurDataURL ? (
         <div>
             <Image
                 alt={alt}
@@ -54,7 +55,7 @@ const BlurImage: React.FunctionComponent<CustomImageProps> = ({
                 blurDataURL={blurDataURL}
             />
         </div>
-    );
+    ) : null;
 };
 
 export default BlurImage;
