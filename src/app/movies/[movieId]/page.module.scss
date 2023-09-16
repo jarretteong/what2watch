@@ -109,8 +109,8 @@
         }
     }
 
-    .movieRecommendation {
-        display: block;
+    .movieRecommendation, .movieSimilar {
+        margin: auto;
     }
 }
 
@@ -228,6 +228,10 @@
                     font-size: 20px;
                 }
             }
+        }
+
+        .movieRecommendation, .movieSimilar {
+            margin: auto;
         }
     }
 }
@@ -347,6 +351,11 @@
                     font-size: 20px;
                 }
             }
+        }
+
+        .movieRecommendation, .movieSimilar {
+            width: 90%;
+            margin: auto;
         }
     }
 }
@@ -468,107 +477,10 @@
                 }
             }
         }
+
+        .movieRecommendation, .movieSimilar {
+            width: 90%;
+            margin: auto;
+        }
     }
 }
-
-// .movie {
-//     .coverImage {
-//         position: fixed;
-//         inset: 0;
-//         width: 100%;
-//         height: 100%;
-//         max-height: 100vh;
-//         background-repeat: no-repeat;
-//         background-size: cover;
-//     }
-
-//     .movieSummary {
-//         display: flex;
-//         position: relative;
-//         justify-content: center;
-//         align-items: center;
-//         z-index: 5;
-//         margin-top: 120px;
-
-//         .moviePoster {
-//             border-radius: 4px;
-//             margin-right: 60px;
-//             margin-left: 30px;
-//         }
-
-//         .movieInfo {
-//             font-family: Montserrat;
-//             max-width: 50%;
-//             color: #fff;
-//             line-height: 1.5;
-
-//             > * {
-//                 margin-bottom: 16px;
-//             }
-
-//             .movieTitle {
-//                 font-size: 24px;
-//                 font-weight: 700;
-//             }
-
-//             .movieMainMetadata {
-//                 display: flex;
-//                 font-size: 13px;
-//                 align-items: center;
-
-//                 > * {
-//                     margin-right: 30px;
-//                 }
-
-//                 .trailerBtn {
-//                     display: flex;
-//                     padding: 6px 0;
-//                     align-items: center;
-//                 }
-//             }
-
-//             .movieInfoOverview {
-//                 font-size: 15px;
-//             }
-
-//             .movieExtras {
-//                 padding-top: 12px;
-//                 display: grid;
-//                 grid-template-columns: repeat(2, 1fr);
-//                 grid-template-rows: repeat(4, 1fr);
-//                 grid-auto-flow: column;
-//                 font-size: 13px;
-//                 row-gap: 6px;
-//                 column-gap: 16px;
-
-//                 .movieExtrasItem {
-//                     > a {
-//                         text-decoration: none;
-//                         color: #fff;
-
-//                         &:hover {
-//                             text-decoration: underline;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     .movieOthers {
-//         font-family: Montserrat;
-//         position: relative;
-//         z-index: 10;
-//         display: flex;
-//         flex-direction: column;
-//         width: 100%;
-
-//         .movieVids {
-//             h3 {
-//                 color: #fff;
-//                 z-index: 10;
-//                 font-size: 20px;
-//             }
-//         }
-//     }
-// }

@@ -88,3 +88,14 @@ export const fetchTMDBRecommendedMovies = async (
     );
     return await data.json();
 };
+
+export const fetchTMDBSimilarMovies = async (
+    movieId: number,
+    page: number = 1
+): Promise<MovieRes> => {
+    const data = await fetch(
+        `${process.env.TMDB_V3_URL}/movie/${movieId}/similar?api_key=${process.env.TMDB_APIKEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=${page}`,
+        { next: { revalidate: 60 } }
+    );
+    return await data.json();
+};

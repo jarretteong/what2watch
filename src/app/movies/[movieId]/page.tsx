@@ -4,14 +4,24 @@ import {
     fetchTMDBMovieDetails,
     fetchTMDBMovieImages,
     fetchTMDBMovieVideos,
+    fetchTMDBMoviesByGenreId,
     fetchTMDBRecommendedMovies,
+    fetchTMDBSimilarMovies,
     fetchTMDBTrendingMovies,
 } from "@/app/utils/tmdbApi";
 import _ from "lodash";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import styles from "./page.module.scss";
-import { ImageData, Movie, MovieCustom, MovieGenre, MovieRes, Video, VideoRes } from "@/interfaces/movie";
+import {
+    ImageData,
+    Movie,
+    MovieCustom,
+    MovieGenre,
+    MovieRes,
+    Video,
+    VideoRes,
+} from "@/interfaces/movie";
 import MovieVideos from "@/app/components/movieVideos/MovieVideos";
 import { getPlaiceholder } from "plaiceholder";
 import { Credits } from "@/interfaces/credits";
@@ -94,6 +104,41 @@ const addPlaceholderImagesVideos = async (data: Video[]): Promise<Video[]> => {
     );
 };
 
+const formatMovieData = async (movie: MovieCustom) => {
+    const videos = await fetchTMDBMovieVideos(movie.id);
+    const images = await fetchTMDBMovieImages(movie.id);
+    const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
+
+    let filteredImages: any = {};
+    if (images) {
+        _.keys(images)
+            .filter((key) => key === "id" || key === "backdrops" || key === "posters")
+            .forEach((key) => {
+                if (_.isArray(images[key])) {
+                    filteredImages[key] = images[key].filter(
+                        (image: ImageData) => image.iso_639_1 === "en"
+                    );
+                } else if (key === "id") {
+                    filteredImages[key] = images[key];
+                }
+                return null;
+            });
+    }
+    const officialTrailer = _.first(
+        videos.results.filter((video: Video) => video.type === "Trailer")
+    );
+    return {
+        ...movie,
+        ...filteredImages,
+        images: {
+            ...filteredImages,
+        },
+        videos: videos.results,
+        trailer: officialTrailer,
+        credits: movieCredits,
+    };
+};
+
 export default async function MovieComponent(request: any) {
     const { movieId } = request.params;
     const validId = await checkValidParams(movieId);
@@ -105,49 +150,21 @@ export default async function MovieComponent(request: any) {
     // const videosList: VideoRes = await fetchTMDBMovieVideos(validId);
     const movieDetails: Movie = await fetchTMDBMovieDetails(validId);
     const movieCredits: Credits = await fetchTMDBMovieCredits(validId);
-    console.log(validId)
+    console.log(validId);
     const movies: MovieRes = await fetchTMDBRecommendedMovies(validId, 1);
+    const movies2: MovieRes = await fetchTMDBSimilarMovies(validId, 1);
+    const movies3: MovieRes = await fetchTMDBMoviesByGenreId(_.first(movieDetails.genres)!.id);
 
     const recommendedMovies: MovieCustom[] = await Promise.all(
-        movies.results.map(async (movie: any, index: number) => {
-            const videos = await fetchTMDBMovieVideos(movie.id);
-            const images = await fetchTMDBMovieImages(movie.id);
-            const movieCredits: Credits = await fetchTMDBMovieCredits(movie.id);
+        movies.results.map(async (movie: MovieCustom, index: number) => formatMovieData(movie))
+    );
 
-            // if (index <= 5) {
-            //     // videos.results = await addPlaceholderImagesVideos(videos.results);
-            //     movie = await addPlaceholderImagesMovieDetails(movie);
-            // }
+    const similarMovies: MovieCustom[] = await Promise.all(
+        movies2.results.map(async (movie: any, index: number) => formatMovieData(movie))
+    );
 
-            let filteredImages: any = {};
-            if (images) {
-                _.keys(images)
-                    .filter((key) => key === "id" || key === "backdrops" || key === "posters")
-                    .forEach((key) => {
-                        if (_.isArray(images[key])) {
-                            filteredImages[key] = images[key].filter(
-                                (image: ImageData) => image.iso_639_1 === "en"
-                            );
-                        } else if (key === "id") {
-                            filteredImages[key] = images[key];
-                        }
-                        return null;
-                    });
-            }
-            const officialTrailer = _.first(
-                videos.results.filter((video: Video) => video.type === "Trailer")
-            );
-            return {
-                ...movie,
-                ...filteredImages,
-                images: {
-                    ...filteredImages,
-                },
-                videos: videos.results,
-                trailer: officialTrailer,
-                credits: movieCredits,
-            };
-        })
+    const genreMovies: MovieCustom[] = await Promise.all(
+        movies3.results.map(async (movie: any, index: number) => formatMovieData(movie))
     );
 
     // videosList.results = await addPlaceholderImagesVideos(videosList.results);
@@ -166,7 +183,7 @@ export default async function MovieComponent(request: any) {
                     <div className={styles.moviePosterWrapper}>
                         <Image
                             className={styles.moviePoster}
-                            src={`https://image.tmdb.org/t/p/original${movieDetails.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/w342${movieDetails.poster_path}`}
                             alt={movieDetails.title}
                             fill
                         />
@@ -258,11 +275,20 @@ export default async function MovieComponent(request: any) {
                     </div>
                 </section>
             </div>
+            <div className={styles.movieSimilar}>
+                <MoviePoster
+                    type="similar"
+                    movieList={similarMovies.filter((m) => m.poster_path && m.backdrop_path)}
+                    movieId={validId}
+                    title="More Like This"
+                />
+            </div>
             <div className={styles.movieRecommendation}>
                 <MoviePoster
-                    type="recommendations"
-                    movieList={recommendedMovies}
-                    movieId={validId}
+                    type="genre"
+                    genre={_.first(movieDetails.genres)}
+                    movieList={genreMovies.filter((m) => m.poster_path && m.backdrop_path)}
+                    title="You may also like"
                 />
             </div>
         </div>
